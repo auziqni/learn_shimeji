@@ -4,9 +4,11 @@ from PyQt5.QtWidgets import QApplication
 import sys
 
 from control_panel import ControlPanel
+from utils.xml_parser import XMLParser
 
 
 def main():
+    
     app = QApplication(sys.argv)
     
     # Set application properties
@@ -16,6 +18,10 @@ def main():
     # Create dan show window
     window = ControlPanel()
     window.show()
+    
+    parser = XMLParser()
+    sprite_packs = parser.load_all_sprite_packs()
+    parser.print_summary()
     
     sys.exit(app.exec_())
 

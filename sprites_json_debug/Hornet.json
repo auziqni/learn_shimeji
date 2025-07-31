@@ -1,0 +1,4090 @@
+{
+  "sprite_name": "Hornet",
+  "status": "READY",
+  "actions": {
+    "Stand": {
+      "name": "Stand",
+      "action_type": "Stay",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime1.png",
+            "duration": 2.5,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime1a.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "Walk": {
+      "name": "Walk",
+      "action_type": "Move",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime2.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3a.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3b.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3c.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3d.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime2.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3a.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3b.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3c.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3d.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime2.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3a.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3b.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3c.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3d.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime2.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3a.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3ba.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3c.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3d.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "Run": {
+      "name": "Run",
+      "action_type": "Move",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime3e.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              -4,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3f.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              -4,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3g.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              -4,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3h.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              -4,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3i.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              -4,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3j.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              -4,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "Dash": {
+      "name": "Dash",
+      "action_type": "Move",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime3e.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              -8,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3f.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              -8,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3g.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              -8,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3h.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              -8,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3i.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              -8,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime3j.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              -8,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "Sit": {
+      "name": "Sit",
+      "action_type": "Stay",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime11.png",
+            "duration": 2.5,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime11a.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "BePet": {
+      "name": "BePet",
+      "action_type": "Stay",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shimePet14.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "PetAction": {
+      "name": "PetAction",
+      "action_type": "Animate",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shimePet1.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet2.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet3.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet4.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet5.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet6.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet7.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet8.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet9.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet10.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet11.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet12.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet13.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet14.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "PoseAction": {
+      "name": "PoseAction",
+      "action_type": "Animate",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime29.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime15.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime16.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime17.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime26.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": "Hornet_Final_Boss_yell_02.wav",
+            "volume": -11
+          },
+          {
+            "image": "shime27.png",
+            "duration": 0.5333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime28.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime29.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "WatchAction": {
+      "name": "WatchAction",
+      "action_type": "Stay",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime32.png",
+            "duration": 2.5,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime33.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "WatchLoop": {
+      "name": "WatchLoop",
+      "action_type": "Animate",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime32.png",
+            "duration": 8.333333333333334,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "EatBerryAction": {
+      "name": "EatBerryAction",
+      "action_type": "Animate",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime38.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime39.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime40.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41a.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41b.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41c.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41b.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41c.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41b.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41c.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41d.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41e.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41f.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41e.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41f.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41e.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41f.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41g.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41ga.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41gb.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41ga.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41gb.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41ga.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41gb.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41h.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41i.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime41j.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime38.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "ThrowNeedleAction": {
+      "name": "ThrowNeedleAction",
+      "action_type": "Animate",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime47.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime48.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime49.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime50.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime51.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": "Hornet_Fight_Yell_06.wav",
+            "volume": -11
+          },
+          {
+            "image": "shime52.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime53.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime54.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime55.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime56.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime57.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime58.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime59.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime60.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime61.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime62.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime48.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime47.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "SitWithLegsUp": {
+      "name": "SitWithLegsUp",
+      "action_type": "Stay",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime30.png",
+            "duration": 8.333333333333334,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "SitWithLegsDown": {
+      "name": "SitWithLegsDown",
+      "action_type": "Stay",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime31.png",
+            "duration": 2.5,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime31a.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "BePetDangleLegs": {
+      "name": "BePetDangleLegs",
+      "action_type": "Stay",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shimePet28.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "PetActionDangleLegs": {
+      "name": "PetActionDangleLegs",
+      "action_type": "Animate",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shimePet15.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet16.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet17.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet18.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet19.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet20.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet21.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet22.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet23.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet24.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet25.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet26.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet27.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shimePet28.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "Sprawl": {
+      "name": "Sprawl",
+      "action_type": "Stay",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime20.png",
+            "duration": 1.0,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime21.png",
+            "duration": 1.0,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "GrabCeiling": {
+      "name": "GrabCeiling",
+      "action_type": "Stay",
+      "animation_blocks": [],
+      "border_type": "Ceiling",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime23.png",
+            "duration": 2.5,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime23a.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "ClimbCeiling": {
+      "name": "ClimbCeiling",
+      "action_type": "Move",
+      "animation_blocks": [],
+      "border_type": "Ceiling",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime25.png",
+            "duration": 0.5333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime25.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -1,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime23.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -1,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime24.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -1,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime24.png",
+            "duration": 0.5333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime24.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime23.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime25.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime25.png",
+            "duration": 0.5333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime25.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -1,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime23.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -1,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime24.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -1,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime24.png",
+            "duration": 0.5333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime24.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime23.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime25.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime25.png",
+            "duration": 0.5333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime25.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -1,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime23.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -1,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime24.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -1,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime24.png",
+            "duration": 0.5333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime24.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime23.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime25.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime25.png",
+            "duration": 0.5333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime25.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -1,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime23a.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -1,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime24.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -1,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime24.png",
+            "duration": 0.5333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime24.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime23.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime25.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "GrabWall": {
+      "name": "GrabWall",
+      "action_type": "Stay",
+      "animation_blocks": [],
+      "border_type": "Wall",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime13.png",
+            "duration": 2.5,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime13a.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "ClimbWall": {
+      "name": "ClimbWall",
+      "action_type": "Move",
+      "animation_blocks": [
+        {
+          "condition": "#{TargetY < mascot.anchor.y}",
+          "frames": [
+            {
+              "image": "shime14.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13a.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        },
+        {
+          "condition": "#{TargetY >= mascot.anchor.y}",
+          "frames": [
+            {
+              "image": "shime14.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13a.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      ],
+      "border_type": "Wall",
+      "default_animation": {
+        "condition": "#{TargetY < mascot.anchor.y}",
+        "frames": [
+          {
+            "image": "shime14.png",
+            "duration": 0.5333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime14.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -1
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime12.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -1
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime13.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -1
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime13.png",
+            "duration": 0.5333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime13.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -2
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime12.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -2
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime14.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -2
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime14.png",
+            "duration": 0.5333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime14.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -1
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime12.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -1
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime13.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -1
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime13.png",
+            "duration": 0.5333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime13.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -2
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime12.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -2
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime14.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -2
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime14.png",
+            "duration": 0.5333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime14.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -1
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime12.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -1
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime13.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -1
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime13.png",
+            "duration": 0.5333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime13.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -2
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime12.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -2
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime14.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -2
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime14.png",
+            "duration": 0.5333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime14.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -1
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime12.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -1
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime13a.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -1
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime13.png",
+            "duration": 0.5333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime13.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -2
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime12.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -2
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime14.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              -2
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "FallWithIe": {
+      "name": "FallWithIe",
+      "action_type": "Embedded",
+      "animation_blocks": [],
+      "border_type": null,
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime36.png",
+            "duration": 8.333333333333334,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "WalkWithIe": {
+      "name": "WalkWithIe",
+      "action_type": "Embedded",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime34.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime35.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36a.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36b.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36c.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime34.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime35.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36a.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36b.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36c.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime34.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime35.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36a.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36b.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36c.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime34.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime35.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36ab.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36b.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36c.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "RunWithIe": {
+      "name": "RunWithIe",
+      "action_type": "Embedded",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime34.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              -8,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime35.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              -8,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              -8,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36a.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              -8,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36b.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              -8,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime36c.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              -8,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "ThrowIe": {
+      "name": "ThrowIe",
+      "action_type": "Embedded",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime37.png",
+            "duration": 0.1,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": "Hornet_Fight_Yell_06.wav",
+            "volume": -11
+          },
+          {
+            "image": "shime37a.png",
+            "duration": 0.9666666666666667,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime37b.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime37c.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "Jumping": {
+      "name": "Jumping",
+      "action_type": "Embedded",
+      "animation_blocks": [],
+      "border_type": null,
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime22.png",
+            "duration": 8.333333333333334,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "Falling": {
+      "name": "Falling",
+      "action_type": "Embedded",
+      "animation_blocks": [],
+      "border_type": null,
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime4.png",
+            "duration": 8.333333333333334,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "Bouncing": {
+      "name": "Bouncing",
+      "action_type": "Animate",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime18.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime19.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "Tripping": {
+      "name": "Tripping",
+      "action_type": "Animate",
+      "animation_blocks": [],
+      "border_type": "Floor",
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime19.png",
+            "duration": 0.26666666666666666,
+            "velocity": [
+              -8,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime18.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -4,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime11.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -2,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime11.png",
+            "duration": 0.3333333333333333,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime19.png",
+            "duration": 0.13333333333333333,
+            "velocity": [
+              -4,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "Pinched": {
+      "name": "Pinched",
+      "action_type": "Embedded",
+      "animation_blocks": [
+        {
+          "condition": "#{FootX < mascot.environment.cursor.x-50}",
+          "frames": [
+            {
+              "image": "shime9.png",
+              "duration": 0.16666666666666666,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        },
+        {
+          "condition": "#{FootX < mascot.environment.cursor.x-30}",
+          "frames": [
+            {
+              "image": "shime7.png",
+              "duration": 0.16666666666666666,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        },
+        {
+          "condition": "#{FootX < mascot.environment.cursor.x-15}",
+          "frames": [
+            {
+              "image": "shime5.png",
+              "duration": 0.16666666666666666,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        },
+        {
+          "condition": "#{FootX < mascot.environment.cursor.x-5 || FootX < mascot.environment.cursor.x+5}",
+          "frames": [
+            {
+              "image": "shime5a.png",
+              "duration": 2.5,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime5ab.png",
+              "duration": 0.16666666666666666,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        },
+        {
+          "condition": "#{FootX < mascot.environment.cursor.x+30}",
+          "frames": [
+            {
+              "image": "shime6.png",
+              "duration": 0.16666666666666666,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        },
+        {
+          "condition": "#{FootX < mascot.environment.cursor.x+50}",
+          "frames": [
+            {
+              "image": "shime8.png",
+              "duration": 0.16666666666666666,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        },
+        {
+          "condition": "#{FootX >= mascot.environment.cursor.x+30}",
+          "frames": [
+            {
+              "image": "shime10.png",
+              "duration": 0.16666666666666666,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      ],
+      "border_type": null,
+      "default_animation": {
+        "condition": "#{FootX < mascot.environment.cursor.x-50}",
+        "frames": [
+          {
+            "image": "shime9.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    },
+    "Resisting": {
+      "name": "Resisting",
+      "action_type": "Embedded",
+      "animation_blocks": [],
+      "border_type": null,
+      "default_animation": {
+        "condition": null,
+        "frames": [
+          {
+            "image": "shime5.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime6.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime5.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime6.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime5a.png",
+            "duration": 1.6666666666666667,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime5.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime6.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime5.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime6.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime5.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime6.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime5.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime6.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime5a.png",
+            "duration": 3.3333333333333335,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime5.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime6.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime5.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime6.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime5.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime6.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime5.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime6.png",
+            "duration": 0.16666666666666666,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime5.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime6.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime5.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime6.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime5.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime6.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime5.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          },
+          {
+            "image": "shime6.png",
+            "duration": 0.06666666666666667,
+            "velocity": [
+              0,
+              0
+            ],
+            "sound": null,
+            "volume": null
+          }
+        ],
+        "priority": 0
+      }
+    }
+  },
+  "behaviors": {
+    "Pet": {
+      "name": "Pet",
+      "frequency": 0,
+      "condition": null,
+      "hidden": true,
+      "next_behaviors": [
+        "SitDownAfterPet"
+      ]
+    },
+    "PetDangleLegs": {
+      "name": "PetDangleLegs",
+      "frequency": 0,
+      "condition": null,
+      "hidden": true,
+      "next_behaviors": [
+        "SitDownAfterPetDangleLegs"
+      ]
+    },
+    "WatchShows (Endless)": {
+      "name": "WatchShows (Endless)",
+      "frequency": 0,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "hidden": false,
+      "next_behaviors": [
+        "ContinueWatch"
+      ]
+    },
+    "ContinueWatch": {
+      "name": "ContinueWatch",
+      "frequency": 0,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "hidden": true,
+      "next_behaviors": [
+        "WatchShows (Endless)"
+      ]
+    },
+    "WatchShows (CanEnd)": {
+      "name": "WatchShows (CanEnd)",
+      "frequency": 45,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "hidden": false,
+      "next_behaviors": [
+        "ContinueWatch2",
+        "StopWatchingShows"
+      ]
+    },
+    "ContinueWatch2": {
+      "name": "ContinueWatch2",
+      "frequency": 0,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "hidden": true,
+      "next_behaviors": [
+        "WatchShows (CanEnd)"
+      ]
+    },
+    "Pose": {
+      "name": "Pose",
+      "frequency": 30,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "hidden": false,
+      "next_behaviors": [
+        "ShortStandAfterAction"
+      ]
+    },
+    "ThrowNeedle": {
+      "name": "ThrowNeedle",
+      "frequency": 30,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "hidden": false,
+      "next_behaviors": [
+        "ShortStandAfterAction"
+      ]
+    },
+    "EatBerry": {
+      "name": "EatBerry",
+      "frequency": 45,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "hidden": false,
+      "next_behaviors": [
+        "SitDownAfterPet"
+      ]
+    },
+    "Sleep": {
+      "name": "Sleep",
+      "frequency": 40,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "hidden": false,
+      "next_behaviors": [
+        "SitDownAfterPet"
+      ]
+    },
+    "WalkLeftAlongFloorAndSit": {
+      "name": "WalkLeftAlongFloorAndSit",
+      "frequency": 100,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor)}",
+      "hidden": true,
+      "next_behaviors": [
+        "SitDown",
+        "SitWhileDanglingLegs"
+      ]
+    },
+    "WalkRightAlongFloorAndSit": {
+      "name": "WalkRightAlongFloorAndSit",
+      "frequency": 100,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor)}",
+      "hidden": true,
+      "next_behaviors": [
+        "SitDown",
+        "SitWhileDanglingLegs"
+      ]
+    },
+    "WalkLeftAndSit": {
+      "name": "WalkLeftAndSit",
+      "frequency": 100,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor)}",
+      "hidden": true,
+      "next_behaviors": [
+        "SitDown",
+        "SitWhileDanglingLegs"
+      ]
+    },
+    "WalkRightAndSit": {
+      "name": "WalkRightAndSit",
+      "frequency": 100,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor)}",
+      "hidden": true,
+      "next_behaviors": [
+        "SitDown",
+        "SitWhileDanglingLegs"
+      ]
+    },
+    "SitOnTheLeftEdgeOfIE": {
+      "name": "SitOnTheLeftEdgeOfIE",
+      "frequency": 100,
+      "condition": "#{mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "hidden": true,
+      "next_behaviors": [
+        "SitDown",
+        "SitWhileDanglingLegs"
+      ]
+    },
+    "SitOnTheRightEdgeOfIE": {
+      "name": "SitOnTheRightEdgeOfIE",
+      "frequency": 100,
+      "condition": "#{mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "hidden": true,
+      "next_behaviors": [
+        "SitDown",
+        "SitWhileDanglingLegs"
+      ]
+    },
+    "WalkLeftAlongIEAndSit": {
+      "name": "WalkLeftAlongIEAndSit",
+      "frequency": 100,
+      "condition": "#{mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "hidden": true,
+      "next_behaviors": [
+        "SitDown",
+        "SitWhileDanglingLegs"
+      ]
+    },
+    "WalkRightAlongIEAndSit": {
+      "name": "WalkRightAlongIEAndSit",
+      "frequency": 100,
+      "condition": "#{mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "hidden": true,
+      "next_behaviors": [
+        "SitDown",
+        "SitWhileDanglingLegs"
+      ]
+    }
+  },
+  "errors": [],
+  "warnings": [],
+  "missing_files": []
+}
