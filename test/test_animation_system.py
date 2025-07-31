@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 try:
     # Import our existing modules
-    from src.animation import Animation, clear_global_sprite_cache
+    from src.animation import Animation, clear_global_sprite_cache, get_global_sprite_cache_size
     from src.utils.xml_parser import XMLParser
     
     ANIMATION_SYSTEM_AVAILABLE = True
@@ -144,8 +144,24 @@ class AnimationSystemTester:
                             'Duration': str(int(frame.duration * 30))  # Convert to frame units
                         })
                     
-                    animation = Animation(f"assets/{sprite_pack}", action_name, frames_data)
+                    # Create animation with correct sprite pack path
+                    sprite_pack_path = f"assets/{sprite_pack}"
+                    animation = Animation(sprite_pack_path, action_name, frames_data)
                     created_animations[action_name] = animation
+                    
+                    # Debug: Verify animation is using correct sprite pack
+                    if action_name == list(actions.keys())[0]:  # First animation
+                        print(f"   Debug: Animation '{action_name}' created with path: {sprite_pack_path}")
+                        # Check if sprite is actually loaded
+                        if animation.get_frame_count() > 0:
+                            first_frame = animation.get_current_frame()
+                            if first_frame and first_frame.image:
+                                print(f"   Debug: First frame sprite size: {first_frame.image.get_size()}")
+                                print(f"   Debug: Sprite cache size after loading: {get_global_sprite_cache_size()}")
+                            else:
+                                print(f"   Debug: No sprite loaded for first frame")
+                        else:
+                            print(f"   Debug: Animation has no frames")
             
             if created_animations:
                 self.available_actions = list(created_animations.keys())
@@ -221,6 +237,8 @@ class AnimationSystemTester:
         print(f"\n=== Interactive Animation Test for {sprite_pack} ===")
         print("Controls:")
         print("  LEFT/RIGHT arrows: Switch animations")
+        print("  A: Previous sprite pack")
+        print("  S: Next sprite pack")
         print("  SPACE: Restart current animation")
         print("  P: Toggle performance mode (25+ animations)")
         print("  ESC: Exit")
@@ -251,6 +269,10 @@ class AnimationSystemTester:
                             self._previous_animation()
                         elif event.key == pygame.K_RIGHT:
                             self._next_animation()
+                        elif event.key == pygame.K_a:
+                            self._previous_sprite_pack()
+                        elif event.key == pygame.K_s:
+                            self._next_sprite_pack()
                         elif event.key == pygame.K_SPACE:
                             self._restart_animation()
                         elif event.key == pygame.K_p:
@@ -311,6 +333,79 @@ class AnimationSystemTester:
         mode = "ON" if self.performance_mode else "OFF"
         print(f"Performance mode: {mode} ({len(self.test_animations)} animations)")
     
+    def _next_sprite_pack(self):
+        """Switch ke sprite pack berikutnya"""
+        try:
+            if len(self.available_sprite_packs) > 1:
+                current_index = self.available_sprite_packs.index(self.current_sprite_pack)
+                next_index = (current_index + 1) % len(self.available_sprite_packs)
+                new_sprite_pack = self.available_sprite_packs[next_index]
+                self._switch_sprite_pack(new_sprite_pack)
+        except Exception as e:
+            print(f"Error switching sprite pack: {e}")
+    
+    def _previous_sprite_pack(self):
+        """Switch ke sprite pack sebelumnya"""
+        try:
+            if len(self.available_sprite_packs) > 1:
+                current_index = self.available_sprite_packs.index(self.current_sprite_pack)
+                prev_index = (current_index - 1) % len(self.available_sprite_packs)
+                new_sprite_pack = self.available_sprite_packs[prev_index]
+                self._switch_sprite_pack(new_sprite_pack)
+        except Exception as e:
+            print(f"Error switching sprite pack: {e}")
+    
+    def _switch_sprite_pack(self, new_sprite_pack: str):
+        """Switch ke sprite pack baru"""
+        try:
+            print(f"\n🔄 Switching to sprite pack: {new_sprite_pack}")
+            
+            # Clear current animations and reset state
+            self.test_animations.clear()
+            self.current_animation = None
+            self.current_action_index = 0
+            self.available_actions = []
+            
+            # Clear global sprite cache to force reload of new sprites
+            old_cache_size = get_global_sprite_cache_size()
+            clear_global_sprite_cache()
+            print(f"   Cleared sprite cache (was {old_cache_size} sprites)")
+            
+            # Update current sprite pack
+            self.current_sprite_pack = new_sprite_pack
+            
+            # Force reload XML data for new sprite pack
+            self.xml_parser.load_all_sprite_packs()
+            
+            # Reload animations for new sprite pack
+            animation_created = self.test_animation_creation(new_sprite_pack)
+            
+            if animation_created and self.test_animations:
+                self.current_animation = self.test_animations[0]
+                self.current_animation.play()
+                new_cache_size = get_global_sprite_cache_size()
+                print(f"✅ Switched to {new_sprite_pack} with {len(self.test_animations)} animations")
+                print(f"   First animation: {self.current_animation.get_animation_name()}")
+                print(f"   New sprite cache size: {new_cache_size} sprites")
+                
+                # Verify sprites are actually loaded
+                if self.current_animation.get_frame_count() > 0:
+                    first_frame = self.current_animation.get_current_frame()
+                    if first_frame and first_frame.image:
+                        print(f"   ✅ Sprite loaded successfully: {first_frame.image.get_size()}")
+                        # Check if this is actually a different sprite
+                        sprite_hash = hash(first_frame.image.get_buffer().raw)
+                        print(f"   Debug: Sprite hash: {sprite_hash}")
+                    else:
+                        print(f"   ❌ No sprite loaded for current frame")
+                else:
+                    print(f"   ❌ No frames in current animation")
+            else:
+                print(f"❌ Failed to load animations for {new_sprite_pack}")
+                
+        except Exception as e:
+            print(f"Error switching sprite pack: {e}")
+    
     def _print_animation_info(self):
         """Print informasi animasi saat ini"""
         try:
@@ -368,7 +463,7 @@ class AnimationSystemTester:
             # Draw UI info
             y_offset = 10
             ui_texts = [
-                f"Sprite Pack: {self.current_sprite_pack or 'None'}",
+                f"Sprite Pack: {self.current_sprite_pack or 'None'} ({self.available_sprite_packs.index(self.current_sprite_pack) + 1}/{len(self.available_sprite_packs)})",
                 f"Performance Mode: {'ON' if self.performance_mode else 'OFF'}",
                 f"Animations: {len(self.test_animations)}",
             ]
@@ -380,7 +475,7 @@ class AnimationSystemTester:
                 ])
             
             ui_texts.extend([
-                f"Controls: LEFT/RIGHT arrows, SPACE, P, F1, ESC",
+                f"Controls: LEFT/RIGHT arrows, A/S sprite packs, SPACE, P, F1, ESC",
             ])
             
             for text in ui_texts:
@@ -480,15 +575,15 @@ def main():
         # Run tests
         results = tester.run_full_test_suite(sprite_pack)
         
-        # Ask for interactive test
+        # Start interactive test directly if successful
         if results['overall_success']:
-            print(f"\n🎮 Run interactive test? (y/n): ", end="")
+            print(f"\n🎮 Starting interactive test...")
             try:
-                response = input().lower().strip()
-                if response in ['y', 'yes']:
-                    tester.run_interactive_test(sprite_pack)
+                tester.run_interactive_test(sprite_pack)
             except KeyboardInterrupt:
                 print("\nTest interrupted by user")
+        else:
+            print(f"\n❌ Cannot start interactive test - system not ready")
         
         # Cleanup
         clear_global_sprite_cache()
