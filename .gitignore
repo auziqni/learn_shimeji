@@ -60,6 +60,9 @@ ENV/
 env.bak/
 venv.bak/
 
+#debug
+debug/
+
 # IDE
 .vscode/
 .idea/

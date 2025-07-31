@@ -604,7 +604,7 @@ class XMLParser:
         """Save validation result to JSON for debugging"""
         try:
             # Create debug directory
-            debug_dir = Path("sprites_json_debug")
+            debug_dir = Path("debug")
             debug_dir.mkdir(exist_ok=True)
             
             # Convert to dict for JSON serialization
