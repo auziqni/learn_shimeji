@@ -74,13 +74,19 @@ class XMLParser:
     Stores parsed data in memory for fast runtime access.
     """
     
-    def __init__(self, assets_dir: str = "assets", save2json: bool = False):
+    def __init__(self, assets_dir: str = "assets", save2json: bool = False, quiet_warnings: bool = True, more_data_show: bool = False):
         self.assets_dir = Path(assets_dir)
         self.sprite_data: Dict[str, ValidationResult] = {}
         self.save2json = save2json
-        print(f"🔍 XMLParser initialized, assets directory: {self.assets_dir}")
-        if self.save2json:
-            print(f"💾 JSON debug mode: ENABLED")
+        self.quiet_warnings = quiet_warnings
+        self.more_data_show = more_data_show
+        
+        if self.more_data_show:
+            print(f"🔍 XMLParser initialized, assets directory: {self.assets_dir}")
+            if self.save2json :
+                print(f"💾 JSON debug mode: ENABLED")
+            if self.quiet_warnings:
+                print(f"🔇 Warning mode: QUIET (non-essential parsing errors suppressed)")
     
     def load_all_sprite_packs(self) -> Dict[str, str]:
         """
@@ -103,7 +109,9 @@ class XMLParser:
             if folder_path.is_dir():
                 folder_count += 1
                 sprite_name = folder_path.name
-                print(f"\n📁 Validating sprite pack: {sprite_name}")
+                
+                if self.more_data_show :
+                    print(f"\n📁 Validating sprite pack: {sprite_name}")
                 
                 # Validate and parse sprite pack
                 validation_result = self._validate_sprite_pack(sprite_name)
@@ -111,13 +119,15 @@ class XMLParser:
                 sprite_packs[sprite_name] = validation_result.status
                 
                 # Print result
-                self._print_validation_result(validation_result)
+                if self.more_data_show :
+                    self._print_validation_result(validation_result)
                 
                 # Save to JSON if enabled
                 if self.save2json:
                     self._save_debug_json(validation_result)
         
-        print(f"\n✅ Validation complete! Scanned {folder_count} folders, found {len(sprite_packs)} sprite packs")
+        if self.more_data_show:
+            print(f"\n✅ Validation complete! Scanned {folder_count} folders, found {len(sprite_packs)} sprite packs")
         return sprite_packs
     
     def _validate_sprite_pack(self, sprite_name: str) -> ValidationResult:
@@ -337,7 +347,8 @@ class XMLParser:
             return action
             
         except Exception as e:
-            print(f"  ⚠️  Error parsing action element: {e}")
+            if not self.quiet_warnings:
+                print(f"  ⚠️  Error parsing action element: {e}")
             return None
     
     def _parse_animation_element(self, anim_elem) -> Optional[AnimationBlock]:
@@ -368,7 +379,8 @@ class XMLParser:
             return animation_block if animation_block.frames else None
                     
         except Exception as e:
-            print(f"  ⚠️  Error parsing animation element: {e}")
+            if not self.quiet_warnings:
+                print(f"  ⚠️  Error parsing animation element: {e}")
             return None
     
     def _parse_pose_element(self, pose_elem) -> Optional[FrameData]:
@@ -407,7 +419,8 @@ class XMLParser:
             )
             
         except Exception as e:
-            print(f"  ⚠️  Error parsing pose element: {e}")
+            if not self.quiet_warnings:
+                print(f"  ⚠️  Error parsing pose element: {e}")
             return None
     
     def _parse_behaviors_xml(self, xml_path: Path, result: ValidationResult):
@@ -532,7 +545,8 @@ class XMLParser:
             return behavior
             
         except Exception as e:
-            print(f"  ⚠️  Error parsing behavior element: {e}")
+            if not self.quiet_warnings:
+                print(f"  ⚠️  Error parsing behavior element: {e}")
             return None
     
     def _validate_asset_references(self, sprite_path: Path, result: ValidationResult):
@@ -754,7 +768,7 @@ class XMLParser:
         print(f"⚠️  Partial: {partial}")
         print(f"❌ Broken: {broken}")
         
-        if ready > 0:
+        if ready > 0 and self.more_data_show:
             print(f"\n🎮 Ready for use:")
             for name in self.get_ready_sprite_names():
                 actions_count = len(self.sprite_data[name].actions)
