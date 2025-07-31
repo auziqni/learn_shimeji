@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 try:
     # Import our existing modules
-    from src.animation import Animation, clear_global_sprite_cache, get_global_sprite_cache_size
+    from src.animation import Animation, clear_global_sprite_cache, get_global_sprite_cache_size, clear_global_sound_cache, get_global_sound_cache_size
     from src.utils.xml_parser import XMLParser
     
     ANIMATION_SYSTEM_AVAILABLE = True
@@ -36,6 +36,14 @@ class AnimationSystemTester:
         try:
             # Initialize Pygame
             pygame.init()
+            
+            # Initialize mixer for sound
+            try:
+                pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=512)
+                print("✅ Sound system initialized")
+            except Exception as e:
+                print(f"⚠️  Sound system not available: {e}")
+            
             self.screen = pygame.display.set_mode((1000, 700))
             pygame.display.set_caption("Animation System Tester")
             self.clock = pygame.time.Clock()
@@ -137,12 +145,20 @@ class AnimationSystemTester:
                     # Convert ActionData to frame format
                     frames_data = []
                     for frame in action_data.default_animation.frames:
-                        frames_data.append({
+                        frame_data = {
                             'Image': frame.image,
                             'ImageAnchor': '64,128',
                             'Velocity': f"{frame.velocity[0]},{frame.velocity[1]}",
                             'Duration': str(int(frame.duration * 30))  # Convert to frame units
-                        })
+                        }
+                        
+                        # Add sound data if available
+                        if frame.sound:
+                            frame_data['Sound'] = frame.sound
+                        if frame.volume is not None:
+                            frame_data['Volume'] = frame.volume
+                        
+                        frames_data.append(frame_data)
                     
                     # Create animation with correct sprite pack path
                     sprite_pack_path = f"assets/{sprite_pack}"
@@ -158,6 +174,14 @@ class AnimationSystemTester:
                             if first_frame and first_frame.image:
                                 print(f"   Debug: First frame sprite size: {first_frame.image.get_size()}")
                                 print(f"   Debug: Sprite cache size after loading: {get_global_sprite_cache_size()}")
+                                
+                                # Check sound data
+                                if first_frame.sound:
+                                    print(f"   Debug: First frame has sound: {first_frame.sound}")
+                                    if first_frame.volume is not None:
+                                        print(f"   Debug: Sound volume: {first_frame.volume}")
+                                else:
+                                    print(f"   Debug: First frame has no sound")
                             else:
                                 print(f"   Debug: No sprite loaded for first frame")
                         else:
@@ -188,12 +212,15 @@ class AnimationSystemTester:
         try:
             actions = self.xml_parser.get_actions(sprite_pack)
             sprite_references = set()
+            sound_references = set()
             
-            # Collect all sprite references from XML
+            # Collect all sprite and sound references from XML
             for action_name, action_data in actions.items():
                 if action_data.default_animation:
                     for frame in action_data.default_animation.frames:
                         sprite_references.add(frame.image)
+                        if frame.sound:
+                            sound_references.add(frame.sound)
             
             # Test loading sprites
             loaded_sprites = 0
@@ -206,29 +233,57 @@ class AnimationSystemTester:
                 else:
                     missing_sprites.append(sprite_ref)
             
+            # Test loading sounds
+            loaded_sounds = 0
+            missing_sounds = []
+            
+            for sound_ref in sound_references:
+                sound_path = os.path.join(f"assets/{sprite_pack}/sounds", sound_ref)
+                if os.path.exists(sound_path):
+                    loaded_sounds += 1
+                else:
+                    missing_sounds.append(sound_ref)
+            
             print(f"📁 Total sprite references: {len(sprite_references)}")
             print(f"✅ Successfully found: {loaded_sprites}")
             print(f"❌ Missing sprites: {len(missing_sprites)}")
             
+            print(f"🔊 Total sound references: {len(sound_references)}")
+            print(f"✅ Successfully found: {loaded_sounds}")
+            print(f"❌ Missing sounds: {len(missing_sounds)}")
+            
             if missing_sprites:
-                print("Missing files:")
+                print("Missing sprite files:")
                 for sprite in missing_sprites[:10]:  # Show first 10
                     print(f"   - {sprite}")
                 if len(missing_sprites) > 10:
                     print(f"   ... and {len(missing_sprites) - 10} more")
             
+            if missing_sounds:
+                print("Missing sound files:")
+                for sound in missing_sounds[:10]:  # Show first 10
+                    print(f"   - {sound}")
+                if len(missing_sounds) > 10:
+                    print(f"   ... and {len(missing_sounds) - 10} more")
+            
             return {
-                'total': len(sprite_references),
-                'loaded': loaded_sprites,
-                'missing': missing_sprites
+                'total_sprites': len(sprite_references),
+                'loaded_sprites': loaded_sprites,
+                'missing_sprites': missing_sprites,
+                'total_sounds': len(sound_references),
+                'loaded_sounds': loaded_sounds,
+                'missing_sounds': missing_sounds
             }
             
         except Exception as e:
             print(f"❌ Error testing sprite loading: {e}")
             return {
-                'total': 0,
-                'loaded': 0,
-                'missing': [],
+                'total_sprites': 0,
+                'loaded_sprites': 0,
+                'missing_sprites': [],
+                'total_sounds': 0,
+                'loaded_sounds': 0,
+                'missing_sounds': [],
                 'error': str(e)
             }
     
@@ -241,6 +296,7 @@ class AnimationSystemTester:
         print("  S: Next sprite pack")
         print("  SPACE: Restart current animation")
         print("  P: Toggle performance mode (25+ animations)")
+        print("  M: Toggle sound (mute/unmute)")
         print("  ESC: Exit")
         print("  F1: Print current animation info")
         
@@ -277,6 +333,8 @@ class AnimationSystemTester:
                             self._restart_animation()
                         elif event.key == pygame.K_p:
                             self._toggle_performance_mode()
+                        elif event.key == pygame.K_m:
+                            self._toggle_sound()
                         elif event.key == pygame.K_F1:
                             self._print_animation_info()
                 
@@ -333,6 +391,19 @@ class AnimationSystemTester:
         mode = "ON" if self.performance_mode else "OFF"
         print(f"Performance mode: {mode} ({len(self.test_animations)} animations)")
     
+    def _toggle_sound(self):
+        """Toggle sound for all animations"""
+        if self.test_animations:
+            # Toggle sound for first animation (they all share the same setting)
+            sound_enabled = not self.test_animations[0].get_sound_enabled()
+            for anim in self.test_animations:
+                anim.set_sound_enabled(sound_enabled)
+            
+            status = "ON" if sound_enabled else "OFF"
+            print(f"Sound: {status}")
+        else:
+            print("No animations available for sound control")
+    
     def _next_sprite_pack(self):
         """Switch ke sprite pack berikutnya"""
         try:
@@ -366,10 +437,13 @@ class AnimationSystemTester:
             self.current_action_index = 0
             self.available_actions = []
             
-            # Clear global sprite cache to force reload of new sprites
-            old_cache_size = get_global_sprite_cache_size()
+            # Clear global sprite and sound cache to force reload of new assets
+            old_sprite_cache_size = get_global_sprite_cache_size()
+            old_sound_cache_size = get_global_sound_cache_size()
             clear_global_sprite_cache()
-            print(f"   Cleared sprite cache (was {old_cache_size} sprites)")
+            clear_global_sound_cache()
+            print(f"   Cleared sprite cache (was {old_sprite_cache_size} sprites)")
+            print(f"   Cleared sound cache (was {old_sound_cache_size} sounds)")
             
             # Update current sprite pack
             self.current_sprite_pack = new_sprite_pack
@@ -383,10 +457,12 @@ class AnimationSystemTester:
             if animation_created and self.test_animations:
                 self.current_animation = self.test_animations[0]
                 self.current_animation.play()
-                new_cache_size = get_global_sprite_cache_size()
+                new_sprite_cache_size = get_global_sprite_cache_size()
+                new_sound_cache_size = get_global_sound_cache_size()
                 print(f"✅ Switched to {new_sprite_pack} with {len(self.test_animations)} animations")
                 print(f"   First animation: {self.current_animation.get_animation_name()}")
-                print(f"   New sprite cache size: {new_cache_size} sprites")
+                print(f"   New sprite cache size: {new_sprite_cache_size} sprites")
+                print(f"   New sound cache size: {new_sound_cache_size} sounds")
                 
                 # Verify sprites are actually loaded
                 if self.current_animation.get_frame_count() > 0:
@@ -465,6 +541,7 @@ class AnimationSystemTester:
             ui_texts = [
                 f"Sprite Pack: {self.current_sprite_pack or 'None'} ({self.available_sprite_packs.index(self.current_sprite_pack) + 1}/{len(self.available_sprite_packs)})",
                 f"Performance Mode: {'ON' if self.performance_mode else 'OFF'}",
+                f"Sound: {'ON' if self.test_animations and self.test_animations[0].get_sound_enabled() else 'OFF'}",
                 f"Animations: {len(self.test_animations)}",
             ]
             
@@ -475,7 +552,7 @@ class AnimationSystemTester:
                 ])
             
             ui_texts.extend([
-                f"Controls: LEFT/RIGHT arrows, A/S sprite packs, SPACE, P, F1, ESC",
+                f"Controls: LEFT/RIGHT arrows, A/S sprite packs, SPACE, P, M, F1, ESC",
             ])
             
             for text in ui_texts:
@@ -525,20 +602,23 @@ class AnimationSystemTester:
         print(f"{'='*60}")
         print(f"XML Parsing: {'✅ PASS' if xml_results.get('success') else '❌ FAIL'}")
         print(f"Animation Creation: {'✅ PASS' if animation_created else '❌ FAIL'}")
-        print(f"Sprite Loading: {sprite_results['loaded']}/{sprite_results['total']} loaded")
+        print(f"Sprite Loading: {sprite_results['loaded_sprites']}/{sprite_results['total_sprites']} loaded")
+        print(f"Sound Loading: {sprite_results['loaded_sounds']}/{sprite_results['total_sounds']} loaded")
         print(f"Animation System: {'✅ AVAILABLE' if ANIMATION_SYSTEM_AVAILABLE else '❌ NOT AVAILABLE'}")
         
         overall_success = (xml_results.get('success', False) and 
                           animation_created and 
-                          sprite_results['loaded'] > 0)
+                          sprite_results['loaded_sprites'] > 0)
         
         print(f"Overall Status: {'✅ READY FOR USE' if overall_success else '❌ NEEDS ATTENTION'}")
         
         return {
             'xml_parsing': xml_results.get('success', False),
             'animation_creation': animation_created,
-            'sprites_loaded': sprite_results['loaded'],
-            'total_sprites': sprite_results['total'],
+            'sprites_loaded': sprite_results['loaded_sprites'],
+            'total_sprites': sprite_results['total_sprites'],
+            'sounds_loaded': sprite_results['loaded_sounds'],
+            'total_sounds': sprite_results['total_sounds'],
             'animation_system_available': ANIMATION_SYSTEM_AVAILABLE,
             'overall_success': overall_success
         }

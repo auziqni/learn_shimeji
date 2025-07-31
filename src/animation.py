@@ -13,10 +13,15 @@ class AnimationFrame:
     velocity: Tuple[float, float]  # (dx, dy) movement per frame
     duration: int  # frames to display this pose
     hotspot: Optional[Dict] = None  # interaction hotspot data
+    sound: Optional[str] = None  # sound file path
+    volume: Optional[int] = None  # sound volume (-100 to 0)
 
 
 # Global sprite cache for memory efficiency across all animations
 _SPRITE_CACHE: Dict[str, pygame.Surface] = {}
+
+# Global sound cache for memory efficiency
+_SOUND_CACHE: Dict[str, pygame.mixer.Sound] = {}
 
 
 class Animation:
@@ -45,6 +50,10 @@ class Animation:
         self.is_playing = False
         self.is_looping = True
         
+        # Sound state
+        self.last_played_sound = None
+        self.sound_enabled = True
+        
         # Load all frames
         self._load_frames()
     
@@ -57,6 +66,8 @@ class Animation:
             velocity = self._parse_velocity(frame_data.get('Velocity', '0,0'))
             duration = int(frame_data.get('Duration', 1))
             hotspot = frame_data.get('Hotspot')
+            sound = frame_data.get('Sound')
+            volume = frame_data.get('Volume')
             
             # Load sprite with caching
             sprite = self._load_sprite(image_path)
@@ -66,7 +77,9 @@ class Animation:
                     image_anchor=image_anchor,
                     velocity=velocity,
                     duration=duration,
-                    hotspot=hotspot
+                    hotspot=hotspot,
+                    sound=sound,
+                    volume=volume
                 )
                 self.frames.append(frame)
     
@@ -103,6 +116,59 @@ class Animation:
             if "No video mode has been set" not in str(e):
                 print(f"Warning: Could not load sprite {full_path}: {e}")
             return None
+    
+    def _load_sound(self, sound_path: str) -> Optional[pygame.mixer.Sound]:
+        """
+        Load sound with intelligent caching for memory efficiency
+        """
+        if not sound_path:
+            return None
+        
+        # Remove leading slash if present
+        if sound_path.startswith('/'):
+            sound_path = sound_path[1:]
+        
+        # Check if already loaded in global cache
+        if sound_path in _SOUND_CACHE:
+            return _SOUND_CACHE[sound_path]
+        
+        # Full path to sound
+        full_path = os.path.join(self.sprite_pack_path, "sounds", sound_path)
+        
+        try:
+            # Load sound
+            sound = pygame.mixer.Sound(full_path)
+            
+            # Cache the sound for reuse
+            _SOUND_CACHE[sound_path] = sound
+            
+            return sound
+            
+        except (pygame.error, FileNotFoundError) as e:
+            print(f"Warning: Could not load sound {full_path}: {e}")
+            return None
+    
+    def _play_frame_sound(self, frame: AnimationFrame):
+        """Play sound for current frame if available"""
+        if not self.sound_enabled or not frame.sound:
+            return
+        
+        try:
+            sound = self._load_sound(frame.sound)
+            if sound:
+                # Apply volume if specified
+                if frame.volume is not None:
+                    # Convert volume from dB to pygame volume (0.0 to 1.0)
+                    # Volume range: -100 to 0 dB
+                    volume_db = max(-100, min(0, frame.volume))
+                    volume_linear = 10 ** (volume_db / 20.0)
+                    sound.set_volume(volume_linear)
+                
+                sound.play()
+                self.last_played_sound = frame.sound
+                
+        except Exception as e:
+            print(f"Warning: Could not play sound {frame.sound}: {e}")
     
     def _parse_anchor(self, anchor_str: str) -> Tuple[int, int]:
         """Parse anchor string like '64,128' to tuple"""
@@ -152,6 +218,10 @@ class Animation:
             return
         
         current_frame = self.frames[self.current_frame_index]
+        
+        # Play sound for current frame if just started
+        if self.frame_timer == 0 and current_frame.sound:
+            self._play_frame_sound(current_frame)
         
         # Update frame timer
         self.frame_timer += delta_time * 30.0  # Convert to frame units
@@ -211,6 +281,21 @@ class Animation:
         """Get animation name"""
         return self.animation_name
     
+    def set_sound_enabled(self, enabled: bool):
+        """Enable or disable sound for this animation"""
+        self.sound_enabled = enabled
+    
+    def get_sound_enabled(self) -> bool:
+        """Get sound enabled state"""
+        return self.sound_enabled
+    
+    def get_current_sound(self) -> Optional[str]:
+        """Get sound file path for current frame"""
+        current_frame = self.get_current_frame()
+        if current_frame:
+            return current_frame.sound
+        return None
+    
     def cleanup(self):
         """Clean up resources (called when animation is no longer needed)"""
         # Note: We don't clear the sprite cache here as it's shared
@@ -227,4 +312,15 @@ def clear_global_sprite_cache():
 
 def get_global_sprite_cache_size() -> int:
     """Get number of cached sprites"""
-    return len(_SPRITE_CACHE) 
+    return len(_SPRITE_CACHE)
+
+
+def clear_global_sound_cache():
+    """Clear global sound cache to free memory"""
+    global _SOUND_CACHE
+    _SOUND_CACHE.clear()
+
+
+def get_global_sound_cache_size() -> int:
+    """Get number of cached sounds"""
+    return len(_SOUND_CACHE) 
