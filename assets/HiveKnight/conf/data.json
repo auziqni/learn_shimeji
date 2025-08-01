@@ -1,0 +1,5023 @@
+{
+  "metadata": {
+    "sprite_name": "HiveKnight",
+    "conversion_date": "2024-01-01",
+    "original_files": [
+      "actions.xml",
+      "behaviors.xml"
+    ]
+  },
+  "actions": {
+    "Look": {
+      "name": "Look",
+      "action_type": "Embedded",
+      "border_type": null,
+      "draggable": null,
+      "loop": null,
+      "animations": {},
+      "action_references": [],
+      "embedded_data": {
+        "class": "com.group_finity.mascot.action.Look"
+      }
+    },
+    "Offset": {
+      "name": "Offset",
+      "action_type": "Embedded",
+      "border_type": null,
+      "draggable": null,
+      "loop": null,
+      "animations": {},
+      "action_references": [],
+      "embedded_data": {
+        "class": "com.group_finity.mascot.action.Offset"
+      }
+    },
+    "Stand": {
+      "name": "Stand",
+      "action_type": "Stay",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shime1.png",
+              "duration": 2.5,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime1a.png",
+              "duration": 0.16666666666666666,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "Walk": {
+      "name": "Walk",
+      "action_type": "Move",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shime2.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3a.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3b.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3c.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3d.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime2.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3a.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3b.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3c.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3d.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime2.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3a.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3b.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3c.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3d.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime2.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3a.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3ba.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3c.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3d.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "Run": {
+      "name": "Run",
+      "action_type": "Move",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shime2.png",
+              "duration": 0.06666666666666667,
+              "velocity": [
+                -4,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3.png",
+              "duration": 0.06666666666666667,
+              "velocity": [
+                -4,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3a.png",
+              "duration": 0.06666666666666667,
+              "velocity": [
+                -4,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3b.png",
+              "duration": 0.06666666666666667,
+              "velocity": [
+                -4,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3c.png",
+              "duration": 0.06666666666666667,
+              "velocity": [
+                -4,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3d.png",
+              "duration": 0.06666666666666667,
+              "velocity": [
+                -4,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "Dash": {
+      "name": "Dash",
+      "action_type": "Move",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shime3e.png",
+              "duration": 0.06666666666666667,
+              "velocity": [
+                -8,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3f.png",
+              "duration": 0.06666666666666667,
+              "velocity": [
+                -8,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3g.png",
+              "duration": 0.06666666666666667,
+              "velocity": [
+                -8,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3h.png",
+              "duration": 0.06666666666666667,
+              "velocity": [
+                -8,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3i.png",
+              "duration": 0.06666666666666667,
+              "velocity": [
+                -8,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime3j.png",
+              "duration": 0.06666666666666667,
+              "velocity": [
+                -8,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "Sit": {
+      "name": "Sit",
+      "action_type": "Stay",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shime11.png",
+              "duration": 2.5,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime11a.png",
+              "duration": 0.16666666666666666,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "BePet": {
+      "name": "BePet",
+      "action_type": "Stay",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shimePet14.png",
+              "duration": 0.16666666666666666,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "PetAction": {
+      "name": "PetAction",
+      "action_type": "Animate",
+      "border_type": "Floor",
+      "draggable": false,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shimePet1.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet2.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet3.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet4.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet5.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet6.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet7.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet8.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet9.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet10.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet11.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet12.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet13.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet14.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "PoseAction": {
+      "name": "PoseAction",
+      "action_type": "Animate",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shime47.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime48.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": "Hive Knight 5.wav",
+              "volume": -7
+            },
+            {
+              "image": "shime49.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime50.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime51.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime50.png",
+              "duration": 0.5,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime52.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime53.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime54.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime1.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "FoodAction": {
+      "name": "FoodAction",
+      "action_type": "Animate",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shime15.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime16.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime17.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime26.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime27.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime28.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime29.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime29a.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime29b.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime29c.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime11.png",
+              "duration": 0.16666666666666666,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "CleanAction": {
+      "name": "CleanAction",
+      "action_type": "Stay",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shime42.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime43.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime44.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime43.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime42.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime45.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime46.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime45.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime42.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime43.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime44.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime43.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime42.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime45.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime46.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime45.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime42.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime43.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime44.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime43.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime42.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime45.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime46.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime45.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime42a.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime43.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime44.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime43.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime42.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime45.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime46.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime45.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "WatchAction": {
+      "name": "WatchAction",
+      "action_type": "Stay",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shime33.png",
+              "duration": 8.333333333333334,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "WatchLoop": {
+      "name": "WatchLoop",
+      "action_type": "Animate",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shime33.png",
+              "duration": 8.333333333333334,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "SitWithLegsUp": {
+      "name": "SitWithLegsUp",
+      "action_type": "Stay",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shime30.png",
+              "duration": 8.333333333333334,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "SitWithLegsDown": {
+      "name": "SitWithLegsDown",
+      "action_type": "Stay",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shime31.png",
+              "duration": 2.5,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime32.png",
+              "duration": 0.16666666666666666,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "BePetDangleLegs": {
+      "name": "BePetDangleLegs",
+      "action_type": "Stay",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shimePet28.png",
+              "duration": 0.16666666666666666,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "PetActionDangleLegs": {
+      "name": "PetActionDangleLegs",
+      "action_type": "Animate",
+      "border_type": "Floor",
+      "draggable": false,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shimePet15.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet16.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet17.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet18.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet19.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet20.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet21.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet22.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet23.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet24.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet25.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet26.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet27.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shimePet28.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "Sprawl": {
+      "name": "Sprawl",
+      "action_type": "Stay",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shime20.png",
+              "duration": 1.0,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime21.png",
+              "duration": 1.0,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "GrabCeiling": {
+      "name": "GrabCeiling",
+      "action_type": "Stay",
+      "border_type": "Ceiling",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shime23.png",
+              "duration": 2.5,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime23a.png",
+              "duration": 0.16666666666666666,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "ClimbCeiling": {
+      "name": "ClimbCeiling",
+      "action_type": "Move",
+      "border_type": "Ceiling",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shime25.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime25.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -1,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime23.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -1,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime24.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -1,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime24.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime24.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime23.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime25.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime25.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime25.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -1,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime23.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -1,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime24.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -1,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime24.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime24.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime23.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime25.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime25.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime25.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -1,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime23.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -1,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime24.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -1,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime24.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime24.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime23.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime25.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime25.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime25.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -1,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime23.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -1,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime24.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -1,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime24.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime24.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime23a.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime25.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "GrabWall": {
+      "name": "GrabWall",
+      "action_type": "Stay",
+      "border_type": "Wall",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shime13.png",
+              "duration": 2.5,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13a.png",
+              "duration": 0.16666666666666666,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "ClimbWall": {
+      "name": "ClimbWall",
+      "action_type": "Move",
+      "border_type": "Wall",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "conditional_0": {
+          "condition": "#{TargetY < mascot.anchor.y}",
+          "frames": [
+            {
+              "image": "shime14.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13c.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                -2
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        },
+        "conditional_1": {
+          "condition": "#{TargetY >= mascot.anchor.y}",
+          "frames": [
+            {
+              "image": "shime14.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13c.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                2
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.5333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime13b.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime12.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime14.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                1
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "FallWithIe": {
+      "name": "FallWithIe",
+      "action_type": "Embedded",
+      "border_type": null,
+      "draggable": null,
+      "loop": null,
+      "animations": {},
+      "action_references": [],
+      "embedded_data": {
+        "class": "com.group_finity.mascot.action.FallWithIE"
+      }
+    },
+    "WalkWithIe": {
+      "name": "WalkWithIe",
+      "action_type": "Embedded",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {},
+      "action_references": [],
+      "embedded_data": {
+        "class": "com.group_finity.mascot.action.WalkWithIE"
+      }
+    },
+    "RunWithIe": {
+      "name": "RunWithIe",
+      "action_type": "Embedded",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {},
+      "action_references": [],
+      "embedded_data": {
+        "class": "com.group_finity.mascot.action.WalkWithIE"
+      }
+    },
+    "ThrowIe": {
+      "name": "ThrowIe",
+      "action_type": "Embedded",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {},
+      "action_references": [],
+      "embedded_data": {
+        "class": "com.group_finity.mascot.action.ThrowIE"
+      }
+    },
+    "Jumping": {
+      "name": "Jumping",
+      "action_type": "Embedded",
+      "border_type": null,
+      "draggable": null,
+      "loop": null,
+      "animations": {},
+      "action_references": [],
+      "embedded_data": {
+        "class": "com.group_finity.mascot.action.Jump"
+      }
+    },
+    "Falling": {
+      "name": "Falling",
+      "action_type": "Embedded",
+      "border_type": null,
+      "draggable": null,
+      "loop": null,
+      "animations": {},
+      "action_references": [],
+      "embedded_data": {
+        "class": "com.group_finity.mascot.action.Fall"
+      }
+    },
+    "Bouncing": {
+      "name": "Bouncing",
+      "action_type": "Animate",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shime18.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime19.png",
+              "duration": 0.06666666666666667,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime19a.png",
+              "duration": 0.1,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime19b.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "Tripping": {
+      "name": "Tripping",
+      "action_type": "Animate",
+      "border_type": "Floor",
+      "draggable": null,
+      "loop": null,
+      "animations": {
+        "default": {
+          "condition": null,
+          "frames": [
+            {
+              "image": "shime19.png",
+              "duration": 0.26666666666666666,
+              "velocity": [
+                -8,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime18.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -4,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime11.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -2,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime11.png",
+              "duration": 0.3333333333333333,
+              "velocity": [
+                0,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            },
+            {
+              "image": "shime19.png",
+              "duration": 0.13333333333333333,
+              "velocity": [
+                -4,
+                0
+              ],
+              "sound": null,
+              "volume": null
+            }
+          ],
+          "priority": 0
+        }
+      },
+      "action_references": [],
+      "embedded_data": {}
+    },
+    "Pinched": {
+      "name": "Pinched",
+      "action_type": "Embedded",
+      "border_type": null,
+      "draggable": null,
+      "loop": null,
+      "animations": {},
+      "action_references": [],
+      "embedded_data": {
+        "class": "com.group_finity.mascot.action.Dragged",
+        "offset_x": "5",
+        "offset_y": "110"
+      }
+    },
+    "Resisting": {
+      "name": "Resisting",
+      "action_type": "Embedded",
+      "border_type": null,
+      "draggable": null,
+      "loop": null,
+      "animations": {},
+      "action_references": [],
+      "embedded_data": {
+        "class": "com.group_finity.mascot.action.Regist"
+      }
+    },
+    "Fall": {
+      "name": "Fall",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Falling"
+        },
+        {
+          "name": "Bouncing"
+        },
+        {
+          "name": "Stand",
+          "duration": "${100+Math.random()*100}"
+        },
+        {
+          "name": "GrabWall",
+          "duration": "100"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "Dragged": {
+      "name": "Dragged",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": true,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Pinched"
+        },
+        {
+          "name": "Resisting"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "Thrown": {
+      "name": "Thrown",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Falling",
+          "initial_vx": "${mascot.environment.cursor.dx}",
+          "initial_vy": "${mascot.environment.cursor.dy}"
+        },
+        {
+          "name": "Bouncing"
+        },
+        {
+          "name": "Stand",
+          "duration": "${100+Math.random()*100}"
+        },
+        {
+          "name": "GrabWall",
+          "duration": "100"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "StandUp": {
+      "name": "StandUp",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Stand",
+          "duration": "${500+Math.random()*1000}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "SitDown": {
+      "name": "SitDown",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Sit",
+          "duration": "${500+Math.random()*1000}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "Sleep": {
+      "name": "Sleep",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Sprawl",
+          "duration": "${500+Math.random()*1000}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "SitWhileDanglingLegs": {
+      "name": "SitWhileDanglingLegs",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "SitWithLegsUp",
+          "duration": "10"
+        },
+        {
+          "name": "SitWithLegsDown",
+          "duration": "${500+Math.random()*100}"
+        },
+        {
+          "name": "SitWithLegsUp",
+          "duration": "10"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "HoldOntoWall": {
+      "name": "HoldOntoWall",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "GrabWall",
+          "duration": "${500+Math.random()*1000}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "FallFromWall": {
+      "name": "FallFromWall",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Offset",
+          "x_offset": "${mascot.lookRight ? -1 : 1}"
+        },
+        {
+          "name": "Stand"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "HoldOntoCeiling": {
+      "name": "HoldOntoCeiling",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "GrabCeiling",
+          "duration": "${500+Math.random()*1000}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "FallFromCeiling": {
+      "name": "FallFromCeiling",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Offset",
+          "y_offset": "1"
+        },
+        {
+          "name": "Stand"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "WalkAlongWorkAreaFloor": {
+      "name": "WalkAlongWorkAreaFloor",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Walk",
+          "target_x": "${mascot.environment.workArea.left+64+Math.random()*(mascot.environment.workArea.width-128)}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "RunAlongWorkAreaFloor": {
+      "name": "RunAlongWorkAreaFloor",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Run",
+          "target_x": "${mascot.environment.workArea.left+64+Math.random()*(mascot.environment.workArea.width-128)}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "WalkLeftAlongFloorAndSit": {
+      "name": "WalkLeftAlongFloorAndSit",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Walk",
+          "target_x": "${mascot.environment.workArea.left+100+Math.random()*300}"
+        },
+        {
+          "name": "Stand",
+          "duration": "${20+Math.random()*20}"
+        },
+        {
+          "name": "Look",
+          "look_right": "true"
+        },
+        {
+          "name": "Stand",
+          "duration": "${20+Math.random()*20}"
+        },
+        {
+          "name": "Sit",
+          "duration": "${500+Math.random()*1000}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "WalkRightAlongFloorAndSit": {
+      "name": "WalkRightAlongFloorAndSit",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Walk",
+          "target_x": "${mascot.environment.workArea.right-100-Math.random()*300}"
+        },
+        {
+          "name": "Stand",
+          "duration": "${20+Math.random()*20}"
+        },
+        {
+          "name": "Look",
+          "look_right": "false"
+        },
+        {
+          "name": "Stand",
+          "duration": "${20+Math.random()*20}"
+        },
+        {
+          "name": "Sit",
+          "duration": "${500+Math.random()*1000}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "GrabWorkAreaBottomLeftWall": {
+      "name": "GrabWorkAreaBottomLeftWall",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Walk",
+          "target_x": "#{mascot.environment.workArea.left}"
+        },
+        {
+          "name": "ClimbWall",
+          "target_y": "#{mascot.environment.workArea.bottom-64}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "GrabWorkAreaBottomRightWall": {
+      "name": "GrabWorkAreaBottomRightWall",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Walk",
+          "target_x": "#{mascot.environment.workArea.right}"
+        },
+        {
+          "name": "ClimbWall",
+          "target_y": "#{mascot.environment.workArea.bottom-64}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "WalkLeftAndSit": {
+      "name": "WalkLeftAndSit",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Run",
+          "target_x": "${mascot.environment.workArea.left+100+Math.random()*300}"
+        },
+        {
+          "name": "Stand",
+          "duration": "${20+Math.random()*20}"
+        },
+        {
+          "name": "Look",
+          "look_right": "true"
+        },
+        {
+          "name": "Stand",
+          "duration": "${20+Math.random()*20}"
+        },
+        {
+          "name": "Sit",
+          "duration": "${500+Math.random()*1000}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "WalkRightAndSit": {
+      "name": "WalkRightAndSit",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Run",
+          "target_x": "${mascot.environment.workArea.right-100-Math.random()*300}"
+        },
+        {
+          "name": "Stand",
+          "duration": "${20+Math.random()*20}"
+        },
+        {
+          "name": "Look",
+          "look_right": "false"
+        },
+        {
+          "name": "Stand",
+          "duration": "${20+Math.random()*20}"
+        },
+        {
+          "name": "Sit",
+          "duration": "${500+Math.random()*1000}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "WalkAndGrabBottomLeftWall": {
+      "name": "WalkAndGrabBottomLeftWall",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Run",
+          "target_x": "#{mascot.environment.workArea.left}"
+        },
+        {
+          "name": "ClimbWall",
+          "target_y": "#{mascot.environment.workArea.bottom-64}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "WalkAndGrabBottomRightWall": {
+      "name": "WalkAndGrabBottomRightWall",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Run",
+          "target_x": "#{mascot.environment.workArea.right}"
+        },
+        {
+          "name": "ClimbWall",
+          "target_y": "#{mascot.environment.workArea.bottom-64}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "JumpFromBottomOfIE": {
+      "name": "JumpFromBottomOfIE",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Jumping",
+          "target_x": "${(mascot.anchor.x*3+mascot.environment.activeIE.left+Math.random()*mascot.environment.activeIE.width)/4}",
+          "target_y": "${mascot.environment.activeIE.bottom}"
+        },
+        {
+          "name": "GrabCeiling",
+          "duration": "${100+Math.random()*100}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "ClimbHalfwayAlongWall": {
+      "name": "ClimbHalfwayAlongWall",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "ClimbWall",
+          "target_y": "${mascot.environment.workArea.top+64 + Math.random()*(mascot.environment.workArea.height-128)}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "ClimbAlongWall": {
+      "name": "ClimbAlongWall",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "ClimbWall",
+          "target_y": "#{mascot.environment.workArea.top+64}"
+        },
+        {
+          "name": "Offset",
+          "y_offset": "-64"
+        },
+        {
+          "name": "Look"
+        },
+        {
+          "name": "ClimbCeiling",
+          "target_x": "${mascot.lookRight ? mascot.environment.workArea.left+Math.random()*100 : mascot.environment.workArea.right-Math.random*100}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "ClimbAlongCeiling": {
+      "name": "ClimbAlongCeiling",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "ClimbCeiling",
+          "target_x": "${mascot.environment.workArea.left+64+Math.random()*(mascot.environment.workArea.width-128)}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "WalkAlongIECeiling": {
+      "name": "WalkAlongIECeiling",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Walk",
+          "target_x": "${mascot.environment.activeIE.left+64+Math.random()*(mascot.environment.activeIE.width-128)}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "RunAlongIECeiling": {
+      "name": "RunAlongIECeiling",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Run",
+          "target_x": "${mascot.environment.activeIE.left+64+Math.random()*(mascot.environment.activeIE.width-128)}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "SitOnTheLeftEdgeOfIE": {
+      "name": "SitOnTheLeftEdgeOfIE",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Walk",
+          "target_x": "${mascot.environment.activeIE.left+100+Math.random()*300}"
+        },
+        {
+          "name": "Stand",
+          "duration": "${100+Math.random()*100}"
+        },
+        {
+          "name": "Sit",
+          "duration": "${500+Math.random()*1000}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "SitOnTheRightEdgeOfIE": {
+      "name": "SitOnTheRightEdgeOfIE",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Walk",
+          "target_x": "${mascot.environment.activeIE.right-100-Math.random()*300}"
+        },
+        {
+          "name": "Stand",
+          "duration": "${100+Math.random()*100}"
+        },
+        {
+          "name": "Sit",
+          "duration": "${500+Math.random()*1000}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "JumpFromLeftEdgeOfIE": {
+      "name": "JumpFromLeftEdgeOfIE",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Walk",
+          "target_x": "${mascot.environment.activeIE.left+Math.random()*50}"
+        },
+        {
+          "name": "Stand",
+          "duration": "${50+Math.random()*50}"
+        },
+        {
+          "name": "Falling",
+          "initial_vx": "${-15-Math.random()*5}",
+          "initial_vy": "${-20-Math.random()*5}"
+        },
+        {
+          "name": "Bouncing"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "JumpFromRightEdgeOfIE": {
+      "name": "JumpFromRightEdgeOfIE",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Walk",
+          "target_x": "${mascot.environment.activeIE.right-Math.random()*50}"
+        },
+        {
+          "name": "Stand",
+          "duration": "${50+Math.random()*50}"
+        },
+        {
+          "name": "Falling",
+          "initial_vx": "${15+Math.random()*5}",
+          "initial_vy": "${-20-Math.random()*5}"
+        },
+        {
+          "name": "Bouncing"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "WalkLeftAlongIEAndSit": {
+      "name": "WalkLeftAlongIEAndSit",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Run",
+          "target_x": "${mascot.environment.activeIE.left+100+Math.random()*300}"
+        },
+        {
+          "name": "Stand",
+          "duration": "${100+Math.random()*100}"
+        },
+        {
+          "name": "Sit",
+          "duration": "${500+Math.random()*1000}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "WalkRightAlongIEAndSit": {
+      "name": "WalkRightAlongIEAndSit",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Run",
+          "target_x": "${mascot.environment.activeIE.right-100-Math.random()*300}"
+        },
+        {
+          "name": "Stand",
+          "duration": "${100+Math.random()*100}"
+        },
+        {
+          "name": "Sit",
+          "duration": "${500+Math.random()*1000}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "WalkLeftAlongIEAndJump": {
+      "name": "WalkLeftAlongIEAndJump",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Run",
+          "target_x": "${mascot.environment.activeIE.left+Math.random()*50}"
+        },
+        {
+          "name": "Falling",
+          "initial_vx": "${-15-Math.random()*5}",
+          "initial_vy": "${-20-Math.random()*5}"
+        },
+        {
+          "name": "Bouncing"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "WalkRightAlongIEAndJump": {
+      "name": "WalkRightAlongIEAndJump",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Run",
+          "target_x": "${mascot.environment.activeIE.right-Math.random()*50}"
+        },
+        {
+          "name": "Falling",
+          "initial_vx": "${15+Math.random()*5}",
+          "initial_vy": "${-20-Math.random()*5}"
+        },
+        {
+          "name": "Bouncing"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "DashIeCeilingLeftEdgeFromJump": {
+      "name": "DashIeCeilingLeftEdgeFromJump",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Dash",
+          "target_x": "${mascot.environment.activeIE.left+Math.random()*20+20}"
+        },
+        {
+          "name": "Falling",
+          "initial_vx": "${-5-Math.random()*2}",
+          "initial_vy": "${-20-Math.random()*5}"
+        },
+        {
+          "name": "Bouncing"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "DashIeCeilingRightEdgeFromJump": {
+      "name": "DashIeCeilingRightEdgeFromJump",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Dash",
+          "target_x": "${mascot.environment.activeIE.right-Math.random()*20-20}"
+        },
+        {
+          "name": "Falling",
+          "initial_vx": "${5+Math.random()*2}",
+          "initial_vy": "${-20-Math.random()*5}"
+        },
+        {
+          "name": "Bouncing"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "HoldOntoIEWall": {
+      "name": "HoldOntoIEWall",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "ClimbWall",
+          "target_y": "${mascot.environment.activeIE.top+64 + Math.random()*(mascot.environment.activeIE.height-128)}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "ClimbIEWall": {
+      "name": "ClimbIEWall",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "ClimbWall",
+          "target_y": "#{mascot.environment.activeIE.top+64}"
+        },
+        {
+          "name": "Offset",
+          "y_offset": "-64"
+        },
+        {
+          "name": "Sit",
+          "duration": "5"
+        },
+        {
+          "name": "Stand",
+          "duration": "${10+Math.random()*10}"
+        },
+        {
+          "name": "Walk",
+          "target_x": "${mascot.lookRight ? mascot.environment.activeIE.left+Math.random()*100 : mascot.environment.activeIE.right-Math.random*100}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "ClimbIEBottom": {
+      "name": "ClimbIEBottom",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "ClimbCeiling",
+          "target_x": "${mascot.environment.activeIE.left+64+(Math.random()*mascot.environment.activeIE.width-128)}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "GrabIEBottomLeftWall": {
+      "name": "GrabIEBottomLeftWall",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "ClimbCeiling",
+          "target_x": "#{mascot.environment.activeIE.left}"
+        },
+        {
+          "name": "Look"
+        },
+        {
+          "name": "ClimbWall",
+          "target_y": "#{mascot.environment.activeIE.bottom-64}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "GrabIEBottomRightWall": {
+      "name": "GrabIEBottomRightWall",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "ClimbCeiling",
+          "target_x": "#{mascot.environment.activeIE.right}"
+        },
+        {
+          "name": "Look"
+        },
+        {
+          "name": "ClimbWall",
+          "target_y": "#{mascot.environment.activeIE.bottom-64}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "JumpFromLeftWall": {
+      "name": "JumpFromLeftWall",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Jumping",
+          "target_x": "${mascot.environment.workArea.left}",
+          "target_y": "${mascot.environment.workArea.bottom-Math.random()*mascot.environment.workArea.height/4}"
+        },
+        {
+          "name": "GrabWall",
+          "duration": "${100+Math.random()*100}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "JumpFromRightWall": {
+      "name": "JumpFromRightWall",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Jumping",
+          "target_x": "${mascot.environment.workArea.right}",
+          "target_y": "${mascot.environment.workArea.bottom-Math.random()*mascot.environment.workArea.height/4}"
+        },
+        {
+          "name": "GrabWall",
+          "duration": "${100+Math.random()*100}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "JumpOnIELeftWall": {
+      "name": "JumpOnIELeftWall",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Jumping",
+          "target_x": "${mascot.environment.activeIE.left}",
+          "target_y": "${mascot.environment.activeIE.bottom-Math.random()*mascot.environment.activeIE.height/4}"
+        },
+        {
+          "name": "GrabWall",
+          "duration": "${100+Math.random()*100}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "JumpOnIERightWall": {
+      "name": "JumpOnIERightWall",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Jumping",
+          "target_x": "${mascot.environment.activeIE.right}",
+          "target_y": "${mascot.environment.activeIE.bottom-Math.random()*mascot.environment.activeIE.height/4}"
+        },
+        {
+          "name": "GrabWall",
+          "duration": "${100+Math.random()*100}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "ThrowIEFromLeft": {
+      "name": "ThrowIEFromLeft",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Jumping",
+          "target_x": "${mascot.environment.activeIE.left}",
+          "target_y": "${mascot.environment.activeIE.bottom+64}"
+        },
+        {
+          "name": "FallWithIe"
+        },
+        {
+          "name": "WalkWithIe",
+          "target_x": "#{mascot.environment.workArea.right-400}"
+        },
+        {
+          "name": "ThrowIe"
+        },
+        {
+          "name": "Stand",
+          "duration": "${50+Math.random()*50}"
+        },
+        {
+          "name": "Look"
+        },
+        {
+          "name": "Stand",
+          "duration": "${50+Math.random()*50}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "ThrowIEFromRight": {
+      "name": "ThrowIEFromRight",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Jumping",
+          "target_x": "${mascot.environment.activeIE.right}",
+          "target_y": "${mascot.environment.activeIE.bottom+64}"
+        },
+        {
+          "name": "FallWithIe"
+        },
+        {
+          "name": "WalkWithIe",
+          "target_x": "#{mascot.environment.workArea.left+400}"
+        },
+        {
+          "name": "ThrowIe"
+        },
+        {
+          "name": "Stand",
+          "duration": "${50+Math.random()*50}"
+        },
+        {
+          "name": "Look"
+        },
+        {
+          "name": "Stand",
+          "duration": "${50+Math.random()*50}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "WalkAndThrowIEFromLeft": {
+      "name": "WalkAndThrowIEFromLeft",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Jumping",
+          "target_x": "${mascot.environment.activeIE.left}",
+          "target_y": "${mascot.environment.activeIE.bottom+64}"
+        },
+        {
+          "name": "FallWithIe"
+        },
+        {
+          "name": "RunWithIe",
+          "target_x": "#{mascot.environment.workArea.right-400}"
+        },
+        {
+          "name": "ThrowIe"
+        },
+        {
+          "name": "Stand",
+          "duration": "${50+Math.random()*50}"
+        },
+        {
+          "name": "Look"
+        },
+        {
+          "name": "Stand",
+          "duration": "${50+Math.random()*50}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "WalkAndThrowIEFromRight": {
+      "name": "WalkAndThrowIEFromRight",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Jumping",
+          "target_x": "${mascot.environment.activeIE.right}",
+          "target_y": "${mascot.environment.activeIE.bottom+64}"
+        },
+        {
+          "name": "FallWithIe"
+        },
+        {
+          "name": "RunWithIe",
+          "target_x": "#{mascot.environment.workArea.left+400}"
+        },
+        {
+          "name": "ThrowIe"
+        },
+        {
+          "name": "Stand",
+          "duration": "${50+Math.random()*50}"
+        },
+        {
+          "name": "Look"
+        },
+        {
+          "name": "Stand",
+          "duration": "${50+Math.random()*50}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "ChaseMouse": {
+      "name": "ChaseMouse",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Offset",
+          "y_offset": "1"
+        },
+        {
+          "name": "Falling"
+        },
+        {
+          "name": "Bouncing"
+        },
+        {
+          "name": "Offset",
+          "x_offset": "1"
+        },
+        {
+          "name": "Falling"
+        },
+        {
+          "name": "Bouncing"
+        },
+        {
+          "name": "Offset",
+          "x_offset": "-1"
+        },
+        {
+          "name": "Falling"
+        },
+        {
+          "name": "Bouncing"
+        },
+        {
+          "name": "DashIeCeilingLeftEdgeFromJump"
+        },
+        {
+          "name": "DashIeCeilingRightEdgeFromJump"
+        },
+        {
+          "name": "Dash",
+          "target_x": "${ mascot.anchor.x+(mascot.environment.cursor.x-mascot.anchor.x)*Math.random()/2 }"
+        },
+        {
+          "name": "Tripping"
+        },
+        {
+          "name": "Dash",
+          "target_x": "${ mascot.anchor.x+(mascot.environment.cursor.x-mascot.anchor.x)*Math.random() }"
+        },
+        {
+          "name": "Tripping"
+        },
+        {
+          "name": "Dash",
+          "target_x": "#{mascot.environment.cursor.x+Gap}"
+        },
+        {
+          "name": "Look",
+          "look_right": "${mascot.anchor.x < mascot.environment.cursor.x}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "WatchShows (Endless)": {
+      "name": "WatchShows (Endless)",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "WatchAction",
+          "duration": "${50+Math.random()*500}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "WatchShows (CanEnd)": {
+      "name": "WatchShows (CanEnd)",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "WatchAction",
+          "duration": "${50+Math.random()*500}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "ContinueWatch": {
+      "name": "ContinueWatch",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "WatchLoop"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "ContinueWatch2": {
+      "name": "ContinueWatch2",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "WatchLoop"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "StopWatchingShows": {
+      "name": "StopWatchingShows",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Stand",
+          "duration": "5"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "Pet": {
+      "name": "Pet",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "PetAction"
+        },
+        {
+          "name": "BePet",
+          "duration": "2"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "PetDangleLegs": {
+      "name": "PetDangleLegs",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "PetActionDangleLegs"
+        },
+        {
+          "name": "BePetDangleLegs",
+          "duration": "2"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "SitDownAfterPet": {
+      "name": "SitDownAfterPet",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Sit",
+          "duration": "${50+Math.random()*100}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "SitDownAfterPetDangleLegs": {
+      "name": "SitDownAfterPetDangleLegs",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "SitWithLegsDown",
+          "duration": "${50+Math.random()*100}"
+        },
+        {
+          "name": "SitWithLegsUp",
+          "duration": "10"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "ShortStandAfterAction": {
+      "name": "ShortStandAfterAction",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Stand",
+          "duration": "${50+Math.random()*100}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "CleanNail": {
+      "name": "CleanNail",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "CleanAction",
+          "duration": "${500+Math.random()*100}"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "Pose": {
+      "name": "Pose",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "PoseAction"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "EatHoney": {
+      "name": "EatHoney",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": false,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "FoodAction"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "Divide1": {
+      "name": "Divide1",
+      "action_type": "Embedded",
+      "border_type": null,
+      "draggable": null,
+      "loop": null,
+      "animations": {},
+      "action_references": [],
+      "embedded_data": {
+        "class": "com.group_finity.mascot.action.Breed",
+        "born_x": "-16",
+        "born_y": "0",
+        "born_behavior": "Divided"
+      }
+    },
+    "Appear": {
+      "name": "Appear",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": null,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Divide1"
+        },
+        {
+          "name": "Offset",
+          "x_offset": "16"
+        },
+        {
+          "name": "Look"
+        },
+        {
+          "name": "Divided"
+        }
+      ],
+      "embedded_data": {}
+    },
+    "Divided": {
+      "name": "Divided",
+      "action_type": "Sequence",
+      "border_type": null,
+      "draggable": null,
+      "loop": null,
+      "animations": {},
+      "action_references": [
+        {
+          "name": "Falling",
+          "initial_vx": "${mascot.lookRight ? 10 : -10}",
+          "initial_vy": "-5"
+        },
+        {
+          "name": "Bouncing"
+        }
+      ],
+      "embedded_data": {}
+    }
+  },
+  "behaviors": {
+    "ChaseMouse": {
+      "name": "ChaseMouse",
+      "frequency": 0,
+      "hidden": true,
+      "condition": null,
+      "next_behaviors": [],
+      "action": null,
+      "type": "system"
+    },
+    "Fall": {
+      "name": "Fall",
+      "frequency": 0,
+      "hidden": true,
+      "condition": null,
+      "next_behaviors": [],
+      "action": null,
+      "type": "system"
+    },
+    "Dragged": {
+      "name": "Dragged",
+      "frequency": 0,
+      "hidden": true,
+      "condition": null,
+      "next_behaviors": [],
+      "action": null,
+      "type": "system"
+    },
+    "Thrown": {
+      "name": "Thrown",
+      "frequency": 0,
+      "hidden": true,
+      "condition": null,
+      "next_behaviors": [],
+      "action": null,
+      "type": "system"
+    },
+    "Divided": {
+      "name": "Divided",
+      "frequency": 0,
+      "hidden": true,
+      "condition": null,
+      "next_behaviors": [],
+      "action": null,
+      "type": "system"
+    },
+    "Pet": {
+      "name": "Pet",
+      "frequency": 0,
+      "hidden": true,
+      "condition": null,
+      "next_behaviors": [
+        "SitDownAfterPet"
+      ],
+      "action": null,
+      "type": "interaction"
+    },
+    "PetAction": {
+      "name": "PetAction",
+      "frequency": 0,
+      "hidden": true,
+      "condition": null,
+      "next_behaviors": [],
+      "action": null,
+      "type": "interaction"
+    },
+    "BePet": {
+      "name": "BePet",
+      "frequency": 0,
+      "hidden": true,
+      "condition": null,
+      "next_behaviors": [],
+      "action": null,
+      "type": "interaction"
+    },
+    "PetDangleLegs": {
+      "name": "PetDangleLegs",
+      "frequency": 0,
+      "hidden": true,
+      "condition": null,
+      "next_behaviors": [
+        "SitDownAfterPetDangleLegs"
+      ],
+      "action": null,
+      "type": "interaction"
+    },
+    "PetActionDangleLegs": {
+      "name": "PetActionDangleLegs",
+      "frequency": 0,
+      "hidden": true,
+      "condition": null,
+      "next_behaviors": [],
+      "action": null,
+      "type": "interaction"
+    },
+    "BePetDangleLegs": {
+      "name": "BePetDangleLegs",
+      "frequency": 0,
+      "hidden": true,
+      "condition": null,
+      "next_behaviors": [],
+      "action": null,
+      "type": "interaction"
+    },
+    "SitDownAfterPetDangleLegs": {
+      "name": "SitDownAfterPetDangleLegs",
+      "frequency": 0,
+      "hidden": true,
+      "condition": null,
+      "next_behaviors": [],
+      "action": null,
+      "type": "interaction"
+    },
+    "SitDownAfterPet": {
+      "name": "SitDownAfterPet",
+      "frequency": 0,
+      "hidden": true,
+      "condition": null,
+      "next_behaviors": [],
+      "action": null,
+      "type": "interaction"
+    },
+    "ShortStandAfterAction": {
+      "name": "ShortStandAfterAction",
+      "frequency": 0,
+      "hidden": true,
+      "condition": null,
+      "next_behaviors": [],
+      "action": null,
+      "type": "transition"
+    },
+    "WatchShows (Endless)": {
+      "name": "WatchShows (Endless)",
+      "frequency": 0,
+      "hidden": false,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [
+        "ContinueWatch"
+      ],
+      "action": null,
+      "type": "ai"
+    },
+    "ContinueWatch": {
+      "name": "ContinueWatch",
+      "frequency": 0,
+      "hidden": true,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [
+        "WatchShows (Endless)"
+      ],
+      "action": null,
+      "type": "transition"
+    },
+    "WatchShows (CanEnd)": {
+      "name": "WatchShows (CanEnd)",
+      "frequency": 45,
+      "hidden": false,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [
+        "ContinueWatch2",
+        "StopWatchingShows"
+      ],
+      "action": null,
+      "type": "ai"
+    },
+    "ContinueWatch2": {
+      "name": "ContinueWatch2",
+      "frequency": 0,
+      "hidden": true,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [
+        "WatchShows (CanEnd)"
+      ],
+      "action": null,
+      "type": "transition"
+    },
+    "StopWatchingShows": {
+      "name": "StopWatchingShows",
+      "frequency": 0,
+      "hidden": true,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "transition"
+    },
+    "Pose": {
+      "name": "Pose",
+      "frequency": 30,
+      "hidden": false,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [
+        "ShortStandAfterAction"
+      ],
+      "action": null,
+      "type": "ai"
+    },
+    "CleanNail": {
+      "name": "CleanNail",
+      "frequency": 30,
+      "hidden": false,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [
+        "SitDownAfterPet"
+      ],
+      "action": null,
+      "type": "ai"
+    },
+    "EatHoney": {
+      "name": "EatHoney",
+      "frequency": 45,
+      "hidden": false,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [
+        "SitDownAfterPet"
+      ],
+      "action": null,
+      "type": "ai"
+    },
+    "StandUp": {
+      "name": "StandUp",
+      "frequency": 200,
+      "hidden": true,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "SitDown": {
+      "name": "SitDown",
+      "frequency": 200,
+      "hidden": false,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "SitWhileDanglingLegs": {
+      "name": "SitWhileDanglingLegs",
+      "frequency": 40,
+      "hidden": false,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "Sleep": {
+      "name": "Sleep",
+      "frequency": 40,
+      "hidden": false,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [
+        "SitDownAfterPet"
+      ],
+      "action": null,
+      "type": "ai"
+    },
+    "Appear": {
+      "name": "Appear",
+      "frequency": 50,
+      "hidden": false,
+      "condition": "(#{mascot.environment.floor.isOn(mascot.anchor) || mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}) && (#{mascot.totalCount < 50})",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "HoldOntoWall": {
+      "name": "HoldOntoWall",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{ mascot.lookRight ? (      mascot.environment.workArea.rightBorder.isOn(mascot.anchor) ||       mascot.environment.activeIE.leftBorder.isOn(mascot.anchor) ) : (      mascot.environment.workArea.leftBorder.isOn(mascot.anchor) ||       mascot.environment.activeIE.rightBorder.isOn(mascot.anchor) ) }",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "FallFromWall": {
+      "name": "FallFromWall",
+      "frequency": 50,
+      "hidden": true,
+      "condition": "(#{ mascot.lookRight ? (      mascot.environment.workArea.rightBorder.isOn(mascot.anchor) ||       mascot.environment.activeIE.leftBorder.isOn(mascot.anchor) ) : (      mascot.environment.workArea.leftBorder.isOn(mascot.anchor) ||       mascot.environment.activeIE.rightBorder.isOn(mascot.anchor) ) }) && (${!mascot.environment.floor.isOn(mascot.anchor)})",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "HoldOntoCeiling": {
+      "name": "HoldOntoCeiling",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.ceiling.isOn(mascot.anchor) || mascot.environment.activeIE.bottomBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "FallFromCeiling": {
+      "name": "FallFromCeiling",
+      "frequency": 50,
+      "hidden": true,
+      "condition": "#{mascot.environment.ceiling.isOn(mascot.anchor) || mascot.environment.activeIE.bottomBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "WalkAlongWorkAreaFloor": {
+      "name": "WalkAlongWorkAreaFloor",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "RunAlongWorkAreaFloor": {
+      "name": "RunAlongWorkAreaFloor",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "WalkLeftAlongFloorAndSit": {
+      "name": "WalkLeftAlongFloorAndSit",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor)}",
+      "next_behaviors": [
+        "SitDown",
+        "SitWhileDanglingLegs"
+      ],
+      "action": null,
+      "type": "ai"
+    },
+    "WalkRightAlongFloorAndSit": {
+      "name": "WalkRightAlongFloorAndSit",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor)}",
+      "next_behaviors": [
+        "SitDown",
+        "SitWhileDanglingLegs"
+      ],
+      "action": null,
+      "type": "ai"
+    },
+    "GrabWorkAreaBottomLeftWall": {
+      "name": "GrabWorkAreaBottomLeftWall",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "GrabWorkAreaBottomRightWall": {
+      "name": "GrabWorkAreaBottomRightWall",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "WalkLeftAndSit": {
+      "name": "WalkLeftAndSit",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor)}",
+      "next_behaviors": [
+        "SitDown",
+        "SitWhileDanglingLegs"
+      ],
+      "action": null,
+      "type": "ai"
+    },
+    "WalkRightAndSit": {
+      "name": "WalkRightAndSit",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor)}",
+      "next_behaviors": [
+        "SitDown",
+        "SitWhileDanglingLegs"
+      ],
+      "action": null,
+      "type": "ai"
+    },
+    "WalkAndGrabBottomLeftWall": {
+      "name": "WalkAndGrabBottomLeftWall",
+      "frequency": 100,
+      "hidden": false,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "WalkAndGrabBottomRightWall": {
+      "name": "WalkAndGrabBottomRightWall",
+      "frequency": 100,
+      "hidden": false,
+      "condition": "#{mascot.environment.floor.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "JumpFromBottomOfIE": {
+      "name": "JumpFromBottomOfIE",
+      "frequency": 50,
+      "hidden": false,
+      "condition": "(#{mascot.environment.floor.isOn(mascot.anchor)}) && (#{mascot.anchor.x >= mascot.environment.activeIE.left &&     mascot.anchor.x < mascot.environment.activeIE.right})",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "ClimbHalfwayAlongWall": {
+      "name": "ClimbHalfwayAlongWall",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.lookRight ? mascot.environment.workArea.rightBorder.isOn(mascot.anchor) :      mascot.environment.workArea.leftBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "ClimbAlongWall": {
+      "name": "ClimbAlongWall",
+      "frequency": 100,
+      "hidden": false,
+      "condition": "#{mascot.lookRight ? mascot.environment.workArea.rightBorder.isOn(mascot.anchor) :      mascot.environment.workArea.leftBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "ClimbAlongCeiling": {
+      "name": "ClimbAlongCeiling",
+      "frequency": 100,
+      "hidden": false,
+      "condition": "#{mascot.environment.ceiling.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "WalkAlongIECeiling": {
+      "name": "WalkAlongIECeiling",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "RunAlongIECeiling": {
+      "name": "RunAlongIECeiling",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "SitOnTheLeftEdgeOfIE": {
+      "name": "SitOnTheLeftEdgeOfIE",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [
+        "SitDown",
+        "SitWhileDanglingLegs"
+      ],
+      "action": null,
+      "type": "ai"
+    },
+    "SitOnTheRightEdgeOfIE": {
+      "name": "SitOnTheRightEdgeOfIE",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [
+        "SitDown",
+        "SitWhileDanglingLegs"
+      ],
+      "action": null,
+      "type": "ai"
+    },
+    "JumpFromLeftEdgeOfIE": {
+      "name": "JumpFromLeftEdgeOfIE",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "JumpFromRightEdgeOfIE": {
+      "name": "JumpFromRightEdgeOfIE",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "WalkLeftAlongIEAndSit": {
+      "name": "WalkLeftAlongIEAndSit",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [
+        "SitDown",
+        "SitWhileDanglingLegs"
+      ],
+      "action": null,
+      "type": "ai"
+    },
+    "WalkRightAlongIEAndSit": {
+      "name": "WalkRightAlongIEAndSit",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [
+        "SitDown",
+        "SitWhileDanglingLegs"
+      ],
+      "action": null,
+      "type": "ai"
+    },
+    "WalkLeftAlongIEAndJump": {
+      "name": "WalkLeftAlongIEAndJump",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "WalkRightAlongIEAndJump": {
+      "name": "WalkRightAlongIEAndJump",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.activeIE.topBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "HoldOntoIEWall": {
+      "name": "HoldOntoIEWall",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.lookRight ? mascot.environment.activeIE.leftBorder.isOn(mascot.anchor) :      mascot.environment.activeIE.rightBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "ClimbIEWall": {
+      "name": "ClimbIEWall",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.lookRight ? mascot.environment.activeIE.leftBorder.isOn(mascot.anchor) :      mascot.environment.activeIE.rightBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "ClimbIEBottom": {
+      "name": "ClimbIEBottom",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.activeIE.bottomBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "GrabIEBottomLeftWall": {
+      "name": "GrabIEBottomLeftWall",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.activeIE.bottomBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "GrabIEBottomRightWall": {
+      "name": "GrabIEBottomRightWall",
+      "frequency": 100,
+      "hidden": true,
+      "condition": "#{mascot.environment.activeIE.bottomBorder.isOn(mascot.anchor)}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "JumpFromLeftWall": {
+      "name": "JumpFromLeftWall",
+      "frequency": 50,
+      "hidden": true,
+      "condition": "#{!mascot.environment.workArea.leftBorder.isOn(mascot.anchor) &&    mascot.anchor.x < mascot.environment.workArea.left+400 &&    Math.abs(mascot.environment.workArea.bottom-mascot.anchor.y) <mascot.environment.workArea.height/4}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "JumpFromRightWall": {
+      "name": "JumpFromRightWall",
+      "frequency": 50,
+      "hidden": true,
+      "condition": "#{!mascot.environment.workArea.rightBorder.isOn(mascot.anchor) &&    mascot.anchor.x >= mascot.environment.workArea.right-400 &&    Math.abs(mascot.environment.workArea.bottom-mascot.anchor.y) <mascot.environment.workArea.height/4}",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "JumpOnIELeftWall": {
+      "name": "JumpOnIELeftWall",
+      "frequency": 50,
+      "hidden": true,
+      "condition": "(#{mascot.environment.activeIE.visible}) && (#{mascot.anchor.x < mascot.environment.activeIE.left &&     Math.abs(mascot.environment.activeIE.bottom-mascot.anchor.y) <mascot.environment.activeIE.height/4})",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "JumpOnIERightWall": {
+      "name": "JumpOnIERightWall",
+      "frequency": 50,
+      "hidden": true,
+      "condition": "(#{mascot.environment.activeIE.visible}) && (#{mascot.anchor.x > mascot.environment.activeIE.right &&     Math.abs(mascot.environment.activeIE.bottom-mascot.anchor.y) <mascot.environment.activeIE.height/4})",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "ThrowIEFromLeft": {
+      "name": "ThrowIEFromLeft",
+      "frequency": 20,
+      "hidden": false,
+      "condition": "(#{mascot.environment.activeIE.visible}) && (#{mascot.environment.activeIE.bottom < mascot.anchor.y-64 &&     mascot.anchor.x < mascot.environment.activeIE.left})",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "ThrowIEFromRight": {
+      "name": "ThrowIEFromRight",
+      "frequency": 20,
+      "hidden": false,
+      "condition": "(#{mascot.environment.activeIE.visible}) && (#{mascot.environment.activeIE.bottom < mascot.anchor.y-64 &&     mascot.anchor.x > mascot.environment.activeIE.right})",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "WalkAndThrowIEFromRight": {
+      "name": "WalkAndThrowIEFromRight",
+      "frequency": 20,
+      "hidden": true,
+      "condition": "(#{mascot.environment.activeIE.visible}) && (#{mascot.environment.activeIE.bottom < mascot.anchor.y-64 &&     mascot.anchor.x < mascot.environment.activeIE.left})",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    },
+    "WalkAndThrowIEFromLeft": {
+      "name": "WalkAndThrowIEFromLeft",
+      "frequency": 20,
+      "hidden": true,
+      "condition": "(#{mascot.environment.activeIE.visible}) && (#{mascot.environment.activeIE.bottom < mascot.anchor.y-64 &&     mascot.anchor.x > mascot.environment.activeIE.right})",
+      "next_behaviors": [],
+      "action": null,
+      "type": "ai"
+    }
+  },
+  "validation": {
+    "success": true,
+    "errors": [],
+    "warnings": []
+  }
+}
