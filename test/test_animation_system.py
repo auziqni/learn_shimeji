@@ -4,7 +4,7 @@ test/test_animation_system.py - Animation System Tester
 
 Interactive testing tool untuk sistem animasi dengan:
 - Sprite pack selection
-- XML parsing validation
+- JSON parsing validation
 - Animation testing dengan visual interface
 - Performance testing untuk 25+ pets
 """
@@ -19,9 +19,9 @@ from typing import Dict, Any, Optional, List
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 try:
-    # Import our existing modules
-    from src.animation import Animation, clear_global_sprite_cache, get_global_sprite_cache_size, clear_global_sound_cache, get_global_sound_cache_size
-    from src.utils.xml_parser import XMLParser
+    # Import our refactored modules
+    from src.animation import AnimationManager, Animation, clear_global_sprite_cache, get_global_sprite_cache_size, clear_global_sound_cache, get_global_sound_cache_size
+    from src.utils.json_parser import JSONParser
     
     ANIMATION_SYSTEM_AVAILABLE = True
 except ImportError as e:
@@ -30,7 +30,7 @@ except ImportError as e:
 
 
 class AnimationSystemTester:
-    """Interactive animation system tester"""
+    """Interactive animation system tester with JSON parser integration"""
     
     def __init__(self):
         try:
@@ -45,10 +45,14 @@ class AnimationSystemTester:
                 print(f"⚠️  Sound system not available: {e}")
             
             self.screen = pygame.display.set_mode((1000, 700))
-            pygame.display.set_caption("Animation System Tester")
+            pygame.display.set_caption("Animation System Tester (JSON)")
             self.clock = pygame.time.Clock()
             self.font = pygame.font.Font(None, 24)
             self.small_font = pygame.font.Font(None, 18)
+            
+            # Initialize JSON parser and animation manager
+            self.json_parser = JSONParser(assets_dir="assets", quiet_warnings=True)
+            self.animation_manager = AnimationManager(self.json_parser)
             
             # Test variables
             self.current_sprite_pack = None
@@ -56,13 +60,12 @@ class AnimationSystemTester:
             self.current_animation = None
             self.available_actions = []
             self.current_action_index = 0
-            self.xml_parser = XMLParser()
             
             # Performance testing
             self.test_animations = []
             self.performance_mode = False
             
-            print("Animation System Tester initialized")
+            print("Animation System Tester initialized (JSON)")
             print(f"Available sprite packs: {self.available_sprite_packs}")
             
         except Exception as e:
@@ -87,20 +90,20 @@ class AnimationSystemTester:
         
         return sprite_packs
     
-    def test_xml_parsing(self, sprite_pack: str) -> Dict[str, Any]:
-        """Test XML parsing untuk sprite pack"""
-        print(f"\n=== Testing XML Parsing for {sprite_pack} ===")
+    def test_json_parsing(self, sprite_pack: str) -> Dict[str, Any]:
+        """Test JSON parsing untuk sprite pack"""
+        print(f"\n=== Testing JSON Parsing for {sprite_pack} ===")
         
         try:
             # Load all sprite packs first
-            self.xml_parser.load_all_sprite_packs()
+            self.json_parser.load_all_sprite_packs()
             
             # Get actions for specific sprite pack
-            actions = self.xml_parser.get_actions(sprite_pack)
-            behaviors = self.xml_parser.get_behaviors(sprite_pack)
+            actions = self.json_parser.get_actions(sprite_pack)
+            behaviors = self.json_parser.get_behaviors(sprite_pack)
             
             if actions:
-                print(f"✅ Successfully parsed XML files")
+                print(f"✅ Successfully parsed JSON files")
                 print(f"📋 Found {len(actions)} actions:")
                 for action_name in sorted(actions.keys()):
                     action_data = actions[action_name]
@@ -121,53 +124,40 @@ class AnimationSystemTester:
                     'action_names': list(actions.keys())
                 }
             else:
-                print("❌ No actions found in XML")
+                print("❌ No actions found in JSON")
                 return {'success': False, 'error': 'No actions found'}
                 
         except Exception as e:
-            print(f"❌ Error during XML parsing: {e}")
+            print(f"❌ Error during JSON parsing: {e}")
             return {'success': False, 'error': str(e)}
     
     def test_animation_creation(self, sprite_pack: str) -> bool:
-        """Test animation creation dari XML data"""
+        """Test animation creation dari JSON data menggunakan AnimationManager"""
         print(f"\n=== Testing Animation Creation for {sprite_pack} ===")
         
         try:
-            actions = self.xml_parser.get_actions(sprite_pack)
+            # Load animations using AnimationManager
+            success = self.animation_manager.load_sprite_animations(sprite_pack)
+            if not success:
+                print("❌ Failed to load animations with AnimationManager")
+                return False
+            
+            # Get available actions
+            actions = self.animation_manager.get_available_actions(sprite_pack)
             if not actions:
                 print("❌ No actions available")
                 return False
             
-            # Test creating animations from XML data
+            # Test creating animations from JSON data
             created_animations = {}
-            for action_name, action_data in actions.items():
-                if action_data.default_animation and action_data.default_animation.frames:
-                    # Convert ActionData to frame format
-                    frames_data = []
-                    for frame in action_data.default_animation.frames:
-                        frame_data = {
-                            'Image': frame.image,
-                            'ImageAnchor': '64,128',
-                            'Velocity': f"{frame.velocity[0]},{frame.velocity[1]}",
-                            'Duration': str(int(frame.duration * 30))  # Convert to frame units
-                        }
-                        
-                        # Add sound data if available
-                        if frame.sound:
-                            frame_data['Sound'] = frame.sound
-                        if frame.volume is not None:
-                            frame_data['Volume'] = frame.volume
-                        
-                        frames_data.append(frame_data)
-                    
-                    # Create animation with correct sprite pack path
-                    sprite_pack_path = f"assets/{sprite_pack}"
-                    animation = Animation(sprite_pack_path, action_name, frames_data)
+            for action_name in actions:
+                animation = self.animation_manager.get_animation(sprite_pack, action_name)
+                if animation:
                     created_animations[action_name] = animation
                     
                     # Debug: Verify animation is using correct sprite pack
-                    if action_name == list(actions.keys())[0]:  # First animation
-                        print(f"   Debug: Animation '{action_name}' created with path: {sprite_pack_path}")
+                    if action_name == actions[0]:  # First animation
+                        print(f"   Debug: Animation '{action_name}' created with path: assets/{sprite_pack}")
                         # Check if sprite is actually loaded
                         if animation.get_frame_count() > 0:
                             first_frame = animation.get_current_frame()
@@ -206,15 +196,15 @@ class AnimationSystemTester:
             return False
     
     def test_sprite_loading(self, sprite_pack: str) -> Dict[str, Any]:
-        """Test sprite loading dari XML references"""
+        """Test sprite loading dari JSON references"""
         print(f"\n=== Testing Sprite Loading for {sprite_pack} ===")
         
         try:
-            actions = self.xml_parser.get_actions(sprite_pack)
+            actions = self.json_parser.get_actions(sprite_pack)
             sprite_references = set()
             sound_references = set()
             
-            # Collect all sprite and sound references from XML
+            # Collect all sprite and sound references from JSON
             for action_name, action_data in actions.items():
                 if action_data.default_animation:
                     for frame in action_data.default_animation.frames:
@@ -448,10 +438,7 @@ class AnimationSystemTester:
             # Update current sprite pack
             self.current_sprite_pack = new_sprite_pack
             
-            # Force reload XML data for new sprite pack
-            self.xml_parser.load_all_sprite_packs()
-            
-            # Reload animations for new sprite pack
+            # Reload animations for new sprite pack using AnimationManager
             animation_created = self.test_animation_creation(new_sprite_pack)
             
             if animation_created and self.test_animations:
@@ -581,14 +568,14 @@ class AnimationSystemTester:
     def run_full_test_suite(self, sprite_pack: str):
         """Run full test suite"""
         print(f"\n{'='*60}")
-        print(f"🧪 FULL ANIMATION SYSTEM TEST SUITE")
+        print(f"🧪 FULL ANIMATION SYSTEM TEST SUITE (JSON)")
         print(f"📦 Sprite Pack: {sprite_pack}")
         print(f"{'='*60}")
         
         self.current_sprite_pack = sprite_pack
         
-        # Test 1: XML Parsing
-        xml_results = self.test_xml_parsing(sprite_pack)
+        # Test 1: JSON Parsing
+        json_results = self.test_json_parsing(sprite_pack)
         
         # Test 2: Animation Creation
         animation_created = self.test_animation_creation(sprite_pack)
@@ -600,20 +587,20 @@ class AnimationSystemTester:
         print(f"\n{'='*60}")
         print(f"📊 TEST RESULTS SUMMARY")
         print(f"{'='*60}")
-        print(f"XML Parsing: {'✅ PASS' if xml_results.get('success') else '❌ FAIL'}")
+        print(f"JSON Parsing: {'✅ PASS' if json_results.get('success') else '❌ FAIL'}")
         print(f"Animation Creation: {'✅ PASS' if animation_created else '❌ FAIL'}")
         print(f"Sprite Loading: {sprite_results['loaded_sprites']}/{sprite_results['total_sprites']} loaded")
         print(f"Sound Loading: {sprite_results['loaded_sounds']}/{sprite_results['total_sounds']} loaded")
         print(f"Animation System: {'✅ AVAILABLE' if ANIMATION_SYSTEM_AVAILABLE else '❌ NOT AVAILABLE'}")
         
-        overall_success = (xml_results.get('success', False) and 
+        overall_success = (json_results.get('success', False) and 
                           animation_created and 
                           sprite_results['loaded_sprites'] > 0)
         
         print(f"Overall Status: {'✅ READY FOR USE' if overall_success else '❌ NEEDS ATTENTION'}")
         
         return {
-            'xml_parsing': xml_results.get('success', False),
+            'json_parsing': json_results.get('success', False),
             'animation_creation': animation_created,
             'sprites_loaded': sprite_results['loaded_sprites'],
             'total_sprites': sprite_results['total_sprites'],
