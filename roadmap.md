@@ -1,4 +1,4 @@
-# Shimeji Desktop Pet - Development Roadmap
+# Shimeji Desktop Pet - Unified Development Roadmap
 
 ## Project Overview
 
@@ -8,6 +8,7 @@
 **Development Approach**: MVP (Minimum Viable Product) for each phase and step  
 **Frame Rate**: 30 FPS  
 **Sprite Size**: 128x128 px with transparency
+**UI Strategy**: Pure Pygame with In-Game Control Panel
 
 ## Core Features
 
@@ -18,19 +19,22 @@
 - TikTok Live integration for real-time chat interaction
 - Multiple sprite support from DeviantArt format
 - XML-based configuration system
-- Panel control for settings and management
+- In-game control panel for settings and management
 - Window interaction capabilities
+- Transparent background with always-on-top functionality
 
 ### User Interactions
 
 - **Left-click + Drag**: Move sprite
 - **Double right-click**: Kill individual sprite
-- **Panel control**: Spawn new pets, adjust settings, TikTok connection
+- **F1**: Toggle in-game control panel
+- **Keyboard shortcuts**: Quick pet management
+- **Right-click context menu**: Pet-specific actions
 
 ### TikTok Integration
 
 - **Standalone Operation**: Application runs independently without TikTok
-- **Optional Connection**: Username input through control panel for TikTok Live
+- **Optional Connection**: Username input through in-game control panel
 - **Automatic Persistence**: Successful usernames saved to config.json
 - **Error Handling**: Connection failures logged without breaking functionality
 - **Real-time Response**: Chat messages trigger pet behaviors and speech bubbles
@@ -40,38 +44,50 @@
 ### Core Technologies
 
 - **Python** with virtual environment
-- **Pygame** for sprite rendering and animation
-- **PyQt5** for control panel UI
+- **Pygame** for sprite rendering, animation, and UI
 - **TikTokLive library** for chat integration
 - **XML parsing** for sprite configurations
 - **JSON** for settings storage
-- **Windows API** for window interaction
+- **Windows API** for window interaction and transparency
 
 ### Dependencies
 
 ```python
 pygame
-PyQt5
 TikTokLive  # https://github.com/isaackogan/TikTokLive
-win32gui (pywin32)  # for window interaction
+win32gui (pywin32)  # for window interaction and transparency
 ```
 
 ## File Structure
 
 ```
-shimeji_desktop/
-├── main.py                 # Main application entry
+src/
+├── main.py                 # Main application entry point
 ├── config.py              # Hardcoded settings and constants
-├── sprite_loader.py       # XML parsing and sprite loading
-├── pet_behavior.py        # Behavior logic and state management
+├── animation/             # Animation system & management
+│   ├── animation_manager.py    # MAESTRO - Central animation controller
+│   ├── sprite_loader.py        # Sprite cache & memory management
+│   ├── stay_animation.py       # Stay action type handler
+│   ├── move_animation.py       # Move action type handler
+│   ├── animate_animation.py    # Animate action type handler
+│   ├── sequence_animation.py   # Sequence action type handler
+│   └── behavior_processor.py   # Behavior logic & decision making
+├── core/                  # Core business logic
+│   ├── pet.py             # Individual pet entity
+│   ├── environment.py     # Virtual boundary detection
+│   └── interaction.py     # User input handling
+├── ui/                    # In-game UI system
+│   ├── ui_manager.py      # UI rendering and management
+│   ├── control_panel.py   # In-game control panel
+│   ├── speech_bubble.py   # Text bubble rendering
+│   └── ui_components.py   # Reusable UI components
+├── utils/                 # Data processing utilities
+│   ├── xml_parser.py      # Legacy XML parsing
+│   ├── xml2json.py        # XML to JSON conversion
+│   ├── json_parser.py     # Modern JSON parsing
+│   └── data_parser.py     # Data validation utilities
 ├── tiktok_integration.py  # TikTok Live connection and events
-├── gui_manager.py         # Pygame window and rendering
-├── control_panel.py       # PyQt5 settings window
 ├── window_manager.py      # Window interaction and detection
-├── utils/
-│   ├── xml_parser.py      # XML configuration parser
-│   ├── animation.py       # Animation system
-│   └── speech_bubble.py   # Text bubble rendering
 ├── assets/
 │   ├── sprite_pack_1/
 │   │   ├── conf/
@@ -127,7 +143,7 @@ sprite_pack/
 
 #### Step 1: Core Infrastructure
 
-**Goal**: Basic window, sprite display, and user interactions
+**Goal**: Basic transparent window, sprite display, and user interactions
 
 - [x] Project structure setup
 - [ ] Pygame transparent window creation (always on top)
@@ -135,20 +151,23 @@ sprite_pack/
 - [ ] Basic mouse event handling
 - [ ] Left-click drag implementation
 - [ ] Double right-click kill functionality
+- [ ] Click-through technology for background interaction
 
-**Deliverable**: Interactive sprite that can be moved and removed
+**Deliverable**: Interactive sprite that can be moved and removed with transparent background
 
-#### Step 2: Control Panel Foundation
+#### Step 2: In-Game Control Panel Foundation
 
-**Goal**: Basic management interface
+**Goal**: Basic management interface within Pygame window
 
-- [ ] PyQt5 control panel window
+- [ ] In-game UI system with Pygame
+- [ ] F1 key toggle for control panel
 - [ ] Spawn new pet functionality
 - [ ] Kill all pets functionality
-- [ ] Basic settings UI structure
+- [ ] Basic settings UI structure (sliders, buttons, text input)
 - [ ] JSON config save/load system
+- [ ] Tab system for different settings
 
-**Deliverable**: Working control panel for pet management
+**Deliverable**: Working in-game control panel for pet management
 
 #### Step 3: XML Parser & Animation System
 
@@ -159,6 +178,7 @@ sprite_pack/
 - [ ] Basic animations (Stand, Walk, Sit) implementation
 - [ ] Sprite positioning and anchor points
 - [ ] Error handling for missing files
+- [ ] Animation Manager (MAESTRO) implementation
 
 **Deliverable**: Animated sprite with XML-driven behaviors
 
@@ -170,7 +190,7 @@ sprite_pack/
 - [ ] Gravity and floor collision system
 - [ ] Basic state machine (idle, walking, sitting)
 - [ ] Random behavior selection (simplified)
-- [ ] Multi-pet management system
+- [ ] Multi-pet management system (25+ pets support)
 
 **Deliverable**: Pet that moves naturally within desktop bounds
 
@@ -182,7 +202,7 @@ sprite_pack/
 
 - [ ] Professional logging framework (time, type, content)
 - [ ] Log levels: INFO, WARNING, ERROR
-- [ ] Log panel integration in control panel (bottom section)
+- [ ] Log panel integration in in-game control panel
 - [ ] Log file output (.log format)
 - [ ] Log filtering and search functionality
 
@@ -231,7 +251,7 @@ sprite_pack/
 **Goal**: Optional TikTok Live integration
 
 - [ ] TikTokLive library integration
-- [ ] Username input in control panel
+- [ ] Username input in in-game control panel
 - [ ] Connection validation on-submit
 - [ ] Config persistence for successful usernames
 - [ ] Error handling with log-only feedback
@@ -278,12 +298,19 @@ pet_state = {
     "health": 100,
     "active_window": None
 }
+
+ui_state = {
+    "control_panel_visible": False,
+    "active_tab": "pets",
+    "focused_element": None,
+    "dragging_slider": None
+}
 ```
 
-### Threading Architecture
+### Single-Threaded Architecture
 
-- **Main Thread**: GUI animation loop (30 FPS)
-- **Background Thread**: TikTok Live listener
+- **Main Thread**: Pygame animation loop (30 FPS) + UI rendering
+- **Background Thread**: TikTok Live listener (optional)
 - **Background Thread**: Behavior timer/scheduler
 - **Background Thread**: Window state monitoring
 
@@ -320,6 +347,49 @@ pet_state = {
 - Windows API errors
 - Audio system failures
 
+## UI System Architecture
+
+### In-Game UI Components
+
+1. **Control Panel**
+   - F1 toggle visibility
+   - Tab system (Pets, Settings, TikTok, Logs)
+   - Sliders, buttons, text input
+   - Real-time updates
+
+2. **Pet Management**
+   - Spawn/Kill buttons
+   - Pet list with individual controls
+   - Clone functionality
+   - Pet-specific settings
+
+3. **Settings Panel**
+   - Volume control
+   - Behavior frequency
+   - Screen boundaries
+   - Auto-save options
+
+4. **TikTok Panel**
+   - Username input
+   - Connect/Disconnect
+   - Status display
+   - Chat log
+
+5. **Log Panel**
+   - Real-time log display
+   - Filter options
+   - Search functionality
+   - Export options
+
+### UI Interaction Flow
+
+```
+Keyboard Event (F1) → Toggle Control Panel → Show/Hide UI
+Mouse Click → UI Element Detection → Execute Action
+Keyboard Input → Text Field Update → Save Settings
+Tab Navigation → Switch Content → Update Display
+```
+
 ## Testing Strategy
 
 ### Unit Testing
@@ -328,13 +398,14 @@ pet_state = {
 - Animation frame calculations
 - Behavior probability system
 - Window boundary detection
+- UI component functionality
 
 ### Integration Testing
 
 - Sprite loading with XML configs
 - TikTok Live connection
 - Multi-pet interaction
-- Control panel functionality
+- In-game control panel functionality
 
 ### Performance Testing
 
@@ -342,6 +413,7 @@ pet_state = {
 - Memory usage optimization
 - CPU usage monitoring
 - Long-running stability
+- UI responsiveness
 
 ## Documentation Requirements
 
@@ -384,17 +456,39 @@ pet_state = {
 
 - Stable desktop pet with basic behaviors
 - Working XML sprite loading system
-- Functional control panel
+- Functional in-game control panel
 - Basic TikTok Live integration
 
 ### Full Success Criteria
 
 - Rich window interaction system
-- Robust multi-pet management
+- Robust multi-pet management (25+ pets)
 - Seamless TikTok Live integration
 - Community-friendly sprite format
-- Performance optimization for 5+ pets
+- Performance optimization for multiple pets
+
+## Key Changes from Original Roadmap
+
+### 1. UI Strategy
+- **Before**: PyQt5 control panel (separate window)
+- **After**: Pure Pygame with in-game control panel
+- **Reason**: Simpler architecture, better performance, unified experience
+
+### 2. Threading Architecture
+- **Before**: Complex multi-threaded Pygame + PyQt5
+- **After**: Single-threaded Pygame with minimal background threads
+- **Reason**: Easier to develop, debug, and maintain
+
+### 3. File Structure
+- **Before**: Separate GUI manager and control panel
+- **After**: Integrated UI system within Pygame
+- **Reason**: Better organization and reduced complexity
+
+### 4. Dependencies
+- **Before**: Pygame + PyQt5 + Windows API
+- **After**: Pygame + Windows API (minimal dependencies)
+- **Reason**: Reduced complexity and better performance
 
 ---
 
-**Note**: This roadmap follows MVP principles - each step should produce a working, testable version before moving to the next step. Regular testing and user feedback should guide development priorities.
+**Note**: This unified roadmap follows MVP principles - each step should produce a working, testable version before moving to the next step. Regular testing and user feedback should guide development priorities. 
