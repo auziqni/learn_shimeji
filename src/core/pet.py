@@ -4,9 +4,9 @@ from utils.log_manager import get_logger
 from animation.animation_manager import AnimationManager
 
 class Pet:
-    """Individual pet entity - handles image and position data with animation support"""
+    """Individual pet entity - handles image and position data with animation support and text display"""
     
-    def __init__(self, x=0, y=0, sprite_name="Hornet", json_parser=None):
+    def __init__(self, x=0, y=0, sprite_name="Hornet", json_parser=None, name=None, chat=None):
         self.logger = get_logger("pet")
         
         # Initialize animation manager
@@ -22,6 +22,10 @@ class Pet:
         self.x = x
         self.y = y
         
+        # Text properties
+        self.name = sprite_name if name is None else name
+        self.chat = "Hello" if chat is None else chat
+        
         # Get initial image from animation manager
         self.image = self.animation_manager.get_current_image()
         if self.image:
@@ -35,7 +39,7 @@ class Pet:
             self.height = self.image.get_height()
             self.logger.warning("Using fallback sprite - no image loaded from animation manager")
         
-        self.logger.info(f"Pet created at position ({x}, {y}) with sprite '{sprite_name}'")
+        self.logger.info(f"Pet created at position ({x}, {y}) with sprite '{sprite_name}', name '{self.name}'")
         self.logger.debug(f"Pet size: {self.width}x{self.height}")
     
     def get_rect(self):
@@ -50,6 +54,25 @@ class Pet:
     def get_position(self):
         """Get pet position"""
         return (self.x, self.y)
+    
+    def set_name(self, name: str):
+        """Set pet name"""
+        if name and len(name) > 0:
+            self.name = name[:25]  # Max 25 characters
+            self.logger.debug(f"Pet name changed to '{self.name}'")
+    
+    def get_name(self) -> str:
+        """Get pet name"""
+        return self.name
+    
+    def set_chat(self, chat: str):
+        """Set pet chat message"""
+        self.chat = chat
+        self.logger.debug(f"Pet chat changed to '{chat}'")
+    
+    def get_chat(self) -> str:
+        """Get pet chat message"""
+        return self.chat
     
     def set_action(self, action_name: str):
         """Set pet action"""

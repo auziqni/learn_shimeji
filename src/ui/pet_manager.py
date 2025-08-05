@@ -1,13 +1,15 @@
 import pygame
 import config
 from core.pet import Pet
+from ui.sprite_name_chat import SpriteNameChat
 
 class PetManager:
-    """Manages collection of pets"""
+    """Manages collection of pets with text rendering"""
     
     def __init__(self):
         self.pets = []
         self.selected_index = 0
+        self.sprite_name_chat = SpriteNameChat()
     
     def add_pet(self, pet):
         """Add pet to collection"""
@@ -53,9 +55,13 @@ class PetManager:
         return len(self.pets)
     
     def draw_all(self, surface):
-        """Draw all pets"""
+        """Draw all pets with names and chat bubbles"""
         for pet in self.pets:
+            # Draw pet sprite
             pet.draw(surface)
+            
+            # Draw name and chat
+            self.sprite_name_chat.render_pet_text(surface, pet, pet.get_name(), pet.get_chat())
     
     def draw_selection_indicator(self, surface):
         """Draw selection indicator around selected pet"""
