@@ -15,6 +15,7 @@ from utils.asset_manager import AssetManager
 from utils.monitor_manager import MonitorManager
 from utils.window_manager import WindowManager
 from utils.log_manager import get_logger
+from utils.json_parser import JSONParser
 
 # Optional Win32 imports with fallback
 try:
@@ -47,6 +48,9 @@ class DesktopPetApp:
         self.environment = None
         self.debug_manager = DebugManager()
         self.control_panel = None  # Will be initialized after screen setup
+        
+        # Initialize JSONParser for sprite packs
+        self.json_parser = None
         
     def initialize(self):
         """Initialize application with main monitor detection"""
@@ -89,6 +93,11 @@ class DesktopPetApp:
             # Initialize control panel with screen dimensions
             self.control_panel = ControlPanel(screen_width, screen_height)
             
+            # Initialize JSONParser and load sprite packs
+            if not self._initialize_sprite_packs():
+                self.logger.critical("Failed to initialize sprite packs")
+                return False
+            
             # Load assets and create initial pets
             self._create_initial_pets()
             
@@ -102,25 +111,58 @@ class DesktopPetApp:
             return False
     
     def _create_initial_pets(self):
-        """Create initial pets"""
-        image_path = AssetManager.get_sprite_path()
-        
+        """Create initial pets with Hornet sprite"""
         for i in range(config.INITIAL_SPRITE_COUNT):
-            # Create pet at safe position
-            temp_pet = Pet(image_path, 0, 0)  # Temporary for size
             try:
-                safe_x, safe_y = self.environment.get_safe_spawn_position(
-                    temp_pet.width, temp_pet.height
-                )
-            except:
-                # Fallback position if boundary calculation fails
-                safe_x, safe_y = 100 + i * 80, 100 + i * 60
-            
-            # Create actual pet at safe position
-            pet = Pet(image_path, safe_x, safe_y)
-            self.pet_manager.add_pet(pet)
+                # Create pet at safe position
+                temp_pet = Pet(0, 0, "Hornet", self.json_parser)  # Temporary for size
+                try:
+                    safe_x, safe_y = self.environment.get_safe_spawn_position(
+                        temp_pet.width, temp_pet.height
+                    )
+                except:
+                    # Fallback position if boundary calculation fails
+                    safe_x, safe_y = 100 + i * 80, 100 + i * 60
+                
+                # Create actual pet at safe position
+                pet = Pet(safe_x, safe_y, "Hornet", self.json_parser)
+                self.pet_manager.add_pet(pet)
+                
+            except Exception as e:
+                self.logger.error(f"Failed to create pet #{i+1}: {e}")
+                # Create fallback pet
+                fallback_pet = Pet(100 + i * 80, 100 + i * 60, "Hornet")
+                self.pet_manager.add_pet(fallback_pet)
         
         self.logger.info(f"Created {self.pet_manager.get_pet_count()} initial pets")
+    
+    def _initialize_sprite_packs(self):
+        """Initialize JSONParser and load sprite packs"""
+        try:
+            self.logger.info("Initializing sprite packs...")
+            
+            # Initialize JSONParser
+            self.json_parser = JSONParser(assets_dir="assets", quiet_warnings=False, more_data_show=True)
+            
+            # Load all sprite packs
+            sprite_status = self.json_parser.load_all_sprite_packs()
+            
+            # Check if Hornet is available and ready
+            if "Hornet" not in sprite_status:
+                self.logger.error("Hornet sprite pack not found")
+                return False
+            
+            hornet_status = sprite_status["Hornet"]
+            if hornet_status != "READY":
+                self.logger.error(f"Hornet sprite pack not ready: {hornet_status}")
+                return False
+            
+            self.logger.info("Sprite packs initialized successfully")
+            return True
+            
+        except Exception as e:
+            self.logger.exception(f"Failed to initialize sprite packs: {e}")
+            return False
     
     def _print_controls(self):
         """Print control instructions"""
@@ -245,8 +287,7 @@ class DesktopPetApp:
     def _add_new_pet(self):
         """Add new pet at safe position"""
         try:
-            image_path = AssetManager.get_sprite_path()
-            temp_pet = Pet(image_path, 0, 0)
+            temp_pet = Pet(0, 0, "Hornet", self.json_parser)
             try:
                 safe_x, safe_y = self.environment.get_safe_spawn_position(
                     temp_pet.width, temp_pet.height
@@ -255,7 +296,7 @@ class DesktopPetApp:
                 # Fallback position
                 safe_x, safe_y = random.randint(100, 400), random.randint(100, 300)
             
-            new_pet = Pet(image_path, safe_x, safe_y)
+            new_pet = Pet(safe_x, safe_y, "Hornet", self.json_parser)
             self.pet_manager.add_pet(new_pet)
             pet_count = self.pet_manager.get_pet_count()
             self.logger.pet_event(pet_count, "created", f"at position ({safe_x}, {safe_y})")

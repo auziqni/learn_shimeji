@@ -1,28 +1,42 @@
 import pygame
 import config
 from utils.log_manager import get_logger
+from animation.animation_manager import AnimationManager
 
 class Pet:
-    """Individual pet entity - handles image and position data"""
+    """Individual pet entity - handles image and position data with animation support"""
     
-    def __init__(self, image_path, x=0, y=0):
-        logger = get_logger("pet")
+    def __init__(self, x=0, y=0, sprite_name="Hornet", json_parser=None):
+        self.logger = get_logger("pet")
         
-        try:
-            self.image = pygame.image.load(image_path)
-            logger.debug(f"Loaded pet image: {image_path}")
-        except pygame.error as e:
-            logger.error(f"Could not load image {image_path}: {e}")
-            # Create fallback red square
-            self.image = pygame.Surface(config.DEFAULT_SPRITE_SIZE)
-            self.image.fill(config.FALLBACK_SPRITE_COLOR)
-            logger.warning("Using fallback sprite color")
+        # Initialize animation manager
+        self.animation_manager = AnimationManager(sprite_name)
         
+        # Load sprite data if json_parser is provided
+        if json_parser:
+            if not self.animation_manager.load_sprite_data(json_parser):
+                self.logger.error(f"Failed to load sprite data for {sprite_name}")
+                raise RuntimeError(f"Failed to load sprite data for {sprite_name}")
+        
+        # Position data
         self.x = x
         self.y = y
-        self.width = self.image.get_width()
-        self.height = self.image.get_height()
-        logger.debug(f"Pet created at position ({x}, {y}) with size {self.width}x{self.height}")
+        
+        # Get initial image from animation manager
+        self.image = self.animation_manager.get_current_image()
+        if self.image:
+            self.width = self.image.get_width()
+            self.height = self.image.get_height()
+        else:
+            # Fallback if no image loaded
+            self.image = pygame.Surface(config.DEFAULT_SPRITE_SIZE)
+            self.image.fill(config.FALLBACK_SPRITE_COLOR)
+            self.width = self.image.get_width()
+            self.height = self.image.get_height()
+            self.logger.warning("Using fallback sprite - no image loaded from animation manager")
+        
+        self.logger.info(f"Pet created at position ({x}, {y}) with sprite '{sprite_name}'")
+        self.logger.debug(f"Pet size: {self.width}x{self.height}")
     
     def get_rect(self):
         """Get pygame rect for collision detection"""
@@ -36,6 +50,31 @@ class Pet:
     def get_position(self):
         """Get pet position"""
         return (self.x, self.y)
+    
+    def set_action(self, action_name: str):
+        """Set pet action"""
+        if self.animation_manager.set_action(action_name):
+            # Update image after action change
+            new_image = self.animation_manager.get_current_image()
+            if new_image:
+                self.image = new_image
+                self.width = self.image.get_width()
+                self.height = self.image.get_height()
+                self.logger.debug(f"Changed action to '{action_name}'")
+                return True
+        return False
+    
+    def get_current_action(self) -> str:
+        """Get current action name"""
+        return self.animation_manager.get_current_action()
+    
+    def get_available_actions(self) -> list:
+        """Get list of available actions"""
+        return self.animation_manager.get_available_actions()
+    
+    def update_animation(self, delta_time: float):
+        """Update animation"""
+        self.animation_manager.update_animation(delta_time)
     
     def draw(self, surface):
         """Draw pet to surface"""
