@@ -14,6 +14,7 @@ from ui.control_panel import ControlPanel
 from utils.asset_manager import AssetManager
 from utils.monitor_manager import MonitorManager
 from utils.window_manager import WindowManager
+from utils.log_manager import get_logger
 
 # Optional Win32 imports with fallback
 try:
@@ -30,6 +31,10 @@ class DesktopPetApp:
     """Main application - orchestrates all modular systems with monitor awareness"""
     
     def __init__(self):
+        # Initialize logger first
+        self.logger = get_logger("main")
+        self.logger.info("Initializing Desktop Pet Application")
+        
         self.running = False
         self.clock = None
         self.display = None
@@ -46,11 +51,12 @@ class DesktopPetApp:
     def initialize(self):
         """Initialize application with main monitor detection"""
         try:
-            print("🚀 Initializing Desktop Pet...")
+            self.logger.info("Starting application initialization")
             
             # Initialize pygame
             pygame.init()
             self.clock = pygame.time.Clock()
+            self.logger.debug("Pygame initialized successfully")
             
             # Initialize debug manager font
             self.debug_manager.initialize_font()
@@ -60,22 +66,22 @@ class DesktopPetApp:
             all_monitors = MonitorManager.get_all_monitors()
             
             if len(all_monitors) > 1:
-                print(f"🖥️ Multi-monitor setup detected. Using main monitor only.")
+                self.logger.info(f"Multi-monitor setup detected ({len(all_monitors)} monitors). Using main monitor only.")
             
             # Try transparent window first, fall back to simple
             try:
                 if WIN32_AVAILABLE:
                     self.display, hwnd, screen_width, screen_height = WindowManager.create_transparent_window(self.monitor_info)
                     self.transparent_mode = True
-                    print("✅ Transparent mode enabled on main monitor")
+                    self.logger.info("Transparent mode enabled on main monitor")
                 else:
                     raise ImportError("Win32 not available")
             except Exception as e:
-                print(f"⚠️ Transparent mode failed: {e}")
-                print("🔄 Falling back to simple mode...")
+                self.logger.warning(f"Transparent mode failed: {e}")
+                self.logger.info("Falling back to simple mode...")
                 self.display, hwnd, screen_width, screen_height = WindowManager.create_simple_window(self.monitor_info)
                 self.transparent_mode = False
-                print("✅ Simple mode enabled on main monitor")
+                self.logger.info("Simple mode enabled on main monitor")
             
             # Initialize environment
             self.environment = Environment(screen_width, screen_height)
@@ -86,15 +92,13 @@ class DesktopPetApp:
             # Load assets and create initial pets
             self._create_initial_pets()
             
-            print("✅ Application initialized successfully!")
+            self.logger.info("Application initialized successfully!")
             self._print_controls()
             
             return True
             
         except Exception as e:
-            print(f"❌ Initialization failed: {e}")
-            import traceback
-            traceback.print_exc()
+            self.logger.exception(f"Initialization failed: {e}")
             return False
     
     def _create_initial_pets(self):
@@ -116,26 +120,44 @@ class DesktopPetApp:
             pet = Pet(image_path, safe_x, safe_y)
             self.pet_manager.add_pet(pet)
         
-        print(f"✅ Created {self.pet_manager.get_pet_count()} pets")
+        self.logger.info(f"Created {self.pet_manager.get_pet_count()} initial pets")
     
     def _print_controls(self):
         """Print control instructions"""
+        self.logger.info("Application Controls:")
+        self.logger.info("  WASD/Arrow Keys: Move selected pet")
+        self.logger.info("  Q/E: Switch pet selection")
+        self.logger.info("  SPACE: Add new pet")
+        self.logger.info("  DELETE/X: Remove selected pet")
+        self.logger.info("  F1: Toggle debug mode")
+        self.logger.info("  F2: Toggle control panel")
+        self.logger.info("  ESC: Exit")
+        
+        mode = 'Transparent' if self.transparent_mode else 'Simple Window'
+        self.logger.info(f"Mode: {mode}")
+        
+        if self.monitor_info:
+            self.logger.info(f"Monitor: {self.monitor_info['width']}x{self.monitor_info['height']} (Main)")
+        
+        debug_status = "ON" if self.debug_manager.debug_mode else "OFF"
+        self.logger.info(f"Debug mode: {debug_status}")
+        
+        # Also print to console for user visibility
         print("\n🎮 Controls:")
         print("  WASD/Arrow Keys: Move selected pet")
         print("  Q/E: Switch pet selection")
         print("  SPACE: Add new pet")
         print("  DELETE/X: Remove selected pet")
         print("  F1: Toggle debug mode")
-        print("  F2: Toggle control panel")  # NEW: Control panel toggle
+        print("  F2: Toggle control panel")
         print("  ESC: Exit")
-        print(f"\n🎨 Mode: {'Transparent' if self.transparent_mode else 'Simple Window'}")
+        print(f"\n🎨 Mode: {mode}")
         if self.monitor_info:
             print(f"🖥️ Monitor: {self.monitor_info['width']}x{self.monitor_info['height']} (Main)")
         print("🐛 Debug Features:")
         print("  🔵 Blue: Walls | 🟡 Yellow: Ceiling | 🟢 Green: Floor")
         print("  🟡 Yellow Box: Selected pet")
         print("  📊 FPS: Top-left corner")
-        debug_status = "ON" if self.debug_manager.debug_mode else "OFF"
         print(f"  Current debug mode: {debug_status}")
         print("🎛️ Control Panel:")
         print("  F2: Show/Hide control panel")
@@ -158,15 +180,20 @@ class DesktopPetApp:
                 elif event.key == pygame.K_F2:  # NEW: Control panel toggle
                     self.control_panel.toggle_visibility()
                     status = "shown" if self.control_panel.visible else "hidden"
+                    self.logger.user_action("toggle_control_panel", f"Control panel {status}")
                     print(f"🎛️ Control panel {status}")
                 
                 elif event.key == pygame.K_q:
                     self.pet_manager.select_previous()
-                    print(f"Selected pet #{self.pet_manager.selected_index + 1}")
+                    pet_num = self.pet_manager.selected_index + 1
+                    self.logger.user_action("select_pet", f"Selected pet #{pet_num}")
+                    print(f"Selected pet #{pet_num}")
                 
                 elif event.key == pygame.K_e:
                     self.pet_manager.select_next()
-                    print(f"Selected pet #{self.pet_manager.selected_index + 1}")
+                    pet_num = self.pet_manager.selected_index + 1
+                    self.logger.user_action("select_pet", f"Selected pet #{pet_num}")
+                    print(f"Selected pet #{pet_num}")
                 
                 elif event.key == pygame.K_SPACE:
                     self._add_new_pet()
@@ -184,28 +211,35 @@ class DesktopPetApp:
         """Handle control panel button actions"""
         if action == 'add_pet':
             self._add_new_pet()
+            self.logger.user_action("add_pet", "via control panel")
             print("🎛️ Added pet via control panel")
         
         elif action == 'remove_pet':
             self._remove_selected_pet()
+            self.logger.user_action("remove_pet", "via control panel")
             print("🎛️ Removed pet via control panel")
         
         elif action == 'clear_all':
             self._clear_all_pets()
+            self.logger.user_action("clear_all_pets", "via control panel")
             print("🎛️ Cleared all pets via control panel")
         
         elif action == 'toggle_debug':
             self.debug_manager.toggle_debug_mode()
+            self.logger.user_action("toggle_debug", "via control panel")
             print("🎛️ Toggled debug mode via control panel")
         
         elif action == 'toggle_boundaries':
             # This would toggle boundary visibility
+            self.logger.user_action("toggle_boundaries", "via control panel")
             print("🎛️ Toggled boundaries via control panel")
         
         elif action == 'connect_tiktok':
+            self.logger.user_action("connect_tiktok", "via control panel")
             print("🎛️ TikTok connect button pressed")
         
         elif action == 'disconnect_tiktok':
+            self.logger.user_action("disconnect_tiktok", "via control panel")
             print("🎛️ TikTok disconnect button pressed")
     
     def _add_new_pet(self):
@@ -223,24 +257,33 @@ class DesktopPetApp:
             
             new_pet = Pet(image_path, safe_x, safe_y)
             self.pet_manager.add_pet(new_pet)
-            print(f"➕ Added pet #{self.pet_manager.get_pet_count()}")
+            pet_count = self.pet_manager.get_pet_count()
+            self.logger.pet_event(pet_count, "created", f"at position ({safe_x}, {safe_y})")
+            print(f"➕ Added pet #{pet_count}")
         
         except Exception as e:
+            self.logger.error(f"Error adding pet: {e}")
             print(f"❌ Error adding pet: {e}")
     
     def _remove_selected_pet(self):
         """Remove selected pet"""
         if self.pet_manager.get_pet_count() > 1:  # Keep at least one pet
+            removed_pet = self.pet_manager.selected_index + 1
             self.pet_manager.remove_selected_pet()
-            print(f"➖ Removed pet. Remaining: {self.pet_manager.get_pet_count()}")
+            remaining = self.pet_manager.get_pet_count()
+            self.logger.pet_event(removed_pet, "removed", f"remaining pets: {remaining}")
+            print(f"➖ Removed pet. Remaining: {remaining}")
         else:
+            self.logger.warning("Cannot remove last pet - minimum 1 pet required")
             print("⚠️ Cannot remove last pet!")
     
     def _clear_all_pets(self):
         """Clear all pets and create one new pet"""
+        previous_count = self.pet_manager.get_pet_count()
         self.pet_manager.pets.clear()
         self.pet_manager.selected_index = 0
         self._add_new_pet()
+        self.logger.pet_event(1, "cleared_all", f"removed {previous_count} pets, created 1 new pet")
         print("🗑️ Cleared all pets and created new one")
     
     def update(self):
@@ -311,9 +354,11 @@ class DesktopPetApp:
     def run(self):
         """Main application loop"""
         if not self.initialize():
+            self.logger.critical("Failed to initialize. Exiting...")
             print("❌ Failed to initialize. Exiting...")
             return
         
+        self.logger.info("Desktop Pet is running on main monitor! Use controls to interact.")
         print("🎮 Desktop Pet is running on main monitor! Use controls to interact.")
         self.running = True
         
@@ -324,12 +369,13 @@ class DesktopPetApp:
                 self.render()
                 self.clock.tick(config.FPS_TARGET)  # 60 FPS
         except KeyboardInterrupt:
+            self.logger.info("Application interrupted by user")
             print("\n⚠️ Interrupted by user")
         except Exception as e:
+            self.logger.exception(f"Runtime error: {e}")
             print(f"❌ Runtime error: {e}")
-            import traceback
-            traceback.print_exc()
         finally:
+            self.logger.info("Desktop Pet closing...")
             print("🏁 Desktop Pet closing...")
             pygame.quit()
             sys.exit()
@@ -341,6 +387,12 @@ def main():
     print("📋 Dependencies check:")
     print(f"   - pygame: {'✅' if 'pygame' in sys.modules else '❌'}")
     print(f"   - win32: {'✅' if WIN32_AVAILABLE else '❌ (fallback to simple mode)'}")
+    
+    # Initialize logger for main entry point
+    logger = get_logger("main_entry")
+    logger.info("Starting Desktop Pet Application")
+    logger.info(f"Pygame available: {'pygame' in sys.modules}")
+    logger.info(f"Win32 available: {WIN32_AVAILABLE}")
     
     app = DesktopPetApp()
     app.run()
