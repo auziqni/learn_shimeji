@@ -3,7 +3,7 @@ import os
 import time
 from typing import List, Dict, Optional, Tuple, Any
 from dataclasses import dataclass
-from src.utils.json_parser import JSONParser, ActionData, FrameData, AnimationBlock
+from srclama.utils.json_parser import JSONParser, ActionData, FrameData, AnimationBlock
 
 
 @dataclass

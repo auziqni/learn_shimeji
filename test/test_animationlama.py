@@ -20,8 +20,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 try:
     # Import our refactored modules
-    from src.animationlama import AnimationManager, Animation, clear_global_sprite_cache, get_global_sprite_cache_size, clear_global_sound_cache, get_global_sound_cache_size
-    from src.utils.json_parser import JSONParser
+    from srclama.animationlama import AnimationManager, Animation, clear_global_sprite_cache, get_global_sprite_cache_size, clear_global_sound_cache, get_global_sound_cache_size
+    from srclama.utils.json_parser import JSONParser
     
     ANIMATION_SYSTEM_AVAILABLE = True
 except ImportError as e:
