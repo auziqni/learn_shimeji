@@ -12,8 +12,7 @@ from ui.pet_manager import PetManager
 from ui.debug_manager import DebugManager
 from ui.control_panel import ControlPanel
 from ui.ui_manager import UIManager
-from utils.asset_manager import AssetManager
-from utils.monitor_manager import MonitorManager
+
 from utils.window_manager import WindowManager
 from utils.log_manager import get_logger
 from utils.json_parser import JSONParser
@@ -67,8 +66,8 @@ class DesktopPetApp:
             self.debug_manager.initialize_font()
             
             # Detect monitors and get main monitor info
-            self.monitor_info = MonitorManager.get_main_monitor_info()
-            all_monitors = MonitorManager.get_all_monitors()
+            self.monitor_info = WindowManager.get_main_monitor_info()
+            all_monitors = WindowManager.get_all_monitors()
             
             if len(all_monitors) > 1:
                 self.logger.info(f"Multi-monitor setup detected ({len(all_monitors)} monitors). Using main monitor only.")
@@ -306,6 +305,16 @@ class DesktopPetApp:
             self.environment, 
             self.control_panel.visible
         )
+        
+        # Apply physics to all pets
+        for pet in self.pet_manager.pets:
+            # Check if user is currently moving the selected pet
+            user_moving = False
+            if pet == self.pet_manager.get_selected_pet():
+                keys = pygame.key.get_pressed()
+                user_moving = keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d]
+            
+            self.environment.apply_physics(pet, delta_time, user_moving)
     
     def render(self):
         """Render everything using UI Manager"""
