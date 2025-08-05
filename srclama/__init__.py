@@ -1,1 +1,0 @@
-# Source package for Shimeji Desktop Pets 

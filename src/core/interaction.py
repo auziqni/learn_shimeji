@@ -1,11 +1,10 @@
 import pygame
-import config
 from core.pet import Pet
 
 class Interaction:
     """Handles all input events, movement, and pet controls"""
     
-    def __init__(self, speed=config.DEFAULT_MOVEMENT_SPEED):
+    def __init__(self, speed=5.0):
         self.speed = speed
     
     def get_movement_from_input(self, keys):

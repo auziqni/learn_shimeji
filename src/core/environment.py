@@ -1,6 +1,5 @@
 import pygame
 import random
-import config
 
 # Optional Win32 imports with fallback
 try:
@@ -15,16 +14,17 @@ except ImportError:
 class Environment:
     """Handles all boundary-related logic, virtual environment detection, and physics"""
     
-    def __init__(self, screen_width, screen_height):
+    def __init__(self, screen_width, screen_height, settings_manager=None):
         self.screen_width = screen_width
         self.screen_height = screen_height
+        self.settings_manager = settings_manager
         self.boundaries = self._calculate_boundaries()
         
         # Physics properties
-        self.gravity = 0.5
-        self.friction = 0.95
-        self.bounce_factor = 0.7
-        self.max_velocity = 10.0
+        self.gravity = self.settings_manager.get_setting('physics.gravity', 0.5) if self.settings_manager else 0.5
+        self.friction = self.settings_manager.get_setting('physics.friction', 0.95) if self.settings_manager else 0.95
+        self.bounce_factor = self.settings_manager.get_setting('physics.bounce_factor', 0.7) if self.settings_manager else 0.7
+        self.max_velocity = self.settings_manager.get_setting('physics.max_velocity', 10.0) if self.settings_manager else 10.0
         
         # Virtual boundary detection
         self.taskbar_height = self._detect_taskbar_height()
@@ -41,11 +41,12 @@ class Environment:
     
     def _calculate_boundaries(self):
         """Calculate boundary positions"""
+        default_margin = self.settings_manager.get_setting('boundaries.default_margin', 0.1) if self.settings_manager else 0.1
         return {
-            'left_wall': int(self.screen_width * config.DEFAULT_BOUNDARY_MARGIN),
-            'right_wall': int(self.screen_width * (1 - config.DEFAULT_BOUNDARY_MARGIN)),
-            'ceiling': int(self.screen_height * config.DEFAULT_BOUNDARY_MARGIN),
-            'floor': int(self.screen_height * (1 - config.DEFAULT_BOUNDARY_MARGIN))
+            'left_wall': int(self.screen_width * default_margin),
+            'right_wall': int(self.screen_width * (1 - default_margin)),
+            'ceiling': int(self.screen_height * default_margin),
+            'floor': int(self.screen_height * (1 - default_margin))
         }
     
     def check_collision(self, pet):
@@ -79,15 +80,16 @@ class Environment:
     
     def get_safe_spawn_position(self, pet_width, pet_height):
         """Get random position within boundaries"""
+        safe_spawn_margin = self.settings_manager.get_setting('boundaries.safe_spawn_margin', 50) if self.settings_manager else 50
         x = random.randint(
-            self.boundaries['left_wall'] + config.SAFE_SPAWN_MARGIN,
-            max(self.boundaries['left_wall'] + config.SAFE_SPAWN_MARGIN + 1, 
-                self.boundaries['right_wall'] - pet_width - config.SAFE_SPAWN_MARGIN)
+            self.boundaries['left_wall'] + safe_spawn_margin,
+            max(self.boundaries['left_wall'] + safe_spawn_margin + 1, 
+                self.boundaries['right_wall'] - pet_width - safe_spawn_margin)
         )
         y = random.randint(
-            self.boundaries['ceiling'] + config.SAFE_SPAWN_MARGIN,
-            max(self.boundaries['ceiling'] + config.SAFE_SPAWN_MARGIN + 1, 
-                self.boundaries['floor'] - pet_height - config.SAFE_SPAWN_MARGIN)
+            self.boundaries['ceiling'] + safe_spawn_margin,
+            max(self.boundaries['ceiling'] + safe_spawn_margin + 1, 
+                self.boundaries['floor'] - pet_height - safe_spawn_margin)
         )
         return (x, y)
     
@@ -219,11 +221,12 @@ class Environment:
     
     def get_virtual_boundaries(self):
         """Get virtual boundaries considering taskbar and work area"""
+        default_margin = self.settings_manager.get_setting('boundaries.default_margin', 0.1) if self.settings_manager else 0.1
         return {
-            'left_wall': self.work_area['x'] + int(self.work_area['width'] * config.DEFAULT_BOUNDARY_MARGIN),
-            'right_wall': self.work_area['x'] + int(self.work_area['width'] * (1 - config.DEFAULT_BOUNDARY_MARGIN)),
-            'ceiling': self.work_area['y'] + int(self.work_area['height'] * config.DEFAULT_BOUNDARY_MARGIN),
-            'floor': self.work_area['y'] + int(self.work_area['height'] * (1 - config.DEFAULT_BOUNDARY_MARGIN)),
+            'left_wall': self.work_area['x'] + int(self.work_area['width'] * default_margin),
+            'right_wall': self.work_area['x'] + int(self.work_area['width'] * (1 - default_margin)),
+            'ceiling': self.work_area['y'] + int(self.work_area['height'] * default_margin),
+            'floor': self.work_area['y'] + int(self.work_area['height'] * (1 - default_margin)),
             'taskbar_height': self.taskbar_height,
             'work_area': self.work_area
         }
@@ -246,22 +249,35 @@ class Environment:
     
     def draw_boundaries(self, surface):
         """Draw boundary lines"""
+        # Get boundary colors from settings
+        boundary_colors = self.settings_manager.get_setting('ui.boundary_colors', {
+            'left_wall': [0, 0, 255],
+            'right_wall': [0, 0, 255],
+            'ceiling': [255, 255, 0],
+            'floor': [0, 255, 0]
+        }) if self.settings_manager else {
+            'left_wall': [0, 0, 255],
+            'right_wall': [0, 0, 255],
+            'ceiling': [255, 255, 0],
+            'floor': [0, 255, 0]
+        }
+        
         # Left wall (blue)
-        pygame.draw.line(surface, config.BOUNDARY_COLORS['left_wall'],
+        pygame.draw.line(surface, boundary_colors['left_wall'],
                         (self.boundaries['left_wall'], 0),
                         (self.boundaries['left_wall'], self.screen_height), 3)
         
         # Right wall (blue)
-        pygame.draw.line(surface, config.BOUNDARY_COLORS['right_wall'],
+        pygame.draw.line(surface, boundary_colors['right_wall'],
                         (self.boundaries['right_wall'], 0),
                         (self.boundaries['right_wall'], self.screen_height), 3)
         
         # Ceiling (yellow)
-        pygame.draw.line(surface, config.BOUNDARY_COLORS['ceiling'],
+        pygame.draw.line(surface, boundary_colors['ceiling'],
                         (0, self.boundaries['ceiling']),
                         (self.screen_width, self.boundaries['ceiling']), 3)
         
         # Floor (green)
-        pygame.draw.line(surface, config.BOUNDARY_COLORS['floor'],
+        pygame.draw.line(surface, boundary_colors['floor'],
                         (0, self.boundaries['floor']),
                         (self.screen_width, self.boundaries['floor']), 3) 

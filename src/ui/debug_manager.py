@@ -1,11 +1,11 @@
 import pygame
-import config
 
 class DebugManager:
     """Handles debug mode and debug info display"""
     
-    def __init__(self):
-        self.debug_mode = config.DEFAULT_DEBUG_MODE
+    def __init__(self, settings_manager=None):
+        self.settings_manager = settings_manager
+        self.debug_mode = self.settings_manager.get_setting('ui.debug_mode', True) if self.settings_manager else True
         self.font = None
         self.fps_counter = 0
         self.fps_timer = 0
@@ -13,8 +13,9 @@ class DebugManager:
     
     def initialize_font(self):
         """Initialize font for debug info"""
+        debug_font_size = self.settings_manager.get_setting('ui.debug_font_size', 18) if self.settings_manager else 18
         try:
-            self.font = pygame.font.Font(None, config.DEBUG_FONT_SIZE)
+            self.font = pygame.font.Font(None, debug_font_size)
         except:
             self.font = pygame.font.SysFont('arial', 18)
     
@@ -31,7 +32,8 @@ class DebugManager:
         self.fps_timer += clock.get_time()
         
         # Update FPS every 500ms
-        if self.fps_timer >= config.FPS_UPDATE_INTERVAL:
+        fps_update_interval = self.settings_manager.get_setting('ui.fps_update_interval', 500) if self.settings_manager else 500
+        if self.fps_timer >= fps_update_interval:
             self.current_fps = int((self.fps_counter * 1000) / self.fps_timer)
             self.fps_counter = 0
             self.fps_timer = 0
@@ -43,7 +45,8 @@ class DebugManager:
         
         # Draw FPS
         fps_text = f"FPS: {self.current_fps}"
-        text_surface = self.font.render(fps_text, True, config.DEBUG_TEXT_COLOR)
+        debug_text_color = self.settings_manager.get_setting('ui.debug_text_color', [255, 255, 255]) if self.settings_manager else [255, 255, 255]
+        text_surface = self.font.render(fps_text, True, debug_text_color)
         
         # Position at top-left with small margin
         surface.blit(text_surface, (10, 10))

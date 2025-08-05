@@ -1,5 +1,4 @@
 import pygame
-import config
 from ui.ui_components import Button, Panel, Slider, TextBox
 
 class ControlPanel:

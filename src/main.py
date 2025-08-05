@@ -4,7 +4,6 @@ import random
 import sys
 
 # Import our modular components
-import config
 from core.pet import Pet
 from core.environment import Environment
 from core.interaction import Interaction
@@ -16,6 +15,7 @@ from ui.ui_manager import UIManager
 from utils.window_manager import WindowManager
 from utils.log_manager import get_logger
 from utils.json_parser import JSONParser
+from utils.settings_manager import SettingsManager
 
 # Optional Win32 imports with fallback
 try:
@@ -36,6 +36,9 @@ class DesktopPetApp:
         self.logger = get_logger("main")
         self.logger.info("Initializing Desktop Pet Application")
         
+        # Initialize settings manager
+        self.settings_manager = SettingsManager()
+        
         self.running = False
         self.clock = None
         self.display = None
@@ -46,7 +49,7 @@ class DesktopPetApp:
         self.pet_manager = PetManager()
         self.interaction = Interaction()
         self.environment = None
-        self.debug_manager = DebugManager()
+        self.debug_manager = DebugManager(self.settings_manager)
         self.control_panel = None  # Will be initialized after screen setup
         
         # Initialize JSONParser for sprite packs
@@ -88,7 +91,7 @@ class DesktopPetApp:
                 self.logger.info("Simple mode enabled on main monitor")
             
             # Initialize environment
-            self.environment = Environment(screen_width, screen_height)
+            self.environment = Environment(screen_width, screen_height, self.settings_manager)
             
             # Initialize control panel with screen dimensions
             self.control_panel = ControlPanel(screen_width, screen_height)
@@ -115,7 +118,8 @@ class DesktopPetApp:
     
     def _create_initial_pets(self):
         """Create initial pets with Hornet sprite"""
-        for i in range(config.INITIAL_SPRITE_COUNT):
+        initial_pet_count = self.settings_manager.get_setting('ui.initial_pet_count', 3)
+        for i in range(initial_pet_count):
             try:
                 # Create pet at safe position
                 temp_pet = Pet(0, 0, "Hornet", self.json_parser)  # Temporary for size
@@ -337,17 +341,20 @@ class DesktopPetApp:
     
     def _render_additional_info(self):
         """Render additional debug information"""
-        font = pygame.font.Font(None, config.INFO_FONT_SIZE)
+        font_size = self.settings_manager.get_setting('ui.info_font_size', 24)
+        font = pygame.font.Font(None, font_size)
         
         # Pet info
         info_text = f"Pet {self.pet_manager.selected_index + 1}/{self.pet_manager.get_pet_count()}"
-        text_surface = font.render(info_text, True, config.INFO_TEXT_COLOR)
+        info_color = self.settings_manager.get_setting('ui.info_text_color', [255, 255, 255])
+        text_surface = font.render(info_text, True, info_color)
         self.display.blit(text_surface, (10, 40))  # Moved down to avoid FPS overlap
         
         # Monitor info
         if self.monitor_info:
             monitor_text = f"Main Monitor: {self.monitor_info['width']}x{self.monitor_info['height']}"
-            monitor_surface = font.render(monitor_text, True, config.MONITOR_INFO_COLOR)
+            monitor_color = self.settings_manager.get_setting('ui.monitor_info_color', [200, 200, 200])
+            monitor_surface = font.render(monitor_text, True, monitor_color)
             self.display.blit(monitor_surface, (10, 65))
         
         # Control panel hint
@@ -372,7 +379,8 @@ class DesktopPetApp:
                 self.handle_events()
                 self.update()
                 self.render()
-                self.clock.tick(config.FPS_TARGET)  # 60 FPS
+                fps_target = self.settings_manager.get_setting('ui.fps_target', 60)
+                self.clock.tick(fps_target)  # 60 FPS
         except KeyboardInterrupt:
             self.logger.info("Application interrupted by user")
             print("\n⚠️ Interrupted by user")

@@ -2,7 +2,6 @@
 # This module contains reusable UI components with functional implementations
 
 import pygame
-import config
 from typing import Optional, Callable, Tuple, Dict, Any
 from utils.log_manager import get_logger
 

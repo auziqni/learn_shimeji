@@ -2,7 +2,6 @@
 # This module handles name display and chat bubble rendering for sprites
 
 import pygame
-import config
 from utils.log_manager import get_logger
 
 class SpriteNameChat:

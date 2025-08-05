@@ -1,5 +1,4 @@
 import pygame
-import config
 from utils.log_manager import get_logger
 from animation.animation_manager import AnimationManager
 
@@ -44,8 +43,10 @@ class Pet:
             self.height = self.image.get_height()
         else:
             # Fallback if no image loaded
-            self.image = pygame.Surface(config.DEFAULT_SPRITE_SIZE)
-            self.image.fill(config.FALLBACK_SPRITE_COLOR)
+            default_sprite_size = (64, 64)  # Default fallback size
+            fallback_color = (255, 0, 0)    # Default fallback color
+            self.image = pygame.Surface(default_sprite_size)
+            self.image.fill(fallback_color)
             self.width = self.image.get_width()
             self.height = self.image.get_height()
             self.logger.warning("Using fallback sprite - no image loaded from animation manager")

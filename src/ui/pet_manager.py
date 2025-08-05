@@ -1,5 +1,4 @@
 import pygame
-import config
 from core.pet import Pet
 from ui.sprite_name_chat import SpriteNameChat
 
@@ -77,4 +76,6 @@ class PetManager:
         selected = self.get_selected_pet()
         if selected:
             rect = selected.get_rect()
-            pygame.draw.rect(surface, config.SELECTION_COLOR, rect, config.SELECTION_THICKNESS) 
+            selection_color = (255, 255, 0)  # Yellow selection color
+            selection_thickness = 2  # Selection thickness
+            pygame.draw.rect(surface, selection_color, rect, selection_thickness) 

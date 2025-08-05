@@ -2,7 +2,6 @@
 # This module handles UI rendering and management with layer system
 
 import pygame
-import config
 from typing import Dict, List, Optional
 from utils.log_manager import get_logger
 
@@ -73,9 +72,9 @@ class UIManager:
         """Render complete game screen with all elements"""
         # Clear with appropriate background
         if game_state.get('transparent_mode', False):
-            surface.fill(config.TRANSPARENT_BG)  # Black = transparent
+            surface.fill((0, 0, 0))  # Black = transparent
         else:
-            surface.fill(config.SIMPLE_BG)  # Dark gray background
+            surface.fill((30, 30, 30))  # Dark gray background
         
         # Render game elements in order
         self._render_boundaries(surface, game_state)
