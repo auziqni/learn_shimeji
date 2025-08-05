@@ -5,11 +5,12 @@ import pygame
 from pathlib import Path
 from typing import Optional, Dict, Any, List
 from utils.log_manager import get_logger
+from .sprite_loader import SpriteLoader
 
 class AnimationManager:
     """MAESTRO - Central animation controller for sprite animations"""
     
-    def __init__(self, sprite_name: str = "Hornet", action_type: str = "Stay"):
+    def __init__(self, sprite_name: str = "Hornet", action_type: str = "Stay", sprite_loader: SpriteLoader = None):
         self.logger = get_logger("animation_manager")
         self.sprite_name = sprite_name
         self.action_type = action_type  # Focus on specific action type
@@ -39,6 +40,9 @@ class AnimationManager:
         self.sound_enabled = True
         self.volume = 0.5  # Default volume (0.0 to 1.0)
         
+        # Sprite loader integration
+        self.sprite_loader = sprite_loader or SpriteLoader()
+        
         # Initialize pygame mixer if not already initialized
         if not pygame.mixer.get_init():
             try:
@@ -62,6 +66,9 @@ class AnimationManager:
             
             # Create action list for navigation (only actions of specified type)
             self.action_list = list(self.actions.keys())
+            
+            # Preload sprites for this action type
+            self.sprite_loader.preload_sprites(self.sprite_name, self.action_type, json_parser)
             
             # Load sounds for this sprite pack
             self._load_sounds()
@@ -230,19 +237,22 @@ class AnimationManager:
             self.logger.warning(f"No frames loaded for action '{action_name}'")
     
     def _load_frame_image(self, image_name: str) -> Optional[pygame.Surface]:
-        """Load frame image from sprite pack"""
-        try:
-            image_path = self.sprite_path / image_name
-            if image_path.exists():
-                image = pygame.image.load(str(image_path))
-                self.logger.debug(f"Loaded image: {image_name}")
-                return image
-            else:
-                self.logger.error(f"Image not found: {image_path}")
-                return None
-        except Exception as e:
-            self.logger.error(f"Failed to load image '{image_name}': {e}")
+        """Load frame image using SpriteLoader"""
+        if not self.sprite_path:
+            self.logger.error("Sprite path not set")
             return None
+        
+        # Construct full path to image
+        image_path = self.sprite_path / image_name
+        
+        # Use SpriteLoader to load the image
+        sprite = self.sprite_loader.load_sprite(str(image_path))
+        
+        if sprite is None:
+            self.logger.warning(f"Failed to load frame image: {image_path}")
+            return None
+        
+        return sprite
     
     def next_action(self):
         """Go to next action in the list"""
@@ -325,4 +335,16 @@ class AnimationManager:
     
     def get_available_behaviors(self) -> list:
         """Get list of available behaviors"""
-        return list(self.behaviors.keys()) 
+        return list(self.behaviors.keys())
+    
+    def get_sprite_loader_stats(self) -> Dict[str, Any]:
+        """Get sprite loader statistics"""
+        return self.sprite_loader.get_cache_stats()
+    
+    def get_memory_usage(self) -> tuple:
+        """Get current memory usage"""
+        return self.sprite_loader.get_memory_usage()
+    
+    def optimize_sprite_cache(self):
+        """Optimize sprite cache"""
+        self.sprite_loader.optimize_cache() 

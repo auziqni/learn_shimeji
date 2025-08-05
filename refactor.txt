@@ -1,0 +1,94 @@
+�� REFACTORING LIST - Clean Code & Best Practice
+1. DUPLICATE FILES - HARUS DIBERSIHKAN
+1.1 Window Manager Duplication
+❌ MASALAH: Ada 2 file window manager yang berbeda:
+src/window_manager.py (24 lines) - Stub file
+src/utils/window_manager.py (105 lines) - Implementasi lengkap
+✅ SOLUSI: Hapus src/window_manager.py karena sudah ada implementasi lengkap di utils/
+1.2 Logger Duplication
+❌ MASALAH: Ada 2 file logger:
+src/utils/logger.py (123 lines) - LoggerConfig class
+src/utils/log_manager.py (81 lines) - LogManager class
+✅ SOLUSI: Merge kedua file menjadi satu src/utils/logger.py
+
+
+
+2. MAIN.PY - TERLALU BESAR (525 lines)
+2.1 Event Handling Refactoring
+❌ MASALAH: Method handle_events() terlalu panjang (111 lines) dengan banyak keyboard event handling
+✅ SOLUSI: Buat src/core/input_handler.py untuk menangani semua input events
+2.2 Control Panel Action Handling
+❌ MASALAH: Method _handle_control_panel_action() di main.py
+✅ SOLUSI: Pindahkan ke src/ui/control_panel.py sebagai method internal
+2.3 Pet Management Methods
+❌ MASALAH: Methods _add_new_pet(), _remove_selected_pet(), _clear_all_pets() di main.py
+✅ SOLUSI: Pindahkan ke src/ui/pet_manager.py
+
+
+3. ANIMATION SYSTEM - PERLU EXPANSION
+3.1 Action Type Handlers
+❌ MASALAH: Semua action type handling di animation_manager.py
+✅ SOLUSI: Buat file terpisah sesuai roadmap:
+src/animation/stay_animation.py
+src/animation/move_animation.py
+src/animation/animate_animation.py
+src/animation/sequence_animation.py
+src/animation/behavior_processor.py
+3.2 Sprite Loader Enhancement
+❌ MASALAH: sprite_loader.py terlalu sederhana (24 lines)
+✅ SOLUSI: Expand untuk sprite cache & memory management
+
+
+4. UI SYSTEM - PERLU REORGANIZATION
+4.1 UI Manager Enhancement
+❌ MASALAH: ui_manager.py terlalu sederhana (24 lines)
+✅ SOLUSI: Expand untuk UI rendering dan management
+4.2 UI Components Separation
+❌ MASALAH: ui_components.py hanya 45 lines
+✅ SOLUSI: Expand untuk reusable UI components
+
+5. UTILS - PERLU CLEANUP
+5.1 Asset Manager Enhancement
+❌ MASALAH: asset_manager.py hanya 41 lines
+✅ SOLUSI: Expand untuk asset loading dan fallback sprite creation
+5.2 Monitor Manager Enhancement
+❌ MASALAH: monitor_manager.py bisa diintegrasikan dengan window manager
+✅ SOLUSI: Merge ke utils/window_manager.py
+
+6. CORE SYSTEM - PERLU EXPANSION
+6.1 Environment Enhancement
+❌ MASALAH: environment.py hanya 85 lines
+✅ SOLUSI: Expand untuk virtual boundary detection dan physics
+6.2 Interaction Enhancement
+❌ MASALAH: interaction.py hanya 31 lines
+✅ SOLUSI: Expand untuk user input handling yang lebih kompleks
+
+7. CONFIGURATION SYSTEM
+7.1 Settings Management
+❌ MASALAH: Settings tersebar di berbagai file
+✅ SOLUSI: Buat src/utils/settings_manager.py untuk centralized settings
+7.2 Configuration Validation
+❌ MASALAH: Tidak ada validation untuk config
+✅ SOLUSI: Buat src/utils/config_validator.py
+
+8. TIKTOK INTEGRATION - STUB IMPLEMENTATION
+8.1 TikTok Integration Enhancement
+❌ MASALAH: tiktok_integration.py hanya stub (31 lines)
+✅ SOLUSI: Implementasi lengkap sesuai roadmap
+
+9. ERROR HANDLING & VALIDATION
+9.1 Error Handling System
+❌ MASALAH: Error handling tersebar
+✅ SOLUSI: Buat src/utils/error_handler.py
+9.2 Data Validation
+❌ MASALAH: Tidak ada validation untuk data
+✅ SOLUSI: Buat src/utils/data_validator.py
+
+10. PERFORMANCE & OPTIMIZATION
+10.1 Performance Monitor
+❌ MASALAH: Tidak ada performance monitoring
+✅ SOLUSI: Buat src/utils/performance_monitor.py
+10.2 Memory Management
+❌ MASALAH: Tidak ada memory management
+✅ SOLUSI: Buat src/utils/memory_manager.py
+

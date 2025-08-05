@@ -11,6 +11,7 @@ from core.interaction import Interaction
 from ui.pet_manager import PetManager
 from ui.debug_manager import DebugManager
 from ui.control_panel import ControlPanel
+from ui.ui_manager import UIManager
 from utils.asset_manager import AssetManager
 from utils.monitor_manager import MonitorManager
 from utils.window_manager import WindowManager
@@ -92,6 +93,9 @@ class DesktopPetApp:
             
             # Initialize control panel with screen dimensions
             self.control_panel = ControlPanel(screen_width, screen_height)
+            
+            # Initialize UI Manager
+            self.ui_manager = UIManager(screen_width, screen_height)
             
             # Initialize JSONParser and load sprite packs
             if not self._initialize_sprite_packs():
@@ -304,51 +308,44 @@ class DesktopPetApp:
         )
     
     def render(self):
-        """Render everything"""
-        # Clear with black (transparent in transparent mode)
-        if self.transparent_mode:
-            self.display.fill(config.TRANSPARENT_BG)  # Black = transparent
-        else:
-            self.display.fill(config.SIMPLE_BG)  # Dark gray background
+        """Render everything using UI Manager"""
+        # Create game state dictionary for UI Manager
+        game_state = {
+            'transparent_mode': self.transparent_mode,
+            'debug_manager': self.debug_manager,
+            'environment': self.environment,
+            'pet_manager': self.pet_manager,
+            'control_panel': self.control_panel,
+            'monitor_info': self.monitor_info
+        }
         
-        # Draw boundaries ONLY in debug mode
-        if self.debug_manager.should_show_boundaries() and self.environment:
-            self.environment.draw_boundaries(self.display)
+        # Use UI Manager to render the complete game screen
+        self.ui_manager.render_game_screen(self.display, game_state)
         
-        # Draw all pets
-        self.pet_manager.draw_all(self.display)
-        
-        # Draw selection indicator ONLY in debug mode
-        if self.debug_manager.should_show_selection_box():
-            self.pet_manager.draw_selection_indicator(self.display)
-        
-        # Draw debug info (FPS) in top-left corner
-        self.debug_manager.draw_debug_info(self.display)
-        
-        # Draw info text (only in simple mode and debug mode)
+        # Draw additional info text (only in simple mode and debug mode)
         if not self.transparent_mode and self.debug_manager.debug_mode:
-            font = pygame.font.Font(None, config.INFO_FONT_SIZE)
-            info_text = f"Pet {self.pet_manager.selected_index + 1}/{self.pet_manager.get_pet_count()}"
-            text_surface = font.render(info_text, True, config.INFO_TEXT_COLOR)
-            self.display.blit(text_surface, (10, 40))  # Moved down to avoid FPS overlap
-            
-            # Show monitor info
-            if self.monitor_info:
-                monitor_text = f"Main Monitor: {self.monitor_info['width']}x{self.monitor_info['height']}"
-                monitor_surface = font.render(monitor_text, True, config.MONITOR_INFO_COLOR)
-                self.display.blit(monitor_surface, (10, 65))
-            
-            # Show control panel hint
-            if not self.control_panel.visible:
-                hint_text = "Press F2 for Control Panel"
-                hint_surface = font.render(hint_text, True, (150, 150, 150))
-                self.display.blit(hint_surface, (10, 90))
+            self._render_additional_info()
+    
+    def _render_additional_info(self):
+        """Render additional debug information"""
+        font = pygame.font.Font(None, config.INFO_FONT_SIZE)
         
-        # Draw control panel (on top of everything)
-        self.control_panel.render(self.display)
+        # Pet info
+        info_text = f"Pet {self.pet_manager.selected_index + 1}/{self.pet_manager.get_pet_count()}"
+        text_surface = font.render(info_text, True, config.INFO_TEXT_COLOR)
+        self.display.blit(text_surface, (10, 40))  # Moved down to avoid FPS overlap
         
-        # Update display
-        pygame.display.flip()
+        # Monitor info
+        if self.monitor_info:
+            monitor_text = f"Main Monitor: {self.monitor_info['width']}x{self.monitor_info['height']}"
+            monitor_surface = font.render(monitor_text, True, config.MONITOR_INFO_COLOR)
+            self.display.blit(monitor_surface, (10, 65))
+        
+        # Control panel hint
+        if not self.control_panel.visible:
+            hint_text = "Press F2 for Control Panel"
+            hint_surface = font.render(hint_text, True, (150, 150, 150))
+            self.display.blit(hint_surface, (10, 90))
     
     def run(self):
         """Main application loop"""
