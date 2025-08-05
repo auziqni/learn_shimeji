@@ -10,6 +10,7 @@ from core.environment import Environment
 from core.interaction import Interaction
 from ui.pet_manager import PetManager
 from ui.debug_manager import DebugManager
+from ui.control_panel import ControlPanel
 from utils.asset_manager import AssetManager
 from utils.monitor_manager import MonitorManager
 from utils.window_manager import WindowManager
@@ -40,6 +41,7 @@ class DesktopPetApp:
         self.interaction = Interaction()
         self.environment = None
         self.debug_manager = DebugManager()
+        self.control_panel = None  # Will be initialized after screen setup
         
     def initialize(self):
         """Initialize application with main monitor detection"""
@@ -77,6 +79,9 @@ class DesktopPetApp:
             
             # Initialize environment
             self.environment = Environment(screen_width, screen_height)
+            
+            # Initialize control panel with screen dimensions
+            self.control_panel = ControlPanel(screen_width, screen_height)
             
             # Load assets and create initial pets
             self._create_initial_pets()
@@ -121,6 +126,7 @@ class DesktopPetApp:
         print("  SPACE: Add new pet")
         print("  DELETE/X: Remove selected pet")
         print("  F1: Toggle debug mode")
+        print("  F2: Toggle control panel")  # NEW: Control panel toggle
         print("  ESC: Exit")
         print(f"\n🎨 Mode: {'Transparent' if self.transparent_mode else 'Simple Window'}")
         if self.monitor_info:
@@ -131,6 +137,10 @@ class DesktopPetApp:
         print("  📊 FPS: Top-left corner")
         debug_status = "ON" if self.debug_manager.debug_mode else "OFF"
         print(f"  Current debug mode: {debug_status}")
+        print("🎛️ Control Panel:")
+        print("  F2: Show/Hide control panel")
+        print("  Mouse: Click tabs and buttons")
+        print("  Tabs: Pets, Settings, TikTok, Logs")
     
     def handle_events(self):
         """Handle all input events"""
@@ -145,6 +155,11 @@ class DesktopPetApp:
                 elif event.key == pygame.K_F1:
                     self.debug_manager.toggle_debug_mode()
                 
+                elif event.key == pygame.K_F2:  # NEW: Control panel toggle
+                    self.control_panel.toggle_visibility()
+                    status = "shown" if self.control_panel.visible else "hidden"
+                    print(f"🎛️ Control panel {status}")
+                
                 elif event.key == pygame.K_q:
                     self.pet_manager.select_previous()
                     print(f"Selected pet #{self.pet_manager.selected_index + 1}")
@@ -158,6 +173,40 @@ class DesktopPetApp:
                 
                 elif event.key == pygame.K_DELETE or event.key == pygame.K_x:
                     self._remove_selected_pet()
+            
+            # Handle control panel input
+            if self.control_panel.visible:
+                action = self.control_panel.handle_input(event)
+                if action:
+                    self._handle_control_panel_action(action)
+    
+    def _handle_control_panel_action(self, action):
+        """Handle control panel button actions"""
+        if action == 'add_pet':
+            self._add_new_pet()
+            print("🎛️ Added pet via control panel")
+        
+        elif action == 'remove_pet':
+            self._remove_selected_pet()
+            print("🎛️ Removed pet via control panel")
+        
+        elif action == 'clear_all':
+            self._clear_all_pets()
+            print("🎛️ Cleared all pets via control panel")
+        
+        elif action == 'toggle_debug':
+            self.debug_manager.toggle_debug_mode()
+            print("🎛️ Toggled debug mode via control panel")
+        
+        elif action == 'toggle_boundaries':
+            # This would toggle boundary visibility
+            print("🎛️ Toggled boundaries via control panel")
+        
+        elif action == 'connect_tiktok':
+            print("🎛️ TikTok connect button pressed")
+        
+        elif action == 'disconnect_tiktok':
+            print("🎛️ TikTok disconnect button pressed")
     
     def _add_new_pet(self):
         """Add new pet at safe position"""
@@ -187,22 +236,30 @@ class DesktopPetApp:
         else:
             print("⚠️ Cannot remove last pet!")
     
+    def _clear_all_pets(self):
+        """Clear all pets and create one new pet"""
+        self.pet_manager.pets.clear()
+        self.pet_manager.selected_index = 0
+        self._add_new_pet()
+        print("🗑️ Cleared all pets and created new one")
+    
     def update(self):
         """Update game logic"""
         # Update FPS counter
         self.debug_manager.update_fps(self.clock)
         
-        # Get movement input
-        keys = pygame.key.get_pressed()
-        dx, dy = self.interaction.get_movement_from_input(keys)
-        
-        # Apply movement to selected pet
-        if dx != 0 or dy != 0:
-            selected = self.pet_manager.get_selected_pet()
-            if selected:
-                self.interaction.apply_movement(selected, dx, dy)
-                if self.environment:
-                    self.environment.clamp_position(selected)
+        # Get movement input (only if control panel is not visible)
+        if not self.control_panel.visible:
+            keys = pygame.key.get_pressed()
+            dx, dy = self.interaction.get_movement_from_input(keys)
+            
+            # Apply movement to selected pet
+            if dx != 0 or dy != 0:
+                selected = self.pet_manager.get_selected_pet()
+                if selected:
+                    self.interaction.apply_movement(selected, dx, dy)
+                    if self.environment:
+                        self.environment.clamp_position(selected)
     
     def render(self):
         """Render everything"""
@@ -238,6 +295,15 @@ class DesktopPetApp:
                 monitor_text = f"Main Monitor: {self.monitor_info['width']}x{self.monitor_info['height']}"
                 monitor_surface = font.render(monitor_text, True, config.MONITOR_INFO_COLOR)
                 self.display.blit(monitor_surface, (10, 65))
+            
+            # Show control panel hint
+            if not self.control_panel.visible:
+                hint_text = "Press F2 for Control Panel"
+                hint_surface = font.render(hint_text, True, (150, 150, 150))
+                self.display.blit(hint_surface, (10, 90))
+        
+        # Draw control panel (on top of everything)
+        self.control_panel.render(self.display)
         
         # Update display
         pygame.display.flip()
