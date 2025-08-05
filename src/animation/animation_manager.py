@@ -33,6 +33,21 @@ class AnimationManager:
         self.action_list = []
         self.current_action_index = 0
         
+        # Sound management
+        self.sounds = {}
+        self.current_sound = None
+        self.sound_enabled = True
+        self.volume = 0.5  # Default volume (0.0 to 1.0)
+        
+        # Initialize pygame mixer if not already initialized
+        if not pygame.mixer.get_init():
+            try:
+                pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=512)
+                self.logger.info("Pygame mixer initialized for sound support")
+            except Exception as e:
+                self.logger.warning(f"Failed to initialize pygame mixer: {e}")
+                self.sound_enabled = False
+        
         self.logger.info(f"AnimationManager initialized for sprite: {sprite_name}, action_type: {action_type}")
     
     def load_sprite_data(self, json_parser):
@@ -48,6 +63,9 @@ class AnimationManager:
             # Create action list for navigation (only actions of specified type)
             self.action_list = list(self.actions.keys())
             
+            # Load sounds for this sprite pack
+            self._load_sounds()
+            
             self.logger.info(f"Loaded {len(self.actions)} {self.action_type} actions and {len(self.behaviors)} behaviors for {self.sprite_name}")
             
             # Load default action (first in list)
@@ -61,6 +79,83 @@ class AnimationManager:
         except Exception as e:
             self.logger.error(f"Failed to load sprite data: {e}")
             return False
+    
+    def _load_sounds(self):
+        """Load sound files for the current sprite pack"""
+        if not self.sound_enabled:
+            return
+        
+        try:
+            sounds_path = self.sprite_path / "sounds"
+            if not sounds_path.exists():
+                self.logger.debug(f"No sounds directory found for {self.sprite_name}")
+                return
+            
+            # Load all sound files
+            for sound_file in sounds_path.glob("*.wav"):
+                sound_name = sound_file.stem
+                try:
+                    sound = pygame.mixer.Sound(str(sound_file))
+                    sound.set_volume(self.volume)
+                    self.sounds[sound_name] = sound
+                    self.logger.debug(f"Loaded sound: {sound_name}")
+                except Exception as e:
+                    self.logger.warning(f"Failed to load sound {sound_name}: {e}")
+            
+            for sound_file in sounds_path.glob("*.ogg"):
+                sound_name = sound_file.stem
+                try:
+                    sound = pygame.mixer.Sound(str(sound_file))
+                    sound.set_volume(self.volume)
+                    self.sounds[sound_name] = sound
+                    self.logger.debug(f"Loaded sound: {sound_name}")
+                except Exception as e:
+                    self.logger.warning(f"Failed to load sound {sound_name}: {e}")
+            
+            self.logger.info(f"Loaded {len(self.sounds)} sounds for {self.sprite_name}")
+            
+        except Exception as e:
+            self.logger.warning(f"Failed to load sounds: {e}")
+    
+    def play_sound(self, sound_name: str):
+        """Play a sound by name"""
+        if not self.sound_enabled or sound_name not in self.sounds:
+            return False
+        
+        try:
+            sound = self.sounds[sound_name]
+            sound.set_volume(self.volume)
+            sound.play()
+            self.logger.debug(f"Playing sound: {sound_name}")
+            return True
+        except Exception as e:
+            self.logger.warning(f"Failed to play sound {sound_name}: {e}")
+            return False
+    
+    def set_volume(self, volume: float):
+        """Set volume for all sounds (0.0 to 1.0)"""
+        self.volume = max(0.0, min(1.0, volume))
+        
+        # Update volume for all loaded sounds
+        for sound in self.sounds.values():
+            sound.set_volume(self.volume)
+        
+        self.logger.debug(f"Volume set to: {self.volume}")
+    
+    def toggle_sound(self):
+        """Toggle sound on/off"""
+        self.sound_enabled = not self.sound_enabled
+        status = "enabled" if self.sound_enabled else "disabled"
+        self.logger.info(f"Sound {status}")
+        return self.sound_enabled
+    
+    def get_sound_status(self) -> bool:
+        """Get current sound status"""
+        return self.sound_enabled
+    
+    def get_volume(self) -> float:
+        """Get current volume"""
+        return self.volume
     
     def set_action(self, action_name: str):
         """Set current action and load its frames"""
@@ -82,10 +177,21 @@ class AnimationManager:
         self.logger.debug(f"Set action '{action_name}' with {len(self.current_frames)} frames")
         return True
     
+    def _play_frame_sound(self, frame_index: int):
+        """Play sound for specific frame"""
+        if not self.sound_enabled or frame_index >= len(self.frame_sounds):
+            return
+        
+        frame_sound = self.frame_sounds[frame_index]
+        if frame_sound and frame_sound in self.sounds:
+            self.play_sound(frame_sound)
+            self.logger.debug(f"Playing frame sound: {frame_sound} at frame {frame_index}")
+    
     def _load_action_frames(self, action_name: str):
         """Load all frames for an action"""
         self.current_frames = []
         self.frame_durations = []
+        self.frame_sounds = []  # Store sound for each frame
         
         action_data = self.actions[action_name]
         if not action_data.animation_blocks:
@@ -103,10 +209,23 @@ class AnimationManager:
                 # Use frame duration from XML, or default
                 duration = getattr(frame, 'duration', 0.1)
                 self.frame_durations.append(duration)
+                
+                # Load frame sound if available (from JSON data)
+                frame_sound = getattr(frame, 'sound', None)
+                if frame_sound:
+                    # Remove leading slash if present
+                    frame_sound = frame_sound.lstrip('/')
+                    # Remove .wav extension for sound name
+                    frame_sound = frame_sound.replace('.wav', '').replace('.ogg', '')
+                self.frame_sounds.append(frame_sound)
         
         if self.current_frames:
             self.current_image = self.current_frames[0]
             self.is_animating = len(self.current_frames) > 1
+            
+            # Play first frame sound if available
+            if self.frame_sounds and self.frame_sounds[0]:
+                self._play_frame_sound(0)
         else:
             self.logger.warning(f"No frames loaded for action '{action_name}'")
     
@@ -176,7 +295,7 @@ class AnimationManager:
             return 1  # Default to 1 if not found
     
     def update_animation(self, delta_time: float):
-        """Update animation with proper timing"""
+        """Update animation with proper timing and sound"""
         if not self.is_animating or not self.current_frames:
             return
         
@@ -185,8 +304,12 @@ class AnimationManager:
         # Check if it's time for next frame
         if self.animation_timer >= self.frame_durations[self.current_frame]:
             self.animation_timer = 0
+            old_frame = self.current_frame
             self.current_frame = (self.current_frame + 1) % len(self.current_frames)
             self.current_image = self.current_frames[self.current_frame]
+            
+            # Play sound for new frame if available
+            self._play_frame_sound(self.current_frame)
     
     def get_current_image(self) -> Optional[pygame.Surface]:
         """Get current frame image"""

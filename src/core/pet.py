@@ -9,6 +9,10 @@ class Pet:
     def __init__(self, x=0, y=0, sprite_name="Hornet", json_parser=None, name=None, chat=None, action_type="Stay"):
         self.logger = get_logger("pet")
         
+        # Sprite pack management
+        self.sprite_packs = ["Hornet", "HiveKnight", "HiveQueen"]
+        self.current_sprite_pack_index = 0  # Default to "Hornet"
+        
         # Action type management - Fixed action types
         self.action_types = ["Stay", "Move", "Animate", "Behavior", "Embedded"]
         self.current_action_type_index = 0  # Default to "Stay"
@@ -207,3 +211,81 @@ class Pet:
     def draw(self, surface):
         """Draw pet to surface"""
         surface.blit(self.image, (self.x, self.y)) 
+    
+    def next_sprite_pack(self):
+        """Go to next sprite pack"""
+        self.current_sprite_pack_index = (self.current_sprite_pack_index + 1) % len(self.sprite_packs)
+        new_sprite_pack = self.sprite_packs[self.current_sprite_pack_index]
+        
+        # Create new animation manager with new sprite pack
+        self.animation_manager = AnimationManager(new_sprite_pack, self.get_current_action_type())
+        
+        # Reload sprite data with new sprite pack
+        if hasattr(self, 'json_parser') and self.json_parser:
+            if self.animation_manager.load_sprite_data(self.json_parser):
+                # Update image and chat
+                new_image = self.animation_manager.get_current_image()
+                if new_image:
+                    self.image = new_image
+                    self.width = self.image.get_width()
+                    self.height = self.image.get_height()
+                
+                # Update name to new sprite pack
+                self.name = new_sprite_pack
+                
+                self.chat = self.animation_manager.get_current_action_info()
+                self.logger.debug(f"Changed to next sprite pack: {new_sprite_pack}")
+                return True
+        
+        return False
+    
+    def previous_sprite_pack(self):
+        """Go to previous sprite pack"""
+        self.current_sprite_pack_index = (self.current_sprite_pack_index - 1) % len(self.sprite_packs)
+        new_sprite_pack = self.sprite_packs[self.current_sprite_pack_index]
+        
+        # Create new animation manager with new sprite pack
+        self.animation_manager = AnimationManager(new_sprite_pack, self.get_current_action_type())
+        
+        # Reload sprite data with new sprite pack
+        if hasattr(self, 'json_parser') and self.json_parser:
+            if self.animation_manager.load_sprite_data(self.json_parser):
+                # Update image and chat
+                new_image = self.animation_manager.get_current_image()
+                if new_image:
+                    self.image = new_image
+                    self.width = self.image.get_width()
+                    self.height = self.image.get_height()
+                
+                # Update name to new sprite pack
+                self.name = new_sprite_pack
+                
+                self.chat = self.animation_manager.get_current_action_info()
+                self.logger.debug(f"Changed to previous sprite pack: {new_sprite_pack}")
+                return True
+        
+        return False
+    
+    def get_current_sprite_pack(self) -> str:
+        """Get current sprite pack"""
+        return self.sprite_packs[self.current_sprite_pack_index]
+    
+    def play_sound(self, sound_name: str):
+        """Play a sound"""
+        return self.animation_manager.play_sound(sound_name)
+    
+    def set_volume(self, volume: float):
+        """Set volume for all sounds"""
+        self.animation_manager.set_volume(volume)
+    
+    def toggle_sound(self):
+        """Toggle sound on/off"""
+        return self.animation_manager.toggle_sound()
+    
+    def get_sound_status(self) -> bool:
+        """Get current sound status"""
+        return self.animation_manager.get_sound_status()
+    
+    def get_volume(self) -> float:
+        """Get current volume"""
+        return self.animation_manager.get_volume() 

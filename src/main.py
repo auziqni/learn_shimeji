@@ -169,8 +169,11 @@ class DesktopPetApp:
         self.logger.info("Application Controls:")
         self.logger.info("  WASD: Move selected pet")
         self.logger.info("  Q/E: Switch pet selection")
+        self.logger.info("  UP/DOWN Arrow: Previous/Next sprite pack")
         self.logger.info("  LEFT/RIGHT Arrow: Previous/Next action type")
         self.logger.info("  Z/C: Previous/Next action")
+        self.logger.info("  M: Toggle sound")
+        self.logger.info("  +/-: Volume up/down")
         self.logger.info("  SPACE: Add new pet")
         self.logger.info("  DELETE/X: Remove selected pet")
         self.logger.info("  F1: Toggle debug mode")
@@ -190,8 +193,11 @@ class DesktopPetApp:
         print("\n🎮 Controls:")
         print("  WASD: Move selected pet")
         print("  Q/E: Switch pet selection")
+        print("  UP/DOWN Arrow: Previous/Next sprite pack")
         print("  LEFT/RIGHT Arrow: Previous/Next action type")
         print("  Z/C: Previous/Next action")
+        print("  M: Toggle sound")
+        print("  +/-: Volume up/down")
         print("  SPACE: Add new pet")
         print("  DELETE/X: Remove selected pet")
         print("  F1: Toggle debug mode")
@@ -241,14 +247,28 @@ class DesktopPetApp:
                     self.logger.user_action("select_pet", f"Selected pet #{pet_num}")
                     print(f"Selected pet #{pet_num}")
                 
-                elif event.key == pygame.K_LEFT:  # NEW: Previous action type
+                elif event.key == pygame.K_UP:  # NEW: Next sprite pack
+                    selected_pet = self.pet_manager.get_selected_pet()
+                    if selected_pet:
+                        if selected_pet.next_sprite_pack():
+                            self.logger.user_action("next_sprite_pack", f"Changed to: {selected_pet.get_current_sprite_pack()}")
+                            print(f"🔄 Next sprite pack: {selected_pet.get_current_sprite_pack()}")
+                
+                elif event.key == pygame.K_DOWN:  # NEW: Previous sprite pack
+                    selected_pet = self.pet_manager.get_selected_pet()
+                    if selected_pet:
+                        if selected_pet.previous_sprite_pack():
+                            self.logger.user_action("previous_sprite_pack", f"Changed to: {selected_pet.get_current_sprite_pack()}")
+                            print(f"🔄 Previous sprite pack: {selected_pet.get_current_sprite_pack()}")
+                
+                elif event.key == pygame.K_LEFT:  # Previous action type
                     selected_pet = self.pet_manager.get_selected_pet()
                     if selected_pet:
                         if selected_pet.previous_action_type():
                             self.logger.user_action("previous_action_type", f"Changed to: {selected_pet.get_current_action_type()}")
                             print(f"🔄 Previous action type: {selected_pet.get_current_action_type()}")
                 
-                elif event.key == pygame.K_RIGHT:  # NEW: Next action type
+                elif event.key == pygame.K_RIGHT:  # Next action type
                     selected_pet = self.pet_manager.get_selected_pet()
                     if selected_pet:
                         if selected_pet.next_action_type():
@@ -268,6 +288,32 @@ class DesktopPetApp:
                         if selected_pet.next_action():
                             self.logger.user_action("next_action", f"Changed to: {selected_pet.get_current_action_info()}")
                             print(f"🔄 Next action: {selected_pet.get_current_action_info()}")
+                
+                elif event.key == pygame.K_m:  # NEW: Toggle sound
+                    selected_pet = self.pet_manager.get_selected_pet()
+                    if selected_pet:
+                        sound_status = selected_pet.toggle_sound()
+                        status = "ON" if sound_status else "OFF"
+                        self.logger.user_action("toggle_sound", f"Sound {status}")
+                        print(f"🔊 Sound {status}")
+                
+                elif event.key == pygame.K_PLUS or event.key == pygame.K_EQUALS:  # NEW: Volume up
+                    selected_pet = self.pet_manager.get_selected_pet()
+                    if selected_pet:
+                        current_volume = selected_pet.get_volume()
+                        new_volume = min(1.0, current_volume + 0.1)
+                        selected_pet.set_volume(new_volume)
+                        self.logger.user_action("volume_up", f"Volume: {new_volume:.1f}")
+                        print(f"🔊 Volume: {new_volume:.1f}")
+                
+                elif event.key == pygame.K_MINUS:  # NEW: Volume down
+                    selected_pet = self.pet_manager.get_selected_pet()
+                    if selected_pet:
+                        current_volume = selected_pet.get_volume()
+                        new_volume = max(0.0, current_volume - 0.1)
+                        selected_pet.set_volume(new_volume)
+                        self.logger.user_action("volume_down", f"Volume: {new_volume:.1f}")
+                        print(f"🔊 Volume: {new_volume:.1f}")
                 
                 elif event.key == pygame.K_SPACE:
                     self._add_new_pet()
