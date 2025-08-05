@@ -6,11 +6,11 @@ from animation.animation_manager import AnimationManager
 class Pet:
     """Individual pet entity - handles image and position data with animation support and text display"""
     
-    def __init__(self, x=0, y=0, sprite_name="Hornet", json_parser=None, name=None, chat=None):
+    def __init__(self, x=0, y=0, sprite_name="Hornet", json_parser=None, name=None, chat=None, action_type="Stay"):
         self.logger = get_logger("pet")
         
-        # Initialize animation manager
-        self.animation_manager = AnimationManager(sprite_name)
+        # Initialize animation manager with action type filtering
+        self.animation_manager = AnimationManager(sprite_name, action_type)
         
         # Load sprite data if json_parser is provided
         if json_parser:
@@ -22,9 +22,9 @@ class Pet:
         self.x = x
         self.y = y
         
-        # Text properties
+        # Text properties - use action info for chat
         self.name = sprite_name if name is None else name
-        self.chat = "Hello" if chat is None else chat
+        self.chat = self.animation_manager.get_current_action_info() if chat is None else chat
         
         # Get initial image from animation manager
         self.image = self.animation_manager.get_current_image()
@@ -39,7 +39,7 @@ class Pet:
             self.height = self.image.get_height()
             self.logger.warning("Using fallback sprite - no image loaded from animation manager")
         
-        self.logger.info(f"Pet created at position ({x}, {y}) with sprite '{sprite_name}', name '{self.name}'")
+        self.logger.info(f"Pet created at position ({x}, {y}) with sprite '{sprite_name}', name '{self.name}', action_type '{action_type}'")
         self.logger.debug(f"Pet size: {self.width}x{self.height}")
     
     def get_rect(self):
@@ -74,6 +74,38 @@ class Pet:
         """Get pet chat message"""
         return self.chat
     
+    def next_action(self):
+        """Go to next action"""
+        if self.animation_manager.next_action():
+            # Update image after action change
+            new_image = self.animation_manager.get_current_image()
+            if new_image:
+                self.image = new_image
+                self.width = self.image.get_width()
+                self.height = self.image.get_height()
+            
+            # Update chat with new action info
+            self.chat = self.animation_manager.get_current_action_info()
+            self.logger.debug(f"Changed to next action: {self.chat}")
+            return True
+        return False
+    
+    def previous_action(self):
+        """Go to previous action"""
+        if self.animation_manager.previous_action():
+            # Update image after action change
+            new_image = self.animation_manager.get_current_image()
+            if new_image:
+                self.image = new_image
+                self.width = self.image.get_width()
+                self.height = self.image.get_height()
+            
+            # Update chat with new action info
+            self.chat = self.animation_manager.get_current_action_info()
+            self.logger.debug(f"Changed to previous action: {self.chat}")
+            return True
+        return False
+    
     def set_action(self, action_name: str):
         """Set pet action"""
         if self.animation_manager.set_action(action_name):
@@ -83,13 +115,20 @@ class Pet:
                 self.image = new_image
                 self.width = self.image.get_width()
                 self.height = self.image.get_height()
-                self.logger.debug(f"Changed action to '{action_name}'")
-                return True
+            
+            # Update chat with new action info
+            self.chat = self.animation_manager.get_current_action_info()
+            self.logger.debug(f"Changed action to '{action_name}'")
+            return True
         return False
     
     def get_current_action(self) -> str:
         """Get current action name"""
         return self.animation_manager.get_current_action()
+    
+    def get_current_action_info(self) -> str:
+        """Get current action info in format '[actiontype] : [actionname]'"""
+        return self.animation_manager.get_current_action_info()
     
     def get_available_actions(self) -> list:
         """Get list of available actions"""
@@ -98,6 +137,13 @@ class Pet:
     def update_animation(self, delta_time: float):
         """Update animation"""
         self.animation_manager.update_animation(delta_time)
+        
+        # Update image if animation changed
+        new_image = self.animation_manager.get_current_image()
+        if new_image and new_image != self.image:
+            self.image = new_image
+            self.width = self.image.get_width()
+            self.height = self.image.get_height()
     
     def draw(self, surface):
         """Draw pet to surface"""

@@ -429,6 +429,17 @@ class JSONParser:
             return self.sprite_data[sprite_name].actions
         return {}
     
+    def get_actions_by_type(self, sprite_name: str, action_type: str) -> Dict[str, ActionData]:
+        """Get actions filtered by action type"""
+        all_actions = self.get_actions(sprite_name)
+        filtered_actions = {}
+        
+        for action_name, action_data in all_actions.items():
+            if action_data.action_type == action_type:
+                filtered_actions[action_name] = action_data
+        
+        return filtered_actions
+    
     def get_behaviors(self, sprite_name: str) -> Dict[str, BehaviorData]:
         """Get all behaviors for a sprite"""
         if sprite_name in self.sprite_data:

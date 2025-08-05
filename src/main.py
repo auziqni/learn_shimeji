@@ -169,6 +169,7 @@ class DesktopPetApp:
         self.logger.info("Application Controls:")
         self.logger.info("  WASD/Arrow Keys: Move selected pet")
         self.logger.info("  Q/E: Switch pet selection")
+        self.logger.info("  Z/C: Previous/Next action")
         self.logger.info("  SPACE: Add new pet")
         self.logger.info("  DELETE/X: Remove selected pet")
         self.logger.info("  F1: Toggle debug mode")
@@ -188,6 +189,7 @@ class DesktopPetApp:
         print("\n🎮 Controls:")
         print("  WASD/Arrow Keys: Move selected pet")
         print("  Q/E: Switch pet selection")
+        print("  Z/C: Previous/Next action")
         print("  SPACE: Add new pet")
         print("  DELETE/X: Remove selected pet")
         print("  F1: Toggle debug mode")
@@ -236,6 +238,20 @@ class DesktopPetApp:
                     pet_num = self.pet_manager.selected_index + 1
                     self.logger.user_action("select_pet", f"Selected pet #{pet_num}")
                     print(f"Selected pet #{pet_num}")
+                
+                elif event.key == pygame.K_z:  # NEW: Previous action
+                    selected_pet = self.pet_manager.get_selected_pet()
+                    if selected_pet:
+                        if selected_pet.previous_action():
+                            self.logger.user_action("previous_action", f"Changed to: {selected_pet.get_current_action_info()}")
+                            print(f"🔄 Previous action: {selected_pet.get_current_action_info()}")
+                
+                elif event.key == pygame.K_c:  # NEW: Next action
+                    selected_pet = self.pet_manager.get_selected_pet()
+                    if selected_pet:
+                        if selected_pet.next_action():
+                            self.logger.user_action("next_action", f"Changed to: {selected_pet.get_current_action_info()}")
+                            print(f"🔄 Next action: {selected_pet.get_current_action_info()}")
                 
                 elif event.key == pygame.K_SPACE:
                     self._add_new_pet()
@@ -331,6 +347,11 @@ class DesktopPetApp:
         """Update game logic"""
         # Update FPS counter
         self.debug_manager.update_fps(self.clock)
+        
+        # Update animations for all pets
+        delta_time = self.clock.get_time() / 1000.0  # Convert to seconds
+        for pet in self.pet_manager.pets:
+            pet.update_animation(delta_time)
         
         # Get movement input (only if control panel is not visible)
         if not self.control_panel.visible:
