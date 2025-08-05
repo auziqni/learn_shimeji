@@ -8,17 +8,17 @@ class Interaction:
         self.speed = speed
     
     def get_movement_from_input(self, keys):
-        """Calculate movement vector from keyboard input"""
+        """Calculate movement vector from keyboard input (WASD only)"""
         dx, dy = 0, 0
         
-        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
+        if keys[pygame.K_a]:
             dx = -self.speed
-        elif keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+        elif keys[pygame.K_d]:
             dx = self.speed
         
-        if keys[pygame.K_w] or keys[pygame.K_UP]:
+        if keys[pygame.K_w]:
             dy = -self.speed
-        elif keys[pygame.K_s] or keys[pygame.K_DOWN]:
+        elif keys[pygame.K_s]:
             dy = self.speed
         
         return (dx, dy)

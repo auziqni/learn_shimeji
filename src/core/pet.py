@@ -9,6 +9,13 @@ class Pet:
     def __init__(self, x=0, y=0, sprite_name="Hornet", json_parser=None, name=None, chat=None, action_type="Stay"):
         self.logger = get_logger("pet")
         
+        # Action type management - Fixed action types
+        self.action_types = ["Stay", "Move", "Animate", "Behavior", "Embedded"]
+        self.current_action_type_index = 0  # Default to "Stay"
+        
+        # Store json_parser for action type cycling
+        self.json_parser = json_parser
+        
         # Initialize animation manager with action type filtering
         self.animation_manager = AnimationManager(sprite_name, action_type)
         
@@ -73,6 +80,58 @@ class Pet:
     def get_chat(self) -> str:
         """Get pet chat message"""
         return self.chat
+    
+    def next_action_type(self):
+        """Go to next action type"""
+        self.current_action_type_index = (self.current_action_type_index + 1) % len(self.action_types)
+        new_action_type = self.action_types[self.current_action_type_index]
+        
+        # Create new animation manager with new action type
+        self.animation_manager = AnimationManager(self.animation_manager.sprite_name, new_action_type)
+        
+        # Reload sprite data with new action type
+        if hasattr(self, 'json_parser') and self.json_parser:
+            if self.animation_manager.load_sprite_data(self.json_parser):
+                # Update image and chat
+                new_image = self.animation_manager.get_current_image()
+                if new_image:
+                    self.image = new_image
+                    self.width = self.image.get_width()
+                    self.height = self.image.get_height()
+                
+                self.chat = self.animation_manager.get_current_action_info()
+                self.logger.debug(f"Changed to next action type: {new_action_type}")
+                return True
+        
+        return False
+    
+    def previous_action_type(self):
+        """Go to previous action type"""
+        self.current_action_type_index = (self.current_action_type_index - 1) % len(self.action_types)
+        new_action_type = self.action_types[self.current_action_type_index]
+        
+        # Create new animation manager with new action type
+        self.animation_manager = AnimationManager(self.animation_manager.sprite_name, new_action_type)
+        
+        # Reload sprite data with new action type
+        if hasattr(self, 'json_parser') and self.json_parser:
+            if self.animation_manager.load_sprite_data(self.json_parser):
+                # Update image and chat
+                new_image = self.animation_manager.get_current_image()
+                if new_image:
+                    self.image = new_image
+                    self.width = self.image.get_width()
+                    self.height = self.image.get_height()
+                
+                self.chat = self.animation_manager.get_current_action_info()
+                self.logger.debug(f"Changed to previous action type: {new_action_type}")
+                return True
+        
+        return False
+    
+    def get_current_action_type(self) -> str:
+        """Get current action type"""
+        return self.action_types[self.current_action_type_index]
     
     def next_action(self):
         """Go to next action"""

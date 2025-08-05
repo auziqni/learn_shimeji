@@ -148,10 +148,32 @@ class AnimationManager:
         return self.action_type
     
     def get_current_action_info(self) -> str:
-        """Get current action info in format '[actiontype] : [actionname]'"""
+        """Get current action info in format '[id.actiontype] : [id.actionname]'"""
         action_type = self.get_current_action_type()
         action_name = self.get_current_action()
-        return f"{action_type} : {action_name}"
+        
+        # Get action type index (1-based)
+        action_type_index = self._get_action_type_index(action_type)
+        
+        # Get action name index (1-based)
+        action_name_index = self._get_action_name_index(action_name)
+        
+        return f"[{action_type_index}.{action_type}] : [{action_name_index}.{action_name}]"
+    
+    def _get_action_type_index(self, action_type: str) -> int:
+        """Get 1-based index for action type"""
+        action_types = ["Stay", "Move", "Animate", "Behavior", "Embedded"]
+        try:
+            return action_types.index(action_type) + 1
+        except ValueError:
+            return 1  # Default to 1 if not found
+    
+    def _get_action_name_index(self, action_name: str) -> int:
+        """Get 1-based index for action name within current action list"""
+        try:
+            return list(self.actions.keys()).index(action_name) + 1
+        except ValueError:
+            return 1  # Default to 1 if not found
     
     def update_animation(self, delta_time: float):
         """Update animation with proper timing"""

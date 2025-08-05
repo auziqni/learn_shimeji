@@ -167,8 +167,9 @@ class DesktopPetApp:
     def _print_controls(self):
         """Print control instructions"""
         self.logger.info("Application Controls:")
-        self.logger.info("  WASD/Arrow Keys: Move selected pet")
+        self.logger.info("  WASD: Move selected pet")
         self.logger.info("  Q/E: Switch pet selection")
+        self.logger.info("  LEFT/RIGHT Arrow: Previous/Next action type")
         self.logger.info("  Z/C: Previous/Next action")
         self.logger.info("  SPACE: Add new pet")
         self.logger.info("  DELETE/X: Remove selected pet")
@@ -187,8 +188,9 @@ class DesktopPetApp:
         
         # Also print to console for user visibility
         print("\n🎮 Controls:")
-        print("  WASD/Arrow Keys: Move selected pet")
+        print("  WASD: Move selected pet")
         print("  Q/E: Switch pet selection")
+        print("  LEFT/RIGHT Arrow: Previous/Next action type")
         print("  Z/C: Previous/Next action")
         print("  SPACE: Add new pet")
         print("  DELETE/X: Remove selected pet")
@@ -239,14 +241,28 @@ class DesktopPetApp:
                     self.logger.user_action("select_pet", f"Selected pet #{pet_num}")
                     print(f"Selected pet #{pet_num}")
                 
-                elif event.key == pygame.K_z:  # NEW: Previous action
+                elif event.key == pygame.K_LEFT:  # NEW: Previous action type
+                    selected_pet = self.pet_manager.get_selected_pet()
+                    if selected_pet:
+                        if selected_pet.previous_action_type():
+                            self.logger.user_action("previous_action_type", f"Changed to: {selected_pet.get_current_action_type()}")
+                            print(f"🔄 Previous action type: {selected_pet.get_current_action_type()}")
+                
+                elif event.key == pygame.K_RIGHT:  # NEW: Next action type
+                    selected_pet = self.pet_manager.get_selected_pet()
+                    if selected_pet:
+                        if selected_pet.next_action_type():
+                            self.logger.user_action("next_action_type", f"Changed to: {selected_pet.get_current_action_type()}")
+                            print(f"🔄 Next action type: {selected_pet.get_current_action_type()}")
+                
+                elif event.key == pygame.K_z:  # Previous action
                     selected_pet = self.pet_manager.get_selected_pet()
                     if selected_pet:
                         if selected_pet.previous_action():
                             self.logger.user_action("previous_action", f"Changed to: {selected_pet.get_current_action_info()}")
                             print(f"🔄 Previous action: {selected_pet.get_current_action_info()}")
                 
-                elif event.key == pygame.K_c:  # NEW: Next action
+                elif event.key == pygame.K_c:  # Next action
                     selected_pet = self.pet_manager.get_selected_pet()
                     if selected_pet:
                         if selected_pet.next_action():
