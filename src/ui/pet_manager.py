@@ -11,8 +11,12 @@ class PetManager:
         self.selected_index = 0
         self.sprite_name_chat = SpriteNameChat()
     
-    def add_pet(self, pet):
+    def add_pet(self, pet=None):
         """Add pet to collection"""
+        if pet is None:
+            # Create default pet if none provided
+            # This will be handled by the calling code
+            return len(self.pets)
         self.pets.append(pet)
         return len(self.pets) - 1
     
@@ -53,6 +57,11 @@ class PetManager:
     def get_pet_count(self):
         """Get number of pets"""
         return len(self.pets)
+    
+    def clear_all_pets(self):
+        """Clear all pets from collection"""
+        self.pets.clear()
+        self.selected_index = 0
     
     def draw_all(self, surface):
         """Draw all pets with names and chat bubbles"""

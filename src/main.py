@@ -222,104 +222,23 @@ class DesktopPetApp:
             if event.type == pygame.QUIT:
                 self.running = False
             
+            # Delegate keyboard events to Interaction class
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    self.running = False
+                # Create app state dictionary for interaction
+                app_state = {
+                    'running': self.running,
+                    'logger': self.logger,
+                    'pet_manager': self.pet_manager,
+                    'debug_manager': self.debug_manager,
+                    'control_panel': self.control_panel,
+                    'json_parser': self.json_parser
+                }
                 
-                elif event.key == pygame.K_F1:
-                    self.debug_manager.toggle_debug_mode()
-                
-                elif event.key == pygame.K_F2:  # NEW: Control panel toggle
-                    self.control_panel.toggle_visibility()
-                    status = "shown" if self.control_panel.visible else "hidden"
-                    self.logger.user_action("toggle_control_panel", f"Control panel {status}")
-                    print(f"🎛️ Control panel {status}")
-                
-                elif event.key == pygame.K_q:
-                    self.pet_manager.select_previous()
-                    pet_num = self.pet_manager.selected_index + 1
-                    self.logger.user_action("select_pet", f"Selected pet #{pet_num}")
-                    print(f"Selected pet #{pet_num}")
-                
-                elif event.key == pygame.K_e:
-                    self.pet_manager.select_next()
-                    pet_num = self.pet_manager.selected_index + 1
-                    self.logger.user_action("select_pet", f"Selected pet #{pet_num}")
-                    print(f"Selected pet #{pet_num}")
-                
-                elif event.key == pygame.K_UP:  # NEW: Next sprite pack
-                    selected_pet = self.pet_manager.get_selected_pet()
-                    if selected_pet:
-                        if selected_pet.next_sprite_pack():
-                            self.logger.user_action("next_sprite_pack", f"Changed to: {selected_pet.get_current_sprite_pack()}")
-                            print(f"🔄 Next sprite pack: {selected_pet.get_current_sprite_pack()}")
-                
-                elif event.key == pygame.K_DOWN:  # NEW: Previous sprite pack
-                    selected_pet = self.pet_manager.get_selected_pet()
-                    if selected_pet:
-                        if selected_pet.previous_sprite_pack():
-                            self.logger.user_action("previous_sprite_pack", f"Changed to: {selected_pet.get_current_sprite_pack()}")
-                            print(f"🔄 Previous sprite pack: {selected_pet.get_current_sprite_pack()}")
-                
-                elif event.key == pygame.K_LEFT:  # Previous action type
-                    selected_pet = self.pet_manager.get_selected_pet()
-                    if selected_pet:
-                        if selected_pet.previous_action_type():
-                            self.logger.user_action("previous_action_type", f"Changed to: {selected_pet.get_current_action_type()}")
-                            print(f"🔄 Previous action type: {selected_pet.get_current_action_type()}")
-                
-                elif event.key == pygame.K_RIGHT:  # Next action type
-                    selected_pet = self.pet_manager.get_selected_pet()
-                    if selected_pet:
-                        if selected_pet.next_action_type():
-                            self.logger.user_action("next_action_type", f"Changed to: {selected_pet.get_current_action_type()}")
-                            print(f"🔄 Next action type: {selected_pet.get_current_action_type()}")
-                
-                elif event.key == pygame.K_z:  # Previous action
-                    selected_pet = self.pet_manager.get_selected_pet()
-                    if selected_pet:
-                        if selected_pet.previous_action():
-                            self.logger.user_action("previous_action", f"Changed to: {selected_pet.get_current_action_info()}")
-                            print(f"🔄 Previous action: {selected_pet.get_current_action_info()}")
-                
-                elif event.key == pygame.K_c:  # Next action
-                    selected_pet = self.pet_manager.get_selected_pet()
-                    if selected_pet:
-                        if selected_pet.next_action():
-                            self.logger.user_action("next_action", f"Changed to: {selected_pet.get_current_action_info()}")
-                            print(f"🔄 Next action: {selected_pet.get_current_action_info()}")
-                
-                elif event.key == pygame.K_m:  # NEW: Toggle sound
-                    selected_pet = self.pet_manager.get_selected_pet()
-                    if selected_pet:
-                        sound_status = selected_pet.toggle_sound()
-                        status = "ON" if sound_status else "OFF"
-                        self.logger.user_action("toggle_sound", f"Sound {status}")
-                        print(f"🔊 Sound {status}")
-                
-                elif event.key == pygame.K_PLUS or event.key == pygame.K_EQUALS:  # NEW: Volume up
-                    selected_pet = self.pet_manager.get_selected_pet()
-                    if selected_pet:
-                        current_volume = selected_pet.get_volume()
-                        new_volume = min(1.0, current_volume + 0.1)
-                        selected_pet.set_volume(new_volume)
-                        self.logger.user_action("volume_up", f"Volume: {new_volume:.1f}")
-                        print(f"🔊 Volume: {new_volume:.1f}")
-                
-                elif event.key == pygame.K_MINUS:  # NEW: Volume down
-                    selected_pet = self.pet_manager.get_selected_pet()
-                    if selected_pet:
-                        current_volume = selected_pet.get_volume()
-                        new_volume = max(0.0, current_volume - 0.1)
-                        selected_pet.set_volume(new_volume)
-                        self.logger.user_action("volume_down", f"Volume: {new_volume:.1f}")
-                        print(f"🔊 Volume: {new_volume:.1f}")
-                
-                elif event.key == pygame.K_SPACE:
-                    self._add_new_pet()
-                
-                elif event.key == pygame.K_DELETE or event.key == pygame.K_x:
-                    self._remove_selected_pet()
+                # Handle keyboard events through Interaction
+                if self.interaction.handle_keyboard_events(event, app_state):
+                    # Update running state if it was changed
+                    self.running = app_state['running']
+                    continue
             
             # Handle control panel input
             if self.control_panel.visible:
@@ -328,82 +247,44 @@ class DesktopPetApp:
                     self._handle_control_panel_action(action)
     
     def _handle_control_panel_action(self, action):
-        """Handle control panel button actions"""
-        if action == 'add_pet':
+        """Handle actions from control panel"""
+        if action == "add_pet":
             self._add_new_pet()
-            self.logger.user_action("add_pet", "via control panel")
-            print("🎛️ Added pet via control panel")
-        
-        elif action == 'remove_pet':
+        elif action == "remove_pet":
             self._remove_selected_pet()
-            self.logger.user_action("remove_pet", "via control panel")
-            print("🎛️ Removed pet via control panel")
-        
-        elif action == 'clear_all':
+        elif action == "clear_pets":
             self._clear_all_pets()
-            self.logger.user_action("clear_all_pets", "via control panel")
-            print("🎛️ Cleared all pets via control panel")
-        
-        elif action == 'toggle_debug':
+        elif action == "toggle_debug":
             self.debug_manager.toggle_debug_mode()
-            self.logger.user_action("toggle_debug", "via control panel")
-            print("🎛️ Toggled debug mode via control panel")
-        
-        elif action == 'toggle_boundaries':
-            # This would toggle boundary visibility
-            self.logger.user_action("toggle_boundaries", "via control panel")
-            print("🎛️ Toggled boundaries via control panel")
-        
-        elif action == 'connect_tiktok':
-            self.logger.user_action("connect_tiktok", "via control panel")
-            print("🎛️ TikTok connect button pressed")
-        
-        elif action == 'disconnect_tiktok':
-            self.logger.user_action("disconnect_tiktok", "via control panel")
-            print("🎛️ TikTok disconnect button pressed")
+        elif action == "toggle_boundaries":
+            self.debug_manager.toggle_boundaries()
+        elif action == "toggle_selection":
+            self.debug_manager.toggle_selection_box()
+        else:
+            self.logger.warning(f"Unknown control panel action: {action}")
     
     def _add_new_pet(self):
-        """Add new pet at safe position"""
-        try:
-            temp_pet = Pet(0, 0, "Hornet", self.json_parser)
-            try:
-                safe_x, safe_y = self.environment.get_safe_spawn_position(
-                    temp_pet.width, temp_pet.height
-                )
-            except:
-                # Fallback position
-                safe_x, safe_y = random.randint(100, 400), random.randint(100, 300)
-            
-            new_pet = Pet(safe_x, safe_y, "Hornet", self.json_parser)
-            self.pet_manager.add_pet(new_pet)
-            pet_count = self.pet_manager.get_pet_count()
-            self.logger.pet_event(pet_count, "created", f"at position ({safe_x}, {safe_y})")
-            print(f"➕ Added pet #{pet_count}")
-        
-        except Exception as e:
-            self.logger.error(f"Error adding pet: {e}")
-            print(f"❌ Error adding pet: {e}")
+        """Add new pet to the scene"""
+        self.pet_manager.add_pet()
+        pet_count = self.pet_manager.get_pet_count()
+        self.logger.user_action("add_pet", f"Added pet #{pet_count}")
+        print(f"➕ Added pet #{pet_count}")
     
     def _remove_selected_pet(self):
-        """Remove selected pet"""
-        if self.pet_manager.get_pet_count() > 1:  # Keep at least one pet
-            removed_pet = self.pet_manager.selected_index + 1
+        """Remove selected pet from the scene"""
+        if self.pet_manager.get_pet_count() > 1:
             self.pet_manager.remove_selected_pet()
-            remaining = self.pet_manager.get_pet_count()
-            self.logger.pet_event(removed_pet, "removed", f"remaining pets: {remaining}")
-            print(f"➖ Removed pet. Remaining: {remaining}")
+            self.logger.user_action("remove_pet", "Removed selected pet")
+            print("➖ Removed selected pet")
         else:
-            self.logger.warning("Cannot remove last pet - minimum 1 pet required")
-            print("⚠️ Cannot remove last pet!")
+            self.logger.warning("Cannot remove last pet")
+            print("⚠️ Cannot remove last pet")
     
     def _clear_all_pets(self):
-        """Clear all pets and create one new pet"""
-        previous_count = self.pet_manager.get_pet_count()
-        self.pet_manager.pets.clear()
-        self.pet_manager.selected_index = 0
-        self._add_new_pet()
-        self.logger.pet_event(1, "cleared_all", f"removed {previous_count} pets, created 1 new pet")
-        print("🗑️ Cleared all pets and created new one")
+        """Clear all pets from the scene"""
+        self.pet_manager.clear_all_pets()
+        self.logger.user_action("clear_pets", "Cleared all pets")
+        print("🗑️ Cleared all pets")
     
     def update(self):
         """Update game logic"""
@@ -415,18 +296,12 @@ class DesktopPetApp:
         for pet in self.pet_manager.pets:
             pet.update_animation(delta_time)
         
-        # Get movement input (only if control panel is not visible)
-        if not self.control_panel.visible:
-            keys = pygame.key.get_pressed()
-            dx, dy = self.interaction.get_movement_from_input(keys)
-            
-            # Apply movement to selected pet
-            if dx != 0 or dy != 0:
-                selected = self.pet_manager.get_selected_pet()
-                if selected:
-                    self.interaction.apply_movement(selected, dx, dy)
-                    if self.environment:
-                        self.environment.clamp_position(selected)
+        # Update pet movement through Interaction class
+        self.interaction.update_pet_movement(
+            self.pet_manager, 
+            self.environment, 
+            self.control_panel.visible
+        )
     
     def render(self):
         """Render everything"""
