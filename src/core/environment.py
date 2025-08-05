@@ -142,9 +142,9 @@ class Environment:
             {'x': self.boundaries['right_wall'] - 10, 'y': 0, 'width': 10, 'height': self.screen_height, 'type': 'wall'}  # Right wall
         ]
         
-        # Floors
+        # Floors - Consistent positioning (floor thickness = 10px)
         self.surfaces['floors'] = [
-            {'x': 0, 'y': self.boundaries['floor'] - 10, 'width': self.screen_width, 'height': 10, 'type': 'floor'}  # Bottom floor
+            {'x': 0, 'y': self.boundaries['floor'], 'width': self.screen_width, 'height': 10, 'type': 'floor'}  # Bottom floor
         ]
         
         # Ceilings
@@ -181,20 +181,31 @@ class Environment:
         # Check collisions and apply bouncing
         new_x, new_y = self._handle_physics_collisions(pet, new_x, new_y)
         
+        # Apply boundary clamping only if pet is completely outside boundaries (safety check)
+        if new_x < self.boundaries['left_wall']:
+            new_x = self.boundaries['left_wall']
+        elif new_x + pet.width > self.boundaries['right_wall']:
+            new_x = self.boundaries['right_wall'] - pet.width
+            
+        if new_y < self.boundaries['ceiling']:
+            new_y = self.boundaries['ceiling']
+        elif new_y + pet.height > self.boundaries['floor']:
+            new_y = self.boundaries['floor'] - pet.height
+        
         pet.set_position(new_x, new_y)
     
     def _handle_physics_collisions(self, pet, new_x, new_y):
         """Handle physics-based collisions with bouncing"""
         pet_rect = pygame.Rect(new_x, new_y, pet.width, pet.height)
         
-        # Check wall collisions
+        # Check wall collisions with improved logic
         for wall in self.surfaces['walls']:
             wall_rect = pygame.Rect(wall['x'], wall['y'], wall['width'], wall['height'])
             if pet_rect.colliderect(wall_rect):
-                if wall['x'] < pet_rect.centerx:  # Right wall
+                if wall['side'] == 'right':  # Right wall
                     new_x = wall['x'] - pet.width
                     pet.velocity[0] = -pet.velocity[0] * self.bounce_factor
-                else:  # Left wall
+                elif wall['side'] == 'left':  # Left wall
                     new_x = wall['x'] + wall['width']
                     pet.velocity[0] = -pet.velocity[0] * self.bounce_factor
         
