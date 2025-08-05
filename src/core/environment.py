@@ -136,10 +136,10 @@ class Environment:
     def _initialize_surfaces(self):
         """Initialize virtual surfaces for physics using boundary positions"""
         # Use boundary positions for consistent collision detection
-        # Walls
+        # Walls - Original positioning
         self.surfaces['walls'] = [
-            {'x': self.boundaries['left_wall'], 'y': 0, 'width': 10, 'height': self.screen_height, 'type': 'wall'},  # Left wall
-            {'x': self.boundaries['right_wall'] - 10, 'y': 0, 'width': 10, 'height': self.screen_height, 'type': 'wall'}  # Right wall
+            {'x': self.boundaries['left_wall'], 'y': 0, 'width': 10, 'height': self.screen_height, 'type': 'wall', 'side': 'left'},  # Left wall
+            {'x': self.boundaries['right_wall'], 'y': 0, 'width': 10, 'height': self.screen_height, 'type': 'wall', 'side': 'right'}  # Right wall
         ]
         
         # Floors - Consistent positioning (floor thickness = 10px)
@@ -181,17 +181,7 @@ class Environment:
         # Check collisions and apply bouncing
         new_x, new_y = self._handle_physics_collisions(pet, new_x, new_y)
         
-        # Apply boundary clamping only if pet is completely outside boundaries (safety check)
-        if new_x < self.boundaries['left_wall']:
-            new_x = self.boundaries['left_wall']
-        elif new_x + pet.width > self.boundaries['right_wall']:
-            new_x = self.boundaries['right_wall'] - pet.width
-            
-        if new_y < self.boundaries['ceiling']:
-            new_y = self.boundaries['ceiling']
-        elif new_y + pet.height > self.boundaries['floor']:
-            new_y = self.boundaries['floor'] - pet.height
-        
+        # Set position directly without boundary clamping interference
         pet.set_position(new_x, new_y)
     
     def _handle_physics_collisions(self, pet, new_x, new_y):
@@ -206,7 +196,7 @@ class Environment:
                     new_x = wall['x'] - pet.width
                     pet.velocity[0] = -pet.velocity[0] * self.bounce_factor
                 elif wall['side'] == 'left':  # Left wall
-                    new_x = wall['x'] + wall['width']
+                    new_x = wall['x']  # Place pet exactly at left wall boundary
                     pet.velocity[0] = -pet.velocity[0] * self.bounce_factor
         
         # Check floor/ceiling collisions
