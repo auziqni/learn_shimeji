@@ -50,6 +50,38 @@ class DebugManager:
         
         # Position at top-left with small margin
         surface.blit(text_surface, (10, 10))
+        
+        # Draw performance stats if available
+        try:
+            from utils.performance_monitor import performance_monitor
+            perf_stats = performance_monitor.get_performance_stats()
+            
+            # Frame time
+            frame_time_text = f"Frame: {perf_stats['frame_time']:.1f}ms"
+            frame_time_surface = self.font.render(frame_time_text, True, (200, 200, 200))
+            surface.blit(frame_time_surface, (10, 35))
+            
+            # CPU usage
+            cpu_text = f"CPU: {perf_stats['cpu_usage']:.1f}%"
+            cpu_surface = self.font.render(cpu_text, True, (200, 200, 200))
+            surface.blit(cpu_surface, (10, 60))
+            
+            # Memory info
+            from utils.memory_manager import memory_manager
+            mem_stats = memory_manager.get_memory_stats()
+            mem_text = f"Mem: {mem_stats['current_memory_mb']:.1f}MB"
+            mem_surface = self.font.render(mem_text, True, (200, 200, 200))
+            surface.blit(mem_surface, (10, 85))
+            
+            # Alerts count
+            if perf_stats['alerts'] > 0:
+                alert_text = f"Alerts: {perf_stats['alerts']}"
+                alert_surface = self.font.render(alert_text, True, (255, 200, 200))
+                surface.blit(alert_surface, (10, 110))
+                
+        except Exception as e:
+            # Silently fail if performance monitoring is not available
+            pass
     
     def should_show_boundaries(self):
         """Check if boundaries should be shown"""

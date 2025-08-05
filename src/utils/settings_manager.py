@@ -188,6 +188,22 @@ class SettingsManager:
                 "movement_speed": 5.0,
                 "key_repeat_delay": 100,
                 "key_repeat_interval": 50
+            },
+            
+            "performance": {
+                "monitoring_enabled": True,
+                "fps_threshold": 30,
+                "frame_time_threshold": 33.33,
+                "cpu_threshold": 80,
+                "memory_threshold_mb": 500,
+                "memory_growth_threshold": 50,
+                "gc_threshold": 700,
+                "gc_generation_threshold": 10,
+                "gc_collection_threshold": 10,
+                "auto_cleanup": True,
+                "alert_history_size": 50,
+                "monitoring_interval": 30,
+                "memory_check_interval": 30
             }
         }
     

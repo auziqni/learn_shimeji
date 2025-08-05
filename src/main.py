@@ -16,6 +16,8 @@ from utils.window_manager import WindowManager
 from utils.log_manager import get_logger
 from utils.json_parser import JSONParser
 from utils.settings_manager import SettingsManager
+from utils.performance_monitor import performance_monitor
+from utils.memory_manager import memory_manager
 
 # Optional Win32 imports with fallback
 try:
@@ -51,6 +53,9 @@ class DesktopPetApp:
         self.environment = None
         self.debug_manager = DebugManager(self.settings_manager)
         self.control_panel = None  # Will be initialized after screen setup
+        
+        # Initialize performance and memory monitoring
+        self._initialize_monitoring()
         
         # Initialize JSONParser for sprite packs
         self.json_parser = None
@@ -115,6 +120,27 @@ class DesktopPetApp:
         except Exception as e:
             self.logger.exception(f"Initialization failed: {e}")
             return False
+    
+    def _initialize_monitoring(self):
+        """Initialize performance and memory monitoring"""
+        try:
+            # Start performance monitoring
+            performance_monitor.start_monitoring()
+            
+            # Start memory monitoring
+            memory_manager.start_monitoring()
+            
+            # Add sprite loader cleanup callback
+            if hasattr(self, 'sprite_loader'):
+                memory_manager.add_cleanup_callback(self.sprite_loader.clear_cache)
+            
+            # Add garbage collection optimization
+            memory_manager.optimize_garbage_collection()
+            
+            self.logger.info("Performance and memory monitoring initialized")
+            
+        except Exception as e:
+            self.logger.warning(f"Failed to initialize monitoring: {e}")
     
     def _create_initial_pets(self):
         """Create initial pets with Hornet sprite"""
@@ -295,6 +321,9 @@ class DesktopPetApp:
     
     def update(self):
         """Update game logic"""
+        # Start performance monitoring for this frame
+        performance_monitor.start_frame()
+        
         # Update FPS counter
         self.debug_manager.update_fps(self.clock)
         
@@ -319,6 +348,9 @@ class DesktopPetApp:
                 user_moving = keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d]
             
             self.environment.apply_physics(pet, delta_time, user_moving)
+        
+        # End performance monitoring for this frame
+        performance_monitor.end_frame()
     
     def render(self):
         """Render everything using UI Manager"""
