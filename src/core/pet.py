@@ -32,6 +32,10 @@ class Pet:
         self.x = x
         self.y = y
         
+        # Direction tracking
+        self.direction = "right"  # Default direction
+        self.last_movement_direction = "right"  # Track last movement direction
+        
         # Text properties - use action info for chat
         self.name = sprite_name if name is None else name
         self.chat = self.animation_manager.get_current_action_info() if chat is None else chat
@@ -67,6 +71,28 @@ class Pet:
         """Get pet position"""
         return (self.x, self.y)
     
+    def set_direction(self, direction):
+        """Set pet direction (left/right)"""
+        if direction in ["left", "right"]:
+            self.direction = direction
+            self.last_movement_direction = direction
+            self.logger.debug(f"Pet direction changed to {direction}")
+    
+    def get_direction(self):
+        """Get current pet direction"""
+        return self.direction
+    
+    def get_last_movement_direction(self):
+        """Get last movement direction"""
+        return self.last_movement_direction
+    
+    def update_direction_from_movement(self, dx):
+        """Update direction based on movement delta x"""
+        if dx > 0:
+            self.set_direction("right")
+        elif dx < 0:
+            self.set_direction("left")
+    
     def set_name(self, name: str):
         """Set pet name"""
         if name and len(name) > 0:
@@ -85,6 +111,54 @@ class Pet:
     def get_chat(self) -> str:
         """Get pet chat message"""
         return self.chat
+    
+    def get_flipped_image(self):
+        """Get current image flipped based on direction"""
+        if self.image:
+            if self.direction == "right":
+                return pygame.transform.flip(self.image, True, False)
+            else:
+                return self.image
+        return self.image
+    
+    def draw_arrow_indicator(self, surface, debug_mode=False):
+        """Draw direction arrow indicator"""
+        if not debug_mode:
+            return
+        
+        # Arrow properties
+        arrow_size = 8
+        arrow_color = (255, 255, 0)  # Yellow
+        
+        # Calculate arrow position (top corner of sprite)
+        if self.direction == "right":
+            # Arrow on right side pointing right
+            arrow_x = self.x + self.width - arrow_size - 2
+            arrow_y = self.y + 2
+            # Create right-pointing arrow
+            arrow_points = [
+                (arrow_x, arrow_y + arrow_size//2),
+                (arrow_x + arrow_size, arrow_y + arrow_size//2),
+                (arrow_x + arrow_size - 2, arrow_y),
+                (arrow_x + arrow_size - 2, arrow_y + arrow_size)
+            ]
+        else:
+            # Arrow on left side pointing left
+            arrow_x = self.x + 2
+            arrow_y = self.y + 2
+            # Create left-pointing arrow
+            arrow_points = [
+                (arrow_x + arrow_size, arrow_y + arrow_size//2),
+                (arrow_x, arrow_y + arrow_size//2),
+                (arrow_x + 2, arrow_y),
+                (arrow_x + 2, arrow_y + arrow_size)
+            ]
+        
+        # Draw arrow
+        try:
+            pygame.draw.polygon(surface, arrow_color, arrow_points)
+        except Exception as e:
+            self.logger.debug(f"Failed to draw arrow: {e}")
     
     def next_action_type(self):
         """Go to next action type"""
@@ -211,7 +285,9 @@ class Pet:
     
     def draw(self, surface):
         """Draw pet to surface"""
-        surface.blit(self.image, (self.x, self.y)) 
+        # Use flipped image based on direction
+        flipped_image = self.get_flipped_image()
+        surface.blit(flipped_image, (self.x, self.y))
     
     def next_sprite_pack(self):
         """Go to next sprite pack"""

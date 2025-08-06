@@ -45,8 +45,10 @@ class UIManager:
     def _render_pets(self, surface, game_state):
         """Render all pets"""
         pet_manager = game_state.get('pet_manager')
+        debug_manager = game_state.get('debug_manager')
         if pet_manager:
-            pet_manager.draw_all(surface)
+            debug_mode = debug_manager.debug_mode if debug_manager else False
+            pet_manager.draw_all(surface, debug_mode)
     
     def _render_pet_debug_info(self, surface, game_state):
         """Render debug info for each pet"""

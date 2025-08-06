@@ -29,6 +29,10 @@ class Interaction:
         new_x = current_x + dx
         new_y = current_y + dy
         pet.set_position(new_x, new_y)
+        
+        # Update direction based on horizontal movement
+        if dx != 0:
+            pet.update_direction_from_movement(dx)
     
     def handle_keyboard_events(self, event, app_state):
         """Handle all keyboard events and return True if event was handled"""

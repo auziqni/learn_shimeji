@@ -62,11 +62,14 @@ class PetManager:
         self.pets.clear()
         self.selected_index = 0
     
-    def draw_all(self, surface):
+    def draw_all(self, surface, debug_mode=False):
         """Draw all pets with names and chat bubbles"""
         for pet in self.pets:
             # Draw pet sprite
             pet.draw(surface)
+            
+            # Draw arrow indicator if in debug mode
+            pet.draw_arrow_indicator(surface, debug_mode)
             
             # Draw name and chat
             self.sprite_name_chat.render_pet_text(surface, pet, pet.get_name(), pet.get_chat())

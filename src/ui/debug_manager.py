@@ -93,6 +93,7 @@ class DebugManager:
         pet_name = pet.get_name()
         chat = pet.get_chat()
         position = pet.get_position()
+        direction = pet.get_direction()
         
         # Calculate position for debug info (to the right of pet)
         pet_x, pet_y = position
@@ -104,6 +105,7 @@ class DebugManager:
         sprite_color = (255, 255, 0)    # Yellow for sprite name
         chat_color = (255, 255, 255)    # White for chat/action
         pos_color = (255, 200, 200)     # Light red for position
+        dir_color = (0, 255, 255)       # Cyan for direction
         
         # Line spacing
         line_height = 20
@@ -141,7 +143,13 @@ class DebugManager:
             surface.blit(chat_surface, (debug_x, current_y))
             current_y += line_height
             
-            # Line 3: Position (without comma)
+            # Line 3: Direction
+            dir_text = f"Dir: {direction}"
+            dir_surface = self.font.render(dir_text, True, dir_color)
+            surface.blit(dir_surface, (debug_x, current_y))
+            current_y += line_height
+            
+            # Line 4: Position (without comma)
             pos_text = f"({int(pet_x)} {int(pet_y)})"
             pos_surface = self.font.render(pos_text, True, pos_color)
             surface.blit(pos_surface, (debug_x, current_y))
