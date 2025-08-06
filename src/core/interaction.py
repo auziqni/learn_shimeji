@@ -33,6 +33,11 @@ class Interaction:
         # Update direction based on horizontal movement
         if dx != 0:
             pet.update_direction_from_movement(dx)
+        
+        # Update position state after movement
+        from ..core.environment import Environment
+        # Get environment from app_state if available
+        # For now, we'll update position state in main.py where environment is available
     
     def handle_keyboard_events(self, event, app_state):
         """Handle all keyboard events and return True if event was handled"""

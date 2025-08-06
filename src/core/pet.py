@@ -36,6 +36,20 @@ class Pet:
         self.direction = "right"  # Default direction
         self.last_movement_direction = "right"  # Track last movement direction
         
+        # Position state tracking
+        self.onFloor = False
+        self.onCeiling = False
+        self.onLeftWall = False
+        self.onRightWall = False
+        self.closeToLeftWall = False
+        self.closeToRightWall = False
+        
+        # Corner detection
+        self.rightFloor = False
+        self.leftFloor = False
+        self.rightCeiling = False
+        self.leftCeiling = False
+        
         # Text properties - use action info for chat
         self.name = sprite_name if name is None else name
         self.chat = self.animation_manager.get_current_action_info() if chat is None else chat
@@ -92,6 +106,77 @@ class Pet:
             self.set_direction("right")
         elif dx < 0:
             self.set_direction("left")
+    
+    def update_position_state(self, environment):
+        """Update position state based on current position and environment"""
+        if not environment:
+            return
+        
+        # Get virtual boundaries from environment
+        boundaries = environment.boundaries
+        
+        # Calculate close to thresholds (20% of virtual boundary width)
+        virtual_width = boundaries['right_wall'] - boundaries['left_wall']
+        close_left_threshold = boundaries['left_wall'] + (virtual_width * 0.2)
+        close_right_threshold = boundaries['right_wall'] - (virtual_width * 0.2)
+        
+        # Update position states using virtual boundaries
+        self.onFloor = (self.y + self.height >= boundaries['floor'])
+        self.onCeiling = (self.y <= boundaries['ceiling'])
+        self.onLeftWall = (self.x <= boundaries['left_wall'])
+        self.onRightWall = (self.x + self.width >= boundaries['right_wall'])
+        self.closeToLeftWall = (self.x <= close_left_threshold)
+        self.closeToRightWall = (self.x >= close_right_threshold)
+        
+        # Corner detection
+        self.rightFloor = (self.y + self.height >= boundaries['floor']) and (self.x + self.width >= boundaries['right_wall'])
+        self.leftFloor = (self.y + self.height >= boundaries['floor']) and (self.x <= boundaries['left_wall'])
+        self.rightCeiling = (self.y <= boundaries['ceiling']) and (self.x + self.width >= boundaries['right_wall'])
+        self.leftCeiling = (self.y <= boundaries['ceiling']) and (self.x <= boundaries['left_wall'])
+    
+    def get_position_state(self):
+        """Get current position state as dictionary"""
+        return {
+            'onFloor': self.onFloor,
+            'onCeiling': self.onCeiling,
+            'onLeftWall': self.onLeftWall,
+            'onRightWall': self.onRightWall,
+            'closeToLeftWall': self.closeToLeftWall,
+            'closeToRightWall': self.closeToRightWall,
+            'rightFloor': self.rightFloor,
+            'leftFloor': self.leftFloor,
+            'rightCeiling': self.rightCeiling,
+            'leftCeiling': self.leftCeiling
+        }
+    
+    def get_position_state_text(self):
+        """Get position state as compact text for debug display"""
+        on_states = []
+        close_states = []
+        
+        # Build on states
+        if self.onFloor:
+            on_states.append("F")
+        if self.onCeiling:
+            on_states.append("C")
+        if self.onLeftWall:
+            on_states.append("LW")
+        if self.onRightWall:
+            on_states.append("RW")
+        
+        # Build close states
+        if self.closeToLeftWall:
+            close_states.append("LW")
+        if self.closeToRightWall:
+            close_states.append("RW")
+        
+        # Format on states
+        on_text = "/".join(on_states) if on_states else "n"
+        
+        # Format close states
+        close_text = "/".join(close_states) if close_states else "n"
+        
+        return f"on:{on_text} , close:{close_text}"
     
     def set_name(self, name: str):
         """Set pet name"""

@@ -389,6 +389,9 @@ class DesktopPetApp:
                               not self.control_panel.visible
             
             self.environment.apply_physics(pet, delta_time, user_moving)
+            
+            # Update position state after physics
+            pet.update_position_state(self.environment)
         
         # End performance monitoring for this frame with pygame clock
         performance_monitor.end_frame(self.clock)

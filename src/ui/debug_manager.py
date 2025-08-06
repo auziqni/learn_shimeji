@@ -94,6 +94,7 @@ class DebugManager:
         chat = pet.get_chat()
         position = pet.get_position()
         direction = pet.get_direction()
+        position_state_text = pet.get_position_state_text()
         
         # Calculate position for debug info (to the right of pet)
         pet_x, pet_y = position
@@ -106,6 +107,7 @@ class DebugManager:
         chat_color = (255, 255, 255)    # White for chat/action
         pos_color = (255, 200, 200)     # Light red for position
         dir_color = (0, 255, 255)       # Cyan for direction
+        state_color = (255, 200, 255)   # Light purple for position state
         
         # Line spacing
         line_height = 20
@@ -153,6 +155,15 @@ class DebugManager:
             pos_text = f"({int(pet_x)} {int(pet_y)})"
             pos_surface = self.font.render(pos_text, True, pos_color)
             surface.blit(pos_surface, (debug_x, current_y))
+            current_y += line_height
+            
+            # Line 5: Position State (compact format)
+            # Truncate if too long
+            if len(position_state_text) > 30:
+                position_state_text = position_state_text[:27] + "..."
+            
+            state_surface = self.font.render(position_state_text, True, state_color)
+            surface.blit(state_surface, (debug_x, current_y))
             
         except Exception as e:
             # Silently fail if rendering fails
