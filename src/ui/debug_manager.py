@@ -83,6 +83,73 @@ class DebugManager:
             # Silently fail if performance monitoring is not available
             pass
     
+    def draw_pet_debug_info(self, surface, pet, pet_index):
+        """Draw debug info for a specific pet to the right of the pet"""
+        if not self.debug_mode or not self.font or not pet:
+            return
+        
+        # Get pet data
+        sprite_name = pet.get_current_sprite_pack()
+        pet_name = pet.get_name()
+        chat = pet.get_chat()
+        position = pet.get_position()
+        
+        # Calculate position for debug info (to the right of pet)
+        pet_x, pet_y = position
+        pet_width = pet.width
+        debug_x = pet_x + pet_width + 10  # 10px to the right of pet
+        debug_y = pet_y
+        
+        # Colors for different info types
+        sprite_color = (255, 255, 0)    # Yellow for sprite name
+        chat_color = (255, 255, 255)    # White for chat/action
+        pos_color = (255, 200, 200)     # Light red for position
+        
+        # Line spacing
+        line_height = 20
+        current_y = debug_y
+        
+        try:
+            # Line 1: Sprite Name : Pet Name (always show both)
+            combined_text = f"{sprite_name} : {pet_name}"
+            
+            # Truncate if too long
+            if len(combined_text) > 30:
+                combined_text = combined_text[:27] + "..."
+            
+            combined_surface = self.font.render(combined_text, True, sprite_color)
+            surface.blit(combined_surface, (debug_x, current_y))
+            current_y += line_height
+            
+            # Line 2: Chat/Action info (simplified)
+            # Extract action type and name from chat
+            if " : " in chat:
+                action_parts = chat.split(" : ", 1)
+                if len(action_parts) == 2:
+                    action_type, action_name = action_parts
+                    chat_text = f"{action_type} : {action_name}"
+                else:
+                    chat_text = chat
+            else:
+                chat_text = chat
+            
+            # Truncate if too long
+            if len(chat_text) > 30:
+                chat_text = chat_text[:27] + "..."
+            
+            chat_surface = self.font.render(chat_text, True, chat_color)
+            surface.blit(chat_surface, (debug_x, current_y))
+            current_y += line_height
+            
+            # Line 3: Position (without comma)
+            pos_text = f"({int(pet_x)} {int(pet_y)})"
+            pos_surface = self.font.render(pos_text, True, pos_color)
+            surface.blit(pos_surface, (debug_x, current_y))
+            
+        except Exception as e:
+            # Silently fail if rendering fails
+            pass
+    
     def should_show_boundaries(self):
         """Check if boundaries should be shown"""
         return self.debug_mode

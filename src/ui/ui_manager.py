@@ -26,6 +26,7 @@ class UIManager:
         # Render game elements in order
         self._render_boundaries(surface, game_state)
         self._render_pets(surface, game_state)
+        self._render_pet_debug_info(surface, game_state)
         self._render_selection(surface, game_state)
         self._render_debug_info(surface, game_state)
         self._render_control_panel(surface, game_state)
@@ -46,6 +47,15 @@ class UIManager:
         pet_manager = game_state.get('pet_manager')
         if pet_manager:
             pet_manager.draw_all(surface)
+    
+    def _render_pet_debug_info(self, surface, game_state):
+        """Render debug info for each pet"""
+        debug_manager = game_state.get('debug_manager')
+        pet_manager = game_state.get('pet_manager')
+        
+        if debug_manager and pet_manager and debug_manager.debug_mode:
+            for i, pet in enumerate(pet_manager.pets):
+                debug_manager.draw_pet_debug_info(surface, pet, i)
     
     def _render_selection(self, surface, game_state):
         """Render selection indicator if debug mode is enabled"""
