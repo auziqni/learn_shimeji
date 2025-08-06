@@ -30,7 +30,11 @@ class SpriteLoader:
         self.current_memory_usage = 0
         self.sprite_sizes = {}
         
+        # Check if pygame display is initialized
+        self.display_initialized = pygame.display.get_init()
+        
         self.logger.info(f"SpriteLoader initialized with cache_size={cache_size}, memory_limit={memory_limit_mb}MB")
+        self.logger.info(f"Pygame display initialized: {self.display_initialized}")
     
     def load_sprite(self, sprite_path: str) -> Optional[pygame.Surface]:
         """Load sprite with smart caching and memory management"""
@@ -63,14 +67,36 @@ class SpriteLoader:
     def _load_from_disk(self, sprite_path: str) -> Optional[pygame.Surface]:
         """Load sprite from disk with error handling"""
         try:
+            # Check if file exists
+            if not os.path.exists(sprite_path):
+                self.logger.warning(f"Sprite file not found: {sprite_path}")
+                return None
+            
             # Try to load the sprite
             sprite = pygame.image.load(sprite_path)
             
-            # Convert to optimize for display
-            if sprite.get_alpha() is None:
-                sprite = sprite.convert()
-            else:
-                sprite = sprite.convert_alpha()
+            # Convert to optimize for display - handle display not initialized
+            try:
+                if sprite.get_alpha() is None:
+                    sprite = sprite.convert()
+                else:
+                    sprite = sprite.convert_alpha()
+            except pygame.error as e:
+                if "cannot convert without pygame.display initialized" in str(e):
+                    # Create a dummy display surface for conversion
+                    try:
+                        dummy_surface = pygame.Surface((1, 1))
+                        if sprite.get_alpha() is None:
+                            sprite = sprite.convert(dummy_surface)
+                        else:
+                            sprite = sprite.convert_alpha(dummy_surface)
+                        self.logger.debug(f"Used dummy surface for conversion: {sprite_path}")
+                    except Exception as conv_e:
+                        self.logger.warning(f"Failed to convert sprite {sprite_path}: {conv_e}")
+                        # Return unconverted sprite as fallback
+                        return sprite
+                else:
+                    raise e
             
             return sprite
             

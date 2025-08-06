@@ -1,6 +1,7 @@
 import pygame
 from ..utils.log_manager import get_logger
 from ..animation.animation_manager import AnimationManager
+from typing import Dict, Any
 
 class Pet:
     """Individual pet entity - handles image and position data with animation support and text display"""
@@ -375,6 +376,7 @@ class Pet:
             self.image = new_image
             self.width = self.image.get_width()
             self.height = self.image.get_height()
+            self.logger.debug(f"Pet image updated: {self.width}x{self.height}")
     
     def draw(self, surface):
         """Draw pet to surface"""
@@ -461,3 +463,7 @@ class Pet:
     def get_volume(self) -> float:
         """Get current volume"""
         return self.animation_manager.get_volume() 
+
+    def get_animation_info(self) -> Dict[str, Any]:
+        """Get animation information for debugging"""
+        return self.animation_manager.get_animation_info() 

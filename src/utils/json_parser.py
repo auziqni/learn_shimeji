@@ -331,9 +331,19 @@ class JSONParser:
             sound = frame_data.get("sound")
             volume = frame_data.get("volume")
             
+            # Convert duration from XML units to seconds
+            # XML duration is typically in units that need to be converted to seconds
+            # Based on analysis, duration of 3-5 units should be ~0.1-0.2 seconds
+            if isinstance(duration, (int, float)):
+                # Convert XML duration units to seconds
+                # Typical conversion: 1 unit = ~0.05 seconds (20 units per second)
+                duration_seconds = duration * 0.05
+            else:
+                duration_seconds = 0.1
+            
             return FrameData(
                 image=image,
-                duration=duration,
+                duration=duration_seconds,
                 velocity=velocity,
                 image_anchor=image_anchor,
                 sound=sound,

@@ -234,13 +234,22 @@ class AnimationManager:
         
         if self.current_frames:
             self.current_image = self.current_frames[0]
-            self.is_animating = len(self.current_frames) > 1
+            # Set is_animating based on number of frames and total duration
+            total_duration = sum(self.frame_durations)
+            self.is_animating = len(self.current_frames) > 1 and total_duration > 0
+            
+            # Reset animation state
+            self.current_frame = 0
+            self.animation_timer = 0
             
             # Play first frame sound if available
             if self.frame_sounds and self.frame_sounds[0]:
                 self._play_frame_sound(0)
+                
+            self.logger.debug(f"Loaded {len(self.current_frames)} frames for '{action_name}', is_animating: {self.is_animating}")
         else:
             self.logger.warning(f"No frames loaded for action '{action_name}'")
+            self.is_animating = False
     
     def _load_frame_image(self, image_name: str) -> Optional[pygame.Surface]:
         """Load frame image using SpriteLoader"""
@@ -315,7 +324,7 @@ class AnimationManager:
     
     def update_animation(self, delta_time: float):
         """Update animation with proper timing and sound"""
-        if not self.is_animating or not self.current_frames:
+        if not self.is_animating or not self.current_frames or len(self.current_frames) <= 1:
             return
         
         self.animation_timer += delta_time
@@ -329,6 +338,10 @@ class AnimationManager:
             
             # Play sound for new frame if available
             self._play_frame_sound(self.current_frame)
+            
+            # Debug logging for frame changes
+            if old_frame != self.current_frame:
+                self.logger.debug(f"Frame changed: {old_frame} -> {self.current_frame} (action: {self.current_action})")
     
     def get_current_image(self) -> Optional[pygame.Surface]:
         """Get current frame image"""
@@ -362,4 +375,16 @@ class AnimationManager:
     
     def optimize_sprite_cache(self):
         """Optimize sprite cache"""
-        self.sprite_loader.optimize_cache() 
+        self.sprite_loader.optimize_cache()
+    
+    def get_animation_info(self) -> Dict[str, Any]:
+        """Get detailed animation information for debugging"""
+        return {
+            'current_action': self.current_action,
+            'current_frame': self.current_frame,
+            'total_frames': len(self.current_frames),
+            'is_animating': self.is_animating,
+            'animation_timer': self.animation_timer,
+            'frame_durations': self.frame_durations,
+            'has_image': self.current_image is not None
+        } 
