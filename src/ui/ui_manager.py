@@ -3,7 +3,7 @@
 
 import pygame
 from typing import Dict, List, Optional
-from utils.log_manager import get_logger
+from ..utils.log_manager import get_logger
 
 class UIManager:
     """Centralized UI management system with layer-based rendering"""

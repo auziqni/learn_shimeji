@@ -4,20 +4,20 @@ import random
 import sys
 
 # Import our modular components
-from core.pet import Pet
-from core.environment import Environment
-from core.interaction import Interaction
-from ui.pet_manager import PetManager
-from ui.debug_manager import DebugManager
-from ui.control_panel import ControlPanel
-from ui.ui_manager import UIManager
+from .core.pet import Pet
+from .core.environment import Environment
+from .core.interaction import Interaction
+from .ui.pet_manager import PetManager
+from .ui.debug_manager import DebugManager
+from .ui.control_panel import ControlPanel
+from .ui.ui_manager import UIManager
 
-from utils.window_manager import WindowManager
-from utils.log_manager import get_logger
-from utils.json_parser import JSONParser
-from utils.settings_manager import SettingsManager
-from utils.performance_monitor import performance_monitor
-from utils.memory_manager import memory_manager
+from .utils.window_manager import WindowManager
+from .utils.log_manager import get_logger
+from .utils.json_parser import JSONParser
+from .utils.settings_manager import SettingsManager
+from .utils.performance_monitor import performance_monitor
+from .utils.memory_manager import memory_manager
 
 # Optional Win32 imports with fallback
 try:
@@ -99,7 +99,7 @@ class DesktopPetApp:
             self.environment = Environment(screen_width, screen_height, self.settings_manager)
             
             # Initialize control panel with screen dimensions
-            self.control_panel = ControlPanel(screen_width, screen_height)
+            self.control_panel = ControlPanel(screen_width, screen_height, self.settings_manager)
             
             # Initialize UI Manager
             self.ui_manager = UIManager(screen_width, screen_height)
@@ -277,22 +277,67 @@ class DesktopPetApp:
             if self.control_panel.visible:
                 action = self.control_panel.handle_input(event)
                 if action:
-                    self._handle_control_panel_action(action)
+                    if action == "close_panel":
+                        # Control panel was closed
+                        pass
+                    else:
+                        self._handle_control_panel_action(action)
     
     def _handle_control_panel_action(self, action):
         """Handle actions from control panel"""
-        if action == "add_pet":
-            self._add_new_pet()
-        elif action == "remove_pet":
-            self._remove_selected_pet()
-        elif action == "clear_pets":
-            self._clear_all_pets()
-        elif action == "toggle_debug":
-            self.debug_manager.toggle_debug_mode()
-        elif action == "toggle_boundaries":
-            self.debug_manager.toggle_boundaries()
-        elif action == "toggle_selection":
-            self.debug_manager.toggle_selection_box()
+        if action == "sprite_plus":
+            # Handle sprite number increase
+            current = self.settings_manager.get_setting('ui.initial_pet_count', 3)
+            new_value = min(10, current + 1)
+            self.settings_manager.set_setting('ui.initial_pet_count', new_value)
+            self.settings_manager.save_settings()
+            # Update button text in control panel
+            if 'sprite_number' in self.control_panel.ui_components:
+                self.control_panel.ui_components['sprite_number'].text = str(new_value)
+            self.logger.user_action("sprite_number_change", f"Increased to {new_value}")
+            print(f"🔢 Sprite count: {new_value}")
+        elif action == "sprite_minus":
+            # Handle sprite number decrease
+            current = self.settings_manager.get_setting('ui.initial_pet_count', 3)
+            new_value = max(1, current - 1)
+            self.settings_manager.set_setting('ui.initial_pet_count', new_value)
+            self.settings_manager.save_settings()
+            # Update button text in control panel
+            if 'sprite_number' in self.control_panel.ui_components:
+                self.control_panel.ui_components['sprite_number'].text = str(new_value)
+            self.logger.user_action("sprite_number_change", f"Decreased to {new_value}")
+            print(f"🔢 Sprite count: {new_value}")
+        elif action == "username_input":
+            # Handle TikTok username input (already handled by TextBox)
+            pass
+        elif action == "save_username":
+            # Handle TikTok username save
+            if 'username_input' in self.control_panel.ui_components:
+                username = self.control_panel.ui_components['username_input'].text
+                self.settings_manager.set_setting('tiktok.username', username)
+                self.settings_manager.save_settings()
+                self.logger.user_action("tiktok_username_save", f"Saved username: {username}")
+                print(f"💾 TikTok username saved: {username}")
+        elif action in ["floor_plus", "floor_minus", "wall_left_plus", "wall_left_minus",
+                       "wall_right_plus", "wall_right_minus", "ceiling_plus", "ceiling_minus"]:
+            # Handle boundary changes
+            boundary_map = {
+                "floor_plus": ("floor", 1), "floor_minus": ("floor", -1),
+                "wall_left_plus": ("wall_left", 1), "wall_left_minus": ("wall_left", -1),
+                "wall_right_plus": ("wall_right", 1), "wall_right_minus": ("wall_right", -1),
+                "ceiling_plus": ("ceiling", 1), "ceiling_minus": ("ceiling", -1)
+            }
+            if action in boundary_map:
+                boundary_type, delta = boundary_map[action]
+                current = self.settings_manager.get_setting(f'boundaries.{boundary_type}_margin', 10)
+                new_value = max(0, min(100, current + delta))
+                self.settings_manager.set_setting(f'boundaries.{boundary_type}_margin', new_value)
+                self.settings_manager.save_settings()
+                # Update button text in control panel
+                if f'{boundary_type}_number' in self.control_panel.ui_components:
+                    self.control_panel.ui_components[f'{boundary_type}_number'].text = str(new_value)
+                self.logger.user_action("boundary_change", f"{boundary_type}: {current} -> {new_value}")
+                print(f"🔧 {boundary_type}: {new_value}")
         else:
             self.logger.warning(f"Unknown control panel action: {action}")
     
@@ -349,8 +394,8 @@ class DesktopPetApp:
             
             self.environment.apply_physics(pet, delta_time, user_moving)
         
-        # End performance monitoring for this frame
-        performance_monitor.end_frame()
+        # End performance monitoring for this frame with pygame clock
+        performance_monitor.end_frame(self.clock)
     
     def render(self):
         """Render everything using UI Manager"""

@@ -1,6 +1,6 @@
 import pygame
-from utils.log_manager import get_logger
-from animation.animation_manager import AnimationManager
+from ..utils.log_manager import get_logger
+from ..animation.animation_manager import AnimationManager
 
 class Pet:
     """Individual pet entity - handles image and position data with animation support and text display"""

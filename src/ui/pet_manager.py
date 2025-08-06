@@ -1,6 +1,6 @@
 import pygame
-from core.pet import Pet
-from ui.sprite_name_chat import SpriteNameChat
+from ..core.pet import Pet
+from .sprite_name_chat import SpriteNameChat
 
 class PetManager:
     """Manages collection of pets with text rendering"""

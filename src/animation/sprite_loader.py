@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 from typing import Optional, Dict, List, Tuple
 from collections import OrderedDict
-from utils.log_manager import get_logger
+from ..utils.log_manager import get_logger
 
 class SpriteLoader:
     """Robust sprite cache & memory management for sprite animations"""

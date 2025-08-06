@@ -53,7 +53,7 @@ class DebugManager:
         
         # Draw performance stats if available
         try:
-            from utils.performance_monitor import performance_monitor
+            from ..utils.performance_monitor import performance_monitor
             perf_stats = performance_monitor.get_performance_stats()
             
             # Frame time
@@ -67,7 +67,7 @@ class DebugManager:
             surface.blit(cpu_surface, (10, 60))
             
             # Memory info
-            from utils.memory_manager import memory_manager
+            from ..utils.memory_manager import memory_manager
             mem_stats = memory_manager.get_memory_stats()
             mem_text = f"Mem: {mem_stats['current_memory_mb']:.1f}MB"
             mem_surface = self.font.render(mem_text, True, (200, 200, 200))

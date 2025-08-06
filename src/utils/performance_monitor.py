@@ -15,7 +15,7 @@ except ImportError:
 class PerformanceMonitor:
     """
     Minimal but effective performance monitoring
-    - FPS tracking
+    - FPS tracking using pygame clock
     - Frame time analysis
     - CPU usage monitoring
     - Performance alerts
@@ -32,14 +32,16 @@ class PerformanceMonitor:
         # FPS tracking
         self.fps_history = deque(maxlen=history_size)
         self.current_fps = 0
+        self.fps_counter = 0
+        self.fps_timer = 0
         
         # CPU monitoring
         self.cpu_usage = 0
         self.cpu_history = deque(maxlen=history_size)
         
         # Performance thresholds
-        self.fps_threshold = 30  # Alert if FPS drops below 30
-        self.frame_time_threshold = 33.33  # Alert if frame time > 33.33ms (30 FPS)
+        self.fps_threshold = 25  # Lowered threshold to reduce false warnings
+        self.frame_time_threshold = 40.0  # Increased threshold (25 FPS)
         self.cpu_threshold = 80  # Alert if CPU usage > 80%
         
         # Alerts
@@ -50,13 +52,17 @@ class PerformanceMonitor:
         self.is_monitoring = False
         self.monitor_thread = None
         
+        # Warning cooldown to prevent spam
+        self.last_warning_time = 0
+        self.warning_cooldown = 5.0  # 5 seconds between warnings
+        
         self.logger.info("Performance monitor initialized")
 
     def start_frame(self):
         """Start timing a frame"""
         self.last_frame_time = time.time()
 
-    def end_frame(self):
+    def end_frame(self, clock=None):
         """End timing a frame and record metrics"""
         current_time = time.time()
         frame_time = (current_time - self.last_frame_time) * 1000  # Convert to ms
@@ -64,20 +70,38 @@ class PerformanceMonitor:
         # Record frame time
         self.frame_times.append(frame_time)
         
-        # Calculate FPS
-        if frame_time > 0:
-            self.current_fps = 1000 / frame_time
-            self.fps_history.append(self.current_fps)
+        # Calculate FPS using pygame clock if available
+        if clock:
+            self.fps_counter += 1
+            self.fps_timer += clock.get_time()
+            
+            # Update FPS every 500ms
+            if self.fps_timer >= 500:
+                if self.fps_timer > 0:
+                    self.current_fps = int((self.fps_counter * 1000) / self.fps_timer)
+                self.fps_counter = 0
+                self.fps_timer = 0
+        else:
+            # Fallback to time-based calculation
+            if frame_time > 0:
+                self.current_fps = 1000 / frame_time
+                self.fps_history.append(self.current_fps)
         
-        # Check for performance issues
+        # Check for performance issues with cooldown
         self._check_performance_alerts(frame_time)
 
     def _check_performance_alerts(self, frame_time: float):
-        """Check for performance issues and create alerts"""
+        """Check for performance issues and create alerts with cooldown"""
+        current_time = time.time()
+        
+        # Check cooldown to prevent spam
+        if current_time - self.last_warning_time < self.warning_cooldown:
+            return
+        
         alerts = []
         
-        # FPS alert
-        if self.current_fps < self.fps_threshold:
+        # FPS alert (only if we have a valid FPS reading)
+        if self.current_fps > 0 and self.current_fps < self.fps_threshold:
             alerts.append(f"Low FPS: {self.current_fps:.1f} (threshold: {self.fps_threshold})")
         
         # Frame time alert
@@ -88,16 +112,18 @@ class PerformanceMonitor:
         if self.cpu_usage > self.cpu_threshold:
             alerts.append(f"High CPU usage: {self.cpu_usage:.1f}% (threshold: {self.cpu_threshold}%)")
         
-        # Log alerts
-        for alert in alerts:
-            self.logger.warning(f"Performance alert: {alert}")
-            self.alert_history.append({
-                'time': time.time(),
-                'message': alert,
-                'fps': self.current_fps,
-                'frame_time': frame_time,
-                'cpu': self.cpu_usage
-            })
+        # Log alerts and update cooldown
+        if alerts:
+            for alert in alerts:
+                self.logger.warning(f"Performance alert: {alert}")
+                self.alert_history.append({
+                    'time': current_time,
+                    'message': alert,
+                    'fps': self.current_fps,
+                    'frame_time': frame_time,
+                    'cpu': self.cpu_usage
+                })
+            self.last_warning_time = current_time
 
     def start_monitoring(self):
         """Start background monitoring"""
@@ -143,8 +169,8 @@ class PerformanceMonitor:
         """Get current performance statistics"""
         if not self.frame_times:
             return {
-                'fps': 0,
-                'avg_fps': 0,
+                'current_fps': 0,
+                'average_fps': 0,
                 'frame_time': 0,
                 'avg_frame_time': 0,
                 'cpu_usage': self.cpu_usage,
@@ -152,8 +178,8 @@ class PerformanceMonitor:
             }
         
         return {
-            'fps': self.current_fps,
-            'avg_fps': sum(self.fps_history) / len(self.fps_history) if self.fps_history else 0,
+            'current_fps': self.current_fps,
+            'average_fps': sum(self.fps_history) / len(self.fps_history) if self.fps_history else 0,
             'frame_time': self.frame_times[-1] if self.frame_times else 0,
             'avg_frame_time': sum(self.frame_times) / len(self.frame_times),
             'cpu_usage': self.cpu_usage,

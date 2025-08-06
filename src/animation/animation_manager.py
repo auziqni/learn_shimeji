@@ -4,7 +4,7 @@
 import pygame
 from pathlib import Path
 from typing import Optional, Dict, Any, List
-from utils.log_manager import get_logger
+from ..utils.log_manager import get_logger
 from .sprite_loader import SpriteLoader
 
 class AnimationManager:

@@ -1,5 +1,5 @@
 import pygame
-from core.pet import Pet
+from .pet import Pet
 
 class Interaction:
     """Handles all input events, movement, and pet controls"""

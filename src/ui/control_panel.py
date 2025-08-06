@@ -1,119 +1,301 @@
 import pygame
-from ui.ui_components import Button, Panel, Slider, TextBox
+from ..utils.settings_manager import SettingsManager
 
 class ControlPanel:
-    """In-game control panel for settings and management"""
+    """Control Panel with modern UI design from contohControlPanel.py"""
     
-    def __init__(self, screen_width, screen_height):
+    def __init__(self, screen_width, screen_height, settings_manager: SettingsManager):
         self.visible = False
-        self.active_tab = "pets"
-        self.tabs = ["pets", "settings", "tiktok", "logs"]
         self.screen_width = screen_width
         self.screen_height = screen_height
+        self.settings_manager = settings_manager
         
-        # Panel dimensions and position (expanded)
-        self.panel_width = 700
-        self.panel_height = 500
+        # Panel dimensions and position
+        self.panel_width = 800
+        self.panel_height = 600
         self.panel_x = (screen_width - self.panel_width) // 2
         self.panel_y = (screen_height - self.panel_height) // 2
         
-        # Create main panel using new UI components
-        self.main_panel = Panel(self.panel_x, self.panel_y, self.panel_width, self.panel_height, "Control Panel")
+        # Colors (Tailwind to RGB conversion from contohControlPanel.py)
+        self.WHITE = (255, 255, 255)
+        self.BLACK = (0, 0, 0)
+        self.BLUE_500 = (59, 130, 246)
+        self.GREEN_800 = (22, 101, 52)
+        self.YELLOW_800 = (133, 77, 14)
+        self.GRAY_300 = (209, 213, 219)
+        self.GRAY_500 = (107, 114, 128)
+        self.BORDER_COLOR = (229, 231, 235)
         
-        # Add tabs to panel
-        for tab_name in self.tabs:
-            self.main_panel.add_tab(tab_name)
+        # Fonts
+        self.font_xl = pygame.font.Font(None, 24)  # text-xl
+        self.font_lg = pygame.font.Font(None, 20)  # text-lg
+        self.font_base = pygame.font.Font(None, 16)  # base text
         
-        # Font
-        self.font = None
-        self.small_font = None
-        self._initialize_fonts()
+        # State
+        self.selected_tab = "shimeji"  # shimeji, general, tiktok
+        self.is_connected = False
         
-        # Settings (must be initialized before UI components)
-        self.settings = {
-            'volume': 70,
-            'debug_mode': True,
-            'boundaries': True,
-            'auto_save': True
-        }
+        # Shimeji state
+        self.spawn_count = self.settings_manager.get_setting('ui.initial_pet_count', 3)
         
-        # Create UI components
-        self.ui_components = {}
-        self._create_ui_components()
-    
-    def _initialize_fonts(self):
-        """Initialize fonts for the control panel"""
-        try:
-            self.font = pygame.font.Font(None, 28)  # Increased font size
-            self.small_font = pygame.font.Font(None, 20)  # Increased small font size
-        except:
-            self.font = pygame.font.SysFont('arial', 24)
-            self.small_font = pygame.font.SysFont('arial', 18)
-    
-    def _create_ui_components(self):
-        """Create UI components for the control panel"""
-        # Pets tab buttons
-        button_y = self.panel_y + 80
-        button_spacing = 120
+        # General state
+        self.floor_value = self.settings_manager.get_setting('boundaries.floor_margin', 10)
+        self.ceiling_value = self.settings_manager.get_setting('boundaries.ceiling_margin', 10)
+        self.left_wall_value = self.settings_manager.get_setting('boundaries.wall_left_margin', 10)
+        self.right_wall_value = self.settings_manager.get_setting('boundaries.wall_right_margin', 90)
         
-        # Add Pet button
-        add_pet_btn = Button(self.panel_x + 30, button_y, 120, 35, "Add Pet")
-        self.ui_components['add_pet'] = add_pet_btn
-        self.main_panel.add_button(add_pet_btn)
+        # TikTok state
+        self.username_text = self.settings_manager.get_setting('tiktok.username', '')
+        self.username_active = False
         
-        # Remove Pet button
-        remove_pet_btn = Button(self.panel_x + 30 + button_spacing, button_y, 120, 35, "Remove Pet")
-        self.ui_components['remove_pet'] = remove_pet_btn
-        self.main_panel.add_button(remove_pet_btn)
+        # UI elements
+        self.setup_ui_elements()
         
-        # Clear All button
-        clear_all_btn = Button(self.panel_x + 30 + button_spacing * 2, button_y, 120, 35, "Clear All")
-        self.ui_components['clear_all'] = clear_all_btn
-        self.main_panel.add_button(clear_all_btn)
+    def setup_ui_elements(self):
+        """Setup UI elements from contohControlPanel.py"""
+        # Panel rect
+        self.panel_rect = pygame.Rect(0, 0, self.panel_width, self.panel_height)
         
-        # Settings tab components
-        settings_y = self.panel_y + 280
+        # Tab buttons
+        tab_width = 266
+        tab_height = 40
+        tab_y = 20
         
-        # Debug Mode button
-        debug_btn = Button(self.panel_x + 30, settings_y, 140, 35, "Debug Mode")
-        self.ui_components['toggle_debug'] = debug_btn
-        self.main_panel.add_button(debug_btn)
+        self.shimeji_tab = pygame.Rect(67, tab_y, tab_width, tab_height)
+        self.general_tab = pygame.Rect(267, tab_y, tab_width, tab_height)
+        self.tiktok_tab = pygame.Rect(467, tab_y, tab_width, tab_height)
         
-        # Boundaries button
-        boundaries_btn = Button(self.panel_x + 30 + button_spacing, settings_y, 140, 35, "Boundaries")
-        self.ui_components['toggle_boundaries'] = boundaries_btn
-        self.main_panel.add_button(boundaries_btn)
+        # Button dimensions
+        self.btn_width = 40
+        self.btn_height = 40
+        self.counter_width = 120
+        self.counter_height = 40
         
-        # Volume slider
-        volume_slider = Slider(self.panel_x + 30, settings_y + 60, 200, 20, 0, 100, self.settings['volume'])
-        self.ui_components['volume_slider'] = volume_slider
-        self.main_panel.add_button(volume_slider)
+    def draw_button(self, rect, text, color, text_color, font=None, align_left=False):
+        """Draw button with styling from contohControlPanel.py"""
+        if font is None:
+            font = self.font_base
+            
+        pygame.draw.rect(self.screen, color, rect)
+        pygame.draw.rect(self.screen, self.BORDER_COLOR, rect, 2)
         
-        # TikTok tab buttons
-        tiktok_button_y = self.panel_y + 160
+        text_surface = font.render(text, True, text_color)
+        if align_left:
+            text_rect = text_surface.get_rect()
+            text_rect.centery = rect.centery
+            text_rect.x = rect.x + 10  # 10px padding from left
+        else:
+            text_rect = text_surface.get_rect(center=rect.center)
+        self.screen.blit(text_surface, text_rect)
         
-        # Connect TikTok button
-        connect_tiktok_btn = Button(self.panel_x + 30, tiktok_button_y, 140, 35, "Connect")
-        self.ui_components['connect_tiktok'] = connect_tiktok_btn
-        self.main_panel.add_button(connect_tiktok_btn)
+    def draw_counter(self, x, y, value, title):
+        """Draw counter with +/- buttons from contohControlPanel.py"""
+        # Title
+        title_surface = self.font_lg.render(title, True, self.BLACK)
+        self.screen.blit(title_surface, (x, y))
         
-        # Disconnect TikTok button
-        disconnect_tiktok_btn = Button(self.panel_x + 30 + button_spacing, tiktok_button_y, 140, 35, "Disconnect")
-        self.ui_components['disconnect_tiktok'] = disconnect_tiktok_btn
-        self.main_panel.add_button(disconnect_tiktok_btn)
-    
+        # Counter elements
+        minus_rect = pygame.Rect(x, y + 30, self.btn_width, self.btn_height)
+        counter_rect = pygame.Rect(x + self.btn_width + 5, y + 30, self.counter_width, self.counter_height)
+        plus_rect = pygame.Rect(x + self.btn_width + self.counter_width + 10, y + 30, self.btn_width, self.btn_height)
+        
+        # Draw buttons and counter
+        self.draw_button(minus_rect, "-", self.WHITE, self.BLACK)
+        self.draw_button(counter_rect, str(value), self.WHITE, self.BLACK)
+        self.draw_button(plus_rect, "+", self.WHITE, self.BLACK)
+        
+        return minus_rect, plus_rect
+        
+    def draw_tabs(self):
+        """Draw tabs from contohControlPanel.py"""
+        # Tab buttons
+        tabs = [
+            (self.shimeji_tab, "shimeji"),
+            (self.general_tab, "general"), 
+            (self.tiktok_tab, "tiktok")
+        ]
+        
+        for rect, tab_name in tabs:
+            if self.selected_tab == tab_name:
+                color = self.BLUE_500
+                text_color = self.WHITE
+            else:
+                color = self.WHITE
+                text_color = self.BLACK
+                
+            self.draw_button(rect, tab_name, color, text_color, self.font_base, align_left=True)
+            
+        # Tab separator line
+        pygame.draw.line(self.screen, self.BORDER_COLOR, (20, 80), (780, 80), 2)
+        
+    def draw_shimeji_content(self):
+        """Draw shimeji tab content from contohControlPanel.py"""
+        # Initial Spawn section
+        title_surface = self.font_xl.render("Initial Spawn", True, self.BLACK)
+        self.screen.blit(title_surface, (30, 100))
+        
+        # Counter
+        self.shimeji_minus, self.shimeji_plus = self.draw_counter(30, 130, self.spawn_count, "spawn")
+        
+        # Section separator (moved down)
+        pygame.draw.line(self.screen, self.GRAY_300, (30, 210), (770, 210), 1)
+        
+    def draw_general_content(self):
+        """Draw general tab content from contohControlPanel.py"""
+        # Boundaries section
+        title_surface = self.font_xl.render("Boundaries", True, self.BLACK)
+        self.screen.blit(title_surface, (30, 100))
+        
+        # Floor and Ceiling
+        self.floor_minus, self.floor_plus = self.draw_counter(30, 130, self.floor_value, "Floor")
+        self.ceiling_minus, self.ceiling_plus = self.draw_counter(250, 130, self.ceiling_value, "Ceiling")
+        
+        # Gap between floor-ceiling and walls sections (added 20px gap)
+        # Left Wall and Right Wall  
+        self.left_wall_minus, self.left_wall_plus = self.draw_counter(30, 220, self.left_wall_value, "Left Wall")
+        self.right_wall_minus, self.right_wall_plus = self.draw_counter(250, 220, self.right_wall_value, "Right Wall")
+        
+        # Section separator (moved down)
+        pygame.draw.line(self.screen, self.GRAY_300, (30, 300), (770, 300), 1)
+        
+    def draw_tiktok_content(self):
+        """Draw tiktok tab content from contohControlPanel.py"""
+        # Username section
+        title_surface = self.font_xl.render("Username:", True, self.BLACK)
+        self.screen.blit(title_surface, (30, 100))
+        
+        # Input field
+        self.username_rect = pygame.Rect(30, 140, 300, 40)
+        input_color = self.WHITE
+        if self.username_active:
+            pygame.draw.rect(self.screen, input_color, self.username_rect)
+            pygame.draw.rect(self.screen, self.BLUE_500, self.username_rect, 2)
+        else:
+            pygame.draw.rect(self.screen, input_color, self.username_rect)
+            pygame.draw.rect(self.screen, self.BORDER_COLOR, self.username_rect, 2)
+            
+        # Username text
+        if self.username_text:
+            text_surface = self.font_base.render(self.username_text, True, self.BLACK)
+        else:
+            text_surface = self.font_base.render("Masukkan username TikTok", True, self.GRAY_500)
+        
+        text_rect = text_surface.get_rect()
+        text_rect.centery = self.username_rect.centery
+        text_rect.x = self.username_rect.x + 10
+        self.screen.blit(text_surface, text_rect)
+        
+        # Input info
+        info_surface = self.font_base.render("input tanpa @", True, self.GRAY_500)
+        self.screen.blit(info_surface, (30, 185))
+        
+        # Connect button
+        self.connect_rect = pygame.Rect(350, 140, 120, 40)
+        if self.is_connected:
+            color = self.GREEN_800
+            text = "Connected"
+        else:
+            color = self.YELLOW_800
+            text = "Connect"
+            
+        self.draw_button(self.connect_rect, text, color, self.WHITE)
+        
+        # Section separator
+        pygame.draw.line(self.screen, self.GRAY_300, (30, 220), (770, 220), 1)
+        
+    def handle_click(self, pos):
+        """Handle mouse clicks from contohControlPanel.py"""
+        # Tab clicks
+        if self.shimeji_tab.collidepoint(pos):
+            self.selected_tab = "shimeji"
+        elif self.general_tab.collidepoint(pos):
+            self.selected_tab = "general"
+        elif self.tiktok_tab.collidepoint(pos):
+            self.selected_tab = "tiktok"
+            
+        # Content clicks based on selected tab
+        if self.selected_tab == "shimeji":
+            if hasattr(self, 'shimeji_minus') and self.shimeji_minus.collidepoint(pos):
+                self.spawn_count = max(0, self.spawn_count - 1)
+                self.settings_manager.set_setting('ui.initial_pet_count', self.spawn_count)
+                self.settings_manager.save_settings()
+            elif hasattr(self, 'shimeji_plus') and self.shimeji_plus.collidepoint(pos):
+                self.spawn_count += 1
+                self.settings_manager.set_setting('ui.initial_pet_count', self.spawn_count)
+                self.settings_manager.save_settings()
+                
+        elif self.selected_tab == "general":
+            # Floor controls
+            if hasattr(self, 'floor_minus') and self.floor_minus.collidepoint(pos):
+                self.floor_value = max(0, self.floor_value - 1)
+                self.settings_manager.set_setting('boundaries.floor_margin', self.floor_value)
+                self.settings_manager.save_settings()
+            elif hasattr(self, 'floor_plus') and self.floor_plus.collidepoint(pos):
+                self.floor_value += 1
+                self.settings_manager.set_setting('boundaries.floor_margin', self.floor_value)
+                self.settings_manager.save_settings()
+                
+            # Ceiling controls
+            if hasattr(self, 'ceiling_minus') and self.ceiling_minus.collidepoint(pos):
+                self.ceiling_value = max(0, self.ceiling_value - 1)
+                self.settings_manager.set_setting('boundaries.ceiling_margin', self.ceiling_value)
+                self.settings_manager.save_settings()
+            elif hasattr(self, 'ceiling_plus') and self.ceiling_plus.collidepoint(pos):
+                self.ceiling_value += 1
+                self.settings_manager.set_setting('boundaries.ceiling_margin', self.ceiling_value)
+                self.settings_manager.save_settings()
+                
+            # Left wall controls
+            if hasattr(self, 'left_wall_minus') and self.left_wall_minus.collidepoint(pos):
+                self.left_wall_value = max(0, self.left_wall_value - 1)
+                self.settings_manager.set_setting('boundaries.wall_left_margin', self.left_wall_value)
+                self.settings_manager.save_settings()
+            elif hasattr(self, 'left_wall_plus') and self.left_wall_plus.collidepoint(pos):
+                self.left_wall_value += 1
+                self.settings_manager.set_setting('boundaries.wall_left_margin', self.left_wall_value)
+                self.settings_manager.save_settings()
+                
+            # Right wall controls
+            if hasattr(self, 'right_wall_minus') and self.right_wall_minus.collidepoint(pos):
+                self.right_wall_value = max(0, self.right_wall_value - 1)
+                self.settings_manager.set_setting('boundaries.wall_right_margin', self.right_wall_value)
+                self.settings_manager.save_settings()
+            elif hasattr(self, 'right_wall_plus') and self.right_wall_plus.collidepoint(pos):
+                self.right_wall_value += 1
+                self.settings_manager.set_setting('boundaries.wall_right_margin', self.right_wall_value)
+                self.settings_manager.save_settings()
+                
+        elif self.selected_tab == "tiktok":
+            # Username input
+            if hasattr(self, 'username_rect') and self.username_rect.collidepoint(pos):
+                self.username_active = True
+            else:
+                self.username_active = False
+                
+            # Connect button
+            if hasattr(self, 'connect_rect') and self.connect_rect.collidepoint(pos):
+                self.is_connected = not self.is_connected
+                if self.username_text:
+                    self.settings_manager.set_setting('tiktok.username', self.username_text)
+                    self.settings_manager.save_settings()
+                    
+    def handle_keydown(self, event):
+        """Handle keyboard input from contohControlPanel.py"""
+        if self.selected_tab == "tiktok" and self.username_active:
+            if event.key == pygame.K_BACKSPACE:
+                self.username_text = self.username_text[:-1]
+            else:
+                # Only allow alphanumeric and some special characters
+                if event.unicode.isprintable() and len(self.username_text) < 30:
+                    self.username_text += event.unicode
+                    
     def toggle_visibility(self):
         """Toggle control panel visibility"""
         self.visible = not self.visible
         return self.visible
     
-    def switch_tab(self, tab_name):
-        """Switch to different tab"""
-        if tab_name in self.tabs:
-            self.active_tab = tab_name
-    
     def handle_mouse_click(self, pos):
-        """Handle mouse clicks on the control panel"""
+        """Handle mouse clicks for the control panel"""
         if not self.visible:
             return None
         
@@ -121,202 +303,56 @@ class ControlPanel:
         if not self._is_point_in_panel(pos):
             return None
         
-        # Check tab clicks
-        if self._handle_tab_click(pos):
-            return None
+        # Convert global coordinates to panel-relative coordinates
+        panel_pos = (pos[0] - self.panel_x, pos[1] - self.panel_y)
         
-        # Check button clicks
-        return self._handle_button_click(pos)
+        # Handle the click with panel-relative coordinates
+        self.handle_click(panel_pos)
+        return None
     
     def _is_point_in_panel(self, pos):
         """Check if point is within panel bounds"""
         return (self.panel_x <= pos[0] <= self.panel_x + self.panel_width and
                 self.panel_y <= pos[1] <= self.panel_y + self.panel_height)
     
-    def _handle_tab_click(self, pos):
-        """Handle tab clicks"""
-        if pos[1] < self.panel_y + self.tab_height:
-            tab_x = pos[0] - self.panel_x
-            tab_index = int(tab_x // self.tab_width)
-            if 0 <= tab_index < len(self.tabs):
-                self.active_tab = self.tabs[tab_index]
-                return True
-        return False
-    
-    def _handle_button_click(self, pos):
-        """Handle button clicks"""
-        for button_id, component in self.ui_components.items():
-            if hasattr(component, 'rect') and component.rect.collidepoint(pos):
-                return button_id
+    def handle_input(self, event):
+        """Handle input events for the control panel"""
+        if not self.visible:
+            return None
+            
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            return self.handle_mouse_click(event.pos)
+        elif event.type == pygame.KEYDOWN:
+            self.handle_keydown(event)
+            if event.key == pygame.K_ESCAPE:
+                self.visible = False
+                return "close_panel"
+        
         return None
     
     def render(self, surface):
-        """Render control panel using new UI components"""
+        """Render control panel with modern design from contohControlPanel.py"""
         if not self.visible:
             return
         
-        # Draw semi-transparent overlay
-        overlay = pygame.Surface((self.screen_width, self.screen_height))
-        overlay.set_alpha(128)
-        overlay.fill((0, 0, 0))
-        surface.blit(overlay, (0, 0))
+        # Create a temporary surface for the panel
+        self.screen = pygame.Surface((self.panel_width, self.panel_height))
+        self.screen.fill(self.WHITE)
         
-        # Render main panel using new UI components
-        self.main_panel.render(surface)
+        # Draw panel border
+        pygame.draw.rect(self.screen, self.WHITE, self.panel_rect)
+        pygame.draw.rect(self.screen, self.BORDER_COLOR, self.panel_rect, 2)
         
-        # Draw additional content based on active tab
-        self._draw_tab_content(surface)
-    
-    def _draw_tabs(self, surface):
-        """Draw tab buttons"""
-        for i, tab_name in enumerate(self.tabs):
-            tab_x = self.panel_x + (i * self.tab_width)
-            tab_rect = pygame.Rect(tab_x, self.panel_y, self.tab_width, self.tab_height)
-            
-            # Choose color based on active state
-            color = self.tab_active if tab_name == self.active_tab else self.tab_bg
-            pygame.draw.rect(surface, color, tab_rect)
-            pygame.draw.rect(surface, (255, 255, 255), tab_rect, 1)
-            
-            # Draw tab text
-            if self.font:
-                text_surface = self.font.render(tab_name.title(), True, self.text_color)
-                text_rect = text_surface.get_rect(center=tab_rect.center)
-                surface.blit(text_surface, text_rect)
-    
-    def _draw_tab_content(self, surface):
-        """Draw content for the active tab with better spacing"""
-        content_y = self.panel_y + self.tab_height + 20  # Increased top margin
+        # Draw tabs
+        self.draw_tabs()
         
-        if self.active_tab == "pets":
-            self._draw_pets_tab(surface, content_y)
-        elif self.active_tab == "settings":
-            self._draw_settings_tab(surface, content_y)
-        elif self.active_tab == "tiktok":
-            self._draw_tiktok_tab(surface, content_y)
-        elif self.active_tab == "logs":
-            self._draw_logs_tab(surface, content_y)
-    
-    def _draw_pets_tab(self, surface, start_y):
-        """Draw pets tab content with better spacing"""
-        if not self.font:
-            return
+        # Draw content based on selected tab
+        if self.selected_tab == "shimeji":
+            self.draw_shimeji_content()
+        elif self.selected_tab == "general":
+            self.draw_general_content()
+        elif self.selected_tab == "tiktok":
+            self.draw_tiktok_content()
         
-        # Title with better spacing
-        title = self.font.render("Pet Management", True, self.text_color)
-        surface.blit(title, (self.panel_x + 30, start_y))
-        
-        # Pet count info with better spacing
-        if self.small_font:
-            pet_info = f"Current Pets: {len(self.ui_components)} available actions"
-            info_surface = self.small_font.render(pet_info, True, (200, 200, 200))
-            surface.blit(info_surface, (self.panel_x + 30, start_y + 40))
-        
-        # Draw buttons for pets tab
-        for button_id, component in self.ui_components.items():
-            if hasattr(component, 'render'):
-                component.render(surface)
-    
-    def _draw_settings_tab(self, surface, start_y):
-        """Draw settings tab content with better spacing"""
-        if not self.font:
-            return
-        
-        # Title with better spacing
-        title = self.font.render("Settings", True, self.text_color)
-        surface.blit(title, (self.panel_x + 30, start_y))
-        
-        # Settings info with better spacing - limited to avoid button collision
-        if self.small_font:
-            y_offset = start_y + 60  # Increased spacing from title
-            settings_to_show = list(self.settings.items())[:3]  # Only show first 3 settings to avoid collision
-            
-            for setting, value in settings_to_show:
-                text = f"{setting.replace('_', ' ').title()}: {value}"
-                text_surface = self.small_font.render(text, True, self.text_color)
-                surface.blit(text_surface, (self.panel_x + 30, y_offset))
-                y_offset += 40  # Increased line spacing to 40px
-            
-            # Add a separator line
-            separator_y = y_offset + 20
-            pygame.draw.line(surface, (100, 100, 100), 
-                           (self.panel_x + 30, separator_y), 
-                           (self.panel_x + self.panel_width - 30, separator_y), 2)
-            
-            # Add note about button position
-            note_text = "Use buttons below to control settings"
-            note_surface = self.small_font.render(note_text, True, (150, 150, 150))
-            surface.blit(note_surface, (self.panel_x + 30, separator_y + 20))
-        
-        # Draw buttons for settings tab
-        for button_id, component in self.ui_components.items():
-            if hasattr(component, 'render'):
-                component.render(surface)
-    
-    def _draw_tiktok_tab(self, surface, start_y):
-        """Draw TikTok tab content with better spacing"""
-        if not self.font:
-            return
-        
-        # Title with better spacing
-        title = self.font.render("TikTok Integration", True, self.text_color)
-        surface.blit(title, (self.panel_x + 30, start_y))
-        
-        # Status info with better spacing
-        if self.small_font:
-            status_text = "Status: Not Connected"
-            status_surface = self.small_font.render(status_text, True, (255, 100, 100))
-            surface.blit(status_surface, (self.panel_x + 30, start_y + 60))
-            
-            # Additional info with better spacing
-            info_text = "Connect to TikTok Live for real-time interaction"
-            info_surface = self.small_font.render(info_text, True, (200, 200, 200))
-            surface.blit(info_surface, (self.panel_x + 30, start_y + 95))
-        
-        # Draw buttons for TikTok tab
-        for button_id, component in self.ui_components.items():
-            if hasattr(component, 'render'):
-                component.render(surface)
-    
-    def _draw_logs_tab(self, surface, start_y):
-        """Draw logs tab content with better spacing"""
-        if not self.font:
-            return
-        
-        # Title with better spacing
-        title = self.font.render("System Logs", True, self.text_color)
-        surface.blit(title, (self.panel_x + 30, start_y))
-        
-        # Sample log entries with better spacing
-        if self.small_font:
-            logs = [
-                "System initialized successfully",
-                "Loaded 3 pets",
-                "Debug mode enabled",
-                "Window transparency applied",
-                "Control panel ready",
-                "Asset loading completed"
-            ]
-            
-            y_offset = start_y + 60  # Increased spacing from title
-            for log in logs:
-                text_surface = self.small_font.render(log, True, self.text_color)
-                surface.blit(text_surface, (self.panel_x + 30, y_offset))
-                y_offset += 30  # Increased line spacing
-    
-    def _draw_button(self, surface, button):
-        """Draw a button with better styling"""
-        color = self.button_color
-        pygame.draw.rect(surface, color, button['rect'])
-        pygame.draw.rect(surface, (255, 255, 255), button['rect'], 1)
-        
-        if self.small_font:
-            text_surface = self.small_font.render(button['text'], True, self.text_color)
-            text_rect = text_surface.get_rect(center=button['rect'].center)
-            surface.blit(text_surface, text_rect)
-    
-    def handle_input(self, event):
-        """Handle control panel input"""
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            return self.handle_mouse_click(event.pos)
-        return None 
+        # Blit the panel surface to the main surface
+        surface.blit(self.screen, (self.panel_x, self.panel_y)) 

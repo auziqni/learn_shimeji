@@ -56,7 +56,11 @@ class SettingsManager:
                 "default_margin": 0.1,
                 "safe_spawn_margin": 50,
                 "wall_thickness": 10,
-                "floor_thickness": 10
+                "floor_thickness": 10,
+                "floor_margin": 10,
+                "wall_left_margin": 10,
+                "wall_right_margin": 90,
+                "ceiling_margin": 10
             },
             
             "ui": {
@@ -204,6 +208,14 @@ class SettingsManager:
                 "alert_history_size": 50,
                 "monitoring_interval": 30,
                 "memory_check_interval": 30
+            },
+            
+            "tiktok": {
+                "username": "",
+                "enabled": False,
+                "auto_connect": False,
+                "connection_timeout": 30,
+                "reconnect_interval": 60
             }
         }
     

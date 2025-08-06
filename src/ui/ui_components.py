@@ -3,7 +3,7 @@
 
 import pygame
 from typing import Optional, Callable, Tuple, Dict, Any
-from utils.log_manager import get_logger
+from ..utils.log_manager import get_logger
 
 class UIComponent:
     """Base class for UI components with common functionality"""
@@ -307,6 +307,9 @@ class Panel(UIComponent):
             'background_color': (40, 40, 40),    # Dark gray
             'border_color': (100, 100, 100),
             'title_color': (255, 255, 255),
+            'text_color': (255, 255, 255),       # Add missing text_color
+            'slider_color': (100, 149, 237),     # Add missing slider_color
+            'border_width': 1,                    # Add missing border_width
             'corner_radius': 5
         })
         
@@ -416,7 +419,7 @@ class TextBox(UIComponent):
         pygame.draw.rect(surface, self.style['background_color'], self.rect)
         
         # Draw border
-        border_color = self.style['slider_color'] if self.focused else self.style['border_color']
+        border_color = self.style['text_color'] if self.focused else self.style['border_color']
         pygame.draw.rect(surface, border_color, self.rect, 2)
         
         # Draw text
@@ -441,17 +444,16 @@ class TextBox(UIComponent):
     
     def _render_cursor(self, surface):
         """Render text cursor"""
-        if not self.text:
-            return
-        
         try:
             font = pygame.font.Font(None, 20)
             text_before_cursor = self.text[:self.cursor_pos]
             text_surface = font.render(text_before_cursor, True, self.style['text_color'])
             cursor_x = self.x + 5 + text_surface.get_width()
             
+            # Make cursor more visible
+            cursor_height = self.height - 10
             pygame.draw.line(surface, self.style['cursor_color'], 
-                           (cursor_x, self.y + 5), (cursor_x, self.y + self.height - 5), 2)
+                           (cursor_x, self.y + 5), (cursor_x, self.y + cursor_height), 2)
         except Exception as e:
             self.logger.warning(f"Failed to render cursor: {e}")
     
@@ -463,12 +465,15 @@ class TextBox(UIComponent):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.rect.collidepoint(event.pos):
                 self.focused = True
+                print(f"🎯 TextBox focused: {self.focused}")
                 return True
             else:
                 self.focused = False
+                print(f"🎯 TextBox unfocused: {self.focused}")
                 return False
         
         elif event.type == pygame.KEYDOWN and self.focused:
+            print(f"⌨️ TextBox handling key: {event.key}, unicode: '{event.unicode}'")
             return self._handle_key_down(event)
         
         return False
@@ -479,28 +484,45 @@ class TextBox(UIComponent):
             if self.cursor_pos > 0:
                 self.text = self.text[:self.cursor_pos-1] + self.text[self.cursor_pos:]
                 self.cursor_pos -= 1
+                print(f"⌨️ Backspace: text='{self.text}', cursor={self.cursor_pos}")
             return True
         
         elif event.key == pygame.K_DELETE:
             if self.cursor_pos < len(self.text):
                 self.text = self.text[:self.cursor_pos] + self.text[self.cursor_pos+1:]
+                print(f"⌨️ Delete: text='{self.text}', cursor={self.cursor_pos}")
             return True
         
         elif event.key == pygame.K_LEFT:
             self.cursor_pos = max(0, self.cursor_pos - 1)
+            print(f"⌨️ Left arrow: cursor={self.cursor_pos}")
             return True
         
         elif event.key == pygame.K_RIGHT:
             self.cursor_pos = min(len(self.text), self.cursor_pos + 1)
+            print(f"⌨️ Right arrow: cursor={self.cursor_pos}")
             return True
         
         elif event.key == pygame.K_RETURN:
             self.focused = False
+            print(f"⌨️ Enter: unfocused")
             return True
         
-        elif event.unicode.isprintable():
+        elif event.key == pygame.K_TAB:
+            # Allow tab to pass through
+            return False
+        
+        elif event.key == pygame.K_ESCAPE:
+            self.focused = False
+            print(f"⌨️ Escape: unfocused")
+            return True
+        
+        # Handle printable characters - improved check
+        elif hasattr(event, 'unicode') and event.unicode and event.unicode.isprintable():
+            # Insert character at cursor position
             self.text = self.text[:self.cursor_pos] + event.unicode + self.text[self.cursor_pos:]
             self.cursor_pos += 1
+            print(f"⌨️ Character '{event.unicode}': text='{self.text}', cursor={self.cursor_pos}")
             return True
         
         return False 
