@@ -78,7 +78,7 @@ class Pet:
         if not self.image:
             return pygame.Rect(self.x, self.y, 0, 0)
         
-        # Get draw position based on anchor point
+        # Use draw position for visual elements
         draw_x, draw_y = self.get_draw_position()
         return pygame.Rect(draw_x, draw_y, self.image.get_width(), self.image.get_height())
     
@@ -213,7 +213,7 @@ class Pet:
         return self.image
     
     def get_draw_position(self) -> Tuple[int, int]:
-        """Get correct draw position based on anchor point and direction"""
+        """Get correct draw position with proper anchor point handling"""
         if not self.image:
             return (self.x, self.y)
         
@@ -223,7 +223,7 @@ class Pet:
             # Default anchor at center bottom
             anchor = (self.image.get_width() // 2, self.image.get_height())
         
-        # Calculate base draw position
+        # Calculate draw position based on anchor point
         draw_x = self.x - anchor[0]
         draw_y = self.y - anchor[1]
         
@@ -234,6 +234,9 @@ class Pet:
             frame_width = self.image.get_width()
             draw_x = self.x - (frame_width - anchor[0])
         
+        # for offset
+        draw_x = draw_x + 64
+        draw_y = draw_y + 128
         return (draw_x, draw_y)
     
     def get_frame_size(self) -> Tuple[int, int]:
@@ -262,7 +265,7 @@ class Pet:
         arrow_size = 8
         arrow_color = (255, 255, 0)  # Yellow
         
-        # Get draw position based on anchor point
+        # Use draw position for visual elements
         draw_x, draw_y = self.get_draw_position()
         frame_w, frame_h = self.get_frame_size()
         
