@@ -277,6 +277,29 @@ class Environment:
         
         return {'collision': False}
     
+    def draw(self, surface):
+        """Draw all pets with anchor-based positioning"""
+        for pet in self.pets:
+            if pet.image:
+                # Get correct draw position based on anchor point
+                draw_x, draw_y = pet.get_draw_position()
+                
+                # Draw the pet at calculated position
+                surface.blit(pet.image, (draw_x, draw_y))
+                
+                # Debug: Draw anchor point indicator
+                if self.debug_mode:
+                    anchor = pet.animation_manager.get_current_anchor()
+                    if anchor:
+                        # Draw anchor point as small red circle
+                        pygame.draw.circle(surface, (255, 0, 0), 
+                                        (pet.x, pet.y), 3)
+                        
+                        # Draw frame size rectangle
+                        frame_w, frame_h = pet.get_frame_size()
+                        pygame.draw.rect(surface, (0, 255, 0), 
+                                       (draw_x, draw_y, frame_w, frame_h), 1)
+    
     def draw_boundaries(self, surface):
         """Draw boundary lines"""
         # Get boundary colors from settings

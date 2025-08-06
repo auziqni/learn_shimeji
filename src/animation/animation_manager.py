@@ -3,7 +3,7 @@
 
 import pygame
 from pathlib import Path
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, Tuple
 from ..utils.log_manager import get_logger
 from .sprite_loader import SpriteLoader
 
@@ -347,11 +347,34 @@ class AnimationManager:
         """Get current frame image"""
         return self.current_image
     
-    def get_current_anchor(self) -> Optional[tuple]:
+    def get_current_anchor(self) -> Optional[Tuple[int, int]]:
         """Get current frame's anchor point"""
-        if self.frame_anchors and self.current_frame < len(self.frame_anchors):
-            return self.frame_anchors[self.current_frame]
-        return None
+        if not self.frame_anchors or self.current_frame >= len(self.frame_anchors):
+            return None
+        return self.frame_anchors[self.current_frame]
+    
+    def get_draw_position(self, base_x: int, base_y: int) -> Tuple[int, int]:
+        """Calculate correct draw position based on anchor point"""
+        if not self.current_image:
+            return (base_x, base_y)
+        
+        # Get current frame's anchor point
+        anchor = self.get_current_anchor()
+        if not anchor:
+            # Default anchor at center bottom
+            anchor = (self.current_image.get_width() // 2, self.current_image.get_height())
+        
+        # Calculate draw position
+        draw_x = base_x - anchor[0]
+        draw_y = base_y - anchor[1]
+        
+        return (draw_x, draw_y)
+    
+    def get_frame_size(self) -> Tuple[int, int]:
+        """Get current frame size"""
+        if not self.current_image:
+            return (0, 0)
+        return (self.current_image.get_width(), self.current_image.get_height())
     
     def get_current_action(self) -> str:
         """Get current action name"""

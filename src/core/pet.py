@@ -1,7 +1,7 @@
 import pygame
 from ..utils.log_manager import get_logger
 from ..animation.animation_manager import AnimationManager
-from typing import Dict, Any
+from typing import Dict, Any, Tuple
 
 class Pet:
     """Individual pet entity - handles image and position data with animation support and text display"""
@@ -74,8 +74,13 @@ class Pet:
         self.logger.debug(f"Pet size: {self.width}x{self.height}")
     
     def get_rect(self):
-        """Get pygame rect for collision detection"""
-        return pygame.Rect(self.x, self.y, self.width, self.height)
+        """Get pet's rectangle for collision detection and selection"""
+        if not self.image:
+            return pygame.Rect(self.x, self.y, 0, 0)
+        
+        # Get draw position based on anchor point
+        draw_x, draw_y = self.get_draw_position()
+        return pygame.Rect(draw_x, draw_y, self.image.get_width(), self.image.get_height())
     
     def set_position(self, x, y):
         """Set pet position"""
@@ -207,13 +212,46 @@ class Pet:
                 return self.image
         return self.image
     
-    def get_draw_position(self) -> tuple:
-        """Get the correct drawing position - simple top-left positioning"""
+    def get_draw_position(self) -> Tuple[int, int]:
+        """Get correct draw position based on anchor point and direction"""
         if not self.image:
             return (self.x, self.y)
         
-        # Simple top-left positioning without anchor point
-        return (self.x, self.y)
+        # Get current frame's anchor point
+        anchor = self.animation_manager.get_current_anchor()
+        if not anchor:
+            # Default anchor at center bottom
+            anchor = (self.image.get_width() // 2, self.image.get_height())
+        
+        # Calculate base draw position
+        draw_x = self.x - anchor[0]
+        draw_y = self.y - anchor[1]
+        
+        # Adjust for direction
+        if self.direction == "right":
+            # When facing right, anchor should be at the left side of the sprite
+            # So we need to adjust the draw position
+            frame_width = self.image.get_width()
+            draw_x = self.x - (frame_width - anchor[0])
+        
+        return (draw_x, draw_y)
+    
+    def get_frame_size(self) -> Tuple[int, int]:
+        """Get current frame size"""
+        return self.animation_manager.get_frame_size()
+    
+    def get_anchor_info(self) -> Dict[str, Any]:
+        """Get anchor information for debugging"""
+        anchor = self.animation_manager.get_current_anchor()
+        frame_size = self.get_frame_size()
+        draw_pos = self.get_draw_position()
+        
+        return {
+            'anchor': anchor,
+            'frame_size': frame_size,
+            'draw_position': draw_pos,
+            'base_position': (self.x, self.y)
+        }
     
     def draw_arrow_indicator(self, surface, debug_mode=False):
         """Draw direction arrow indicator"""
@@ -224,11 +262,15 @@ class Pet:
         arrow_size = 8
         arrow_color = (255, 255, 0)  # Yellow
         
-        # Calculate arrow position (top corner of sprite)
+        # Get draw position based on anchor point
+        draw_x, draw_y = self.get_draw_position()
+        frame_w, frame_h = self.get_frame_size()
+        
+        # Calculate arrow position relative to frame
         if self.direction == "right":
             # Arrow on right side pointing right
-            arrow_x = self.x + self.width - arrow_size - 2
-            arrow_y = self.y + 2
+            arrow_x = draw_x + frame_w - arrow_size - 2
+            arrow_y = draw_y + 2
             # Create right-pointing arrow
             arrow_points = [
                 (arrow_x, arrow_y + arrow_size//2),
@@ -238,8 +280,8 @@ class Pet:
             ]
         else:
             # Arrow on left side pointing left
-            arrow_x = self.x + 2
-            arrow_y = self.y + 2
+            arrow_x = draw_x + 2
+            arrow_y = draw_y + 2
             # Create left-pointing arrow
             arrow_points = [
                 (arrow_x + arrow_size, arrow_y + arrow_size//2),
