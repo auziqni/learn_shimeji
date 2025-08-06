@@ -106,8 +106,10 @@ class Environment:
         pet.set_position(x, y)
     
     def get_safe_spawn_position(self, pet_width, pet_height):
-        """Get random position within boundaries"""
+        """Get random position within boundaries - simple positioning"""
         safe_spawn_margin = self.settings_manager.get_setting('boundaries.safe_spawn_margin', 50) if self.settings_manager else 50
+        
+        # Simple positioning without anchor point consideration
         x = random.randint(
             self.boundaries['left_wall'] + safe_spawn_margin,
             max(self.boundaries['left_wall'] + safe_spawn_margin + 1, 
@@ -118,6 +120,7 @@ class Environment:
             max(self.boundaries['ceiling'] + safe_spawn_margin + 1, 
                 self.boundaries['floor'] - pet_height - safe_spawn_margin)
         )
+        
         return (x, y)
     
     def _detect_taskbar_height(self):

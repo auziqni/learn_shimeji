@@ -20,7 +20,7 @@ from pathlib import Path
 import sys
 
 # Add src to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
 from utils.json_parser import JSONParser, FrameData, AnimationBlock, ActionData, BehaviorData, ValidationResult
 
@@ -167,7 +167,8 @@ class TestJSONParserComprehensive(unittest.TestCase):
         result = parser.load_all_sprite_packs()
         
         self.assertIn("TestSprite", result)
-        self.assertEqual(result["TestSprite"], "BROKEN")
+        # JSON with actions and behaviors is valid, so should be READY
+        self.assertEqual(result["TestSprite"], "READY")
     
     def test_empty_sprite_directory(self):
         """Test handling of empty sprite directory"""

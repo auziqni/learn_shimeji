@@ -130,7 +130,9 @@ class SpriteLoader:
             anim_block = action_data.animation_blocks[0]
             
             for frame in anim_block.frames:
-                image_path = sprite_path / frame.image
+                # Remove leading slash from image path
+                image_name = frame.image.lstrip('/')
+                image_path = sprite_path / image_name
                 if image_path.exists():
                     sprite = self.load_sprite(str(image_path))
                     if sprite is not None:

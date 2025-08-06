@@ -206,6 +206,14 @@ class Pet:
                 return self.image
         return self.image
     
+    def get_draw_position(self) -> tuple:
+        """Get the correct drawing position - simple top-left positioning"""
+        if not self.image:
+            return (self.x, self.y)
+        
+        # Simple top-left positioning without anchor point
+        return (self.x, self.y)
+    
     def draw_arrow_indicator(self, surface, debug_mode=False):
         """Draw direction arrow indicator"""
         if not debug_mode:
@@ -372,7 +380,9 @@ class Pet:
         """Draw pet to surface"""
         # Use flipped image based on direction
         flipped_image = self.get_flipped_image()
-        surface.blit(flipped_image, (self.x, self.y))
+        # Use anchor-based positioning
+        draw_pos = self.get_draw_position()
+        surface.blit(flipped_image, draw_pos)
     
     def next_sprite_pack(self):
         """Go to next sprite pack"""

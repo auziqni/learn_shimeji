@@ -21,6 +21,7 @@ class FrameData:
     image: str
     duration: float  # in seconds
     velocity: tuple = (0, 0)  # (x, y) velocity
+    image_anchor: Optional[tuple] = None  # (x, y) anchor point
     sound: Optional[str] = None
     volume: Optional[int] = None
 
@@ -178,10 +179,42 @@ class XML2JSONConverter:
             tree = ET.parse(xml_path)
             root = tree.getroot()
             
-            # Handle namespaces
-            namespace = {'ns': root.tag.split('}')[0].strip('{')} if '}' in root.tag else {}
+            # Handle namespaces - the XML uses default namespace
+            # Extract namespace from root element
+            if '}' in root.tag:
+                namespace_uri = root.tag.split('}')[0].strip('{')
+                namespace = {'ns': namespace_uri}
+            else:
+                # No namespace found, use empty dict
+                namespace = {}
             
-            for action_elem in root.findall('.//ns:action', namespace):
+            if self.debug_mode:
+                print(f"🔍 Parsing XML with namespace: {namespace}")
+            
+            # Find all Action elements - try both with and without namespace
+            action_elements = []
+            
+            # Try with namespace first
+            if namespace:
+                action_elements = root.findall('.//ns:Action', namespace)
+                if self.debug_mode:
+                    print(f"🔍 Found {len(action_elements)} actions with namespace")
+            
+            # If no actions found with namespace, try without namespace
+            if not action_elements:
+                action_elements = root.findall('.//Action')
+                if self.debug_mode:
+                    print(f"🔍 Found {len(action_elements)} actions without namespace")
+            
+            # If still no actions, try with default namespace handling
+            if not action_elements:
+                # Register the namespace with ElementTree
+                ET.register_namespace('', namespace.get('ns', ''))
+                action_elements = root.findall('.//Action')
+                if self.debug_mode:
+                    print(f"🔍 Found {len(action_elements)} actions with registered namespace")
+            
+            for action_elem in action_elements:
                 action = self._parse_action_element(action_elem, sprite_path, namespace)
                 if action:
                     actions[action.name] = action
@@ -209,38 +242,69 @@ class XML2JSONConverter:
             ActionData or None if parsing failed
         """
         try:
-            # Get basic action info
-            name = action_elem.get('name', '')
-            action_type = action_elem.get('type', '')
+            # Get basic action info - XML uses capitalized attributes
+            name = action_elem.get('Name', '')
+            action_type = action_elem.get('Type', '')
+            
+            # Skip actions without name
+            if not name:
+                if self.debug_mode:
+                    print(f"⚠️ Skipping action without name: Type={action_type}")
+                return None
             
             action = ActionData(name=name, action_type=action_type)
             
-            # Get optional attributes
-            if 'border' in action_elem.attrib:
-                action.border_type = action_elem.get('border')
+            # Get optional attributes - check both capitalized and lowercase
+            border_type = action_elem.get('BorderType') or action_elem.get('border')
+            if border_type:
+                action.border_type = border_type
             
-            if 'draggable' in action_elem.attrib:
-                action.draggable = action_elem.get('draggable') == 'true'
+            draggable = action_elem.get('Draggable') or action_elem.get('draggable')
+            if draggable:
+                action.draggable = draggable == 'true'
             
-            if 'loop' in action_elem.attrib:
-                action.loop = action_elem.get('loop') == 'true'
+            loop = action_elem.get('Loop') or action_elem.get('loop')
+            if loop:
+                action.loop = loop == 'true'
             
-            # Parse animations
-            for anim_elem in action_elem.findall('.//ns:animation', namespace or {}):
+            # Parse animations - try both with and without namespace
+            anim_elements = []
+            
+            # Try with namespace first
+            if namespace:
+                anim_elements = action_elem.findall('.//ns:Animation', namespace)
+            
+            # If no animations found with namespace, try without namespace
+            if not anim_elements:
+                anim_elements = action_elem.findall('.//Animation')
+            
+            for anim_elem in anim_elements:
                 animation = self._parse_animation_element(anim_elem, namespace)
                 if animation:
                     # Use condition as key, or default
                     anim_key = animation.condition or "default"
                     action.animations[anim_key] = animation
             
-            # Parse action references (for Sequence actions)
-            for ref_elem in action_elem.findall('.//ns:actionReference', namespace or {}):
+            # Parse action references (for Sequence actions) - try both with and without namespace
+            ref_elements = []
+            if namespace:
+                ref_elements = action_elem.findall('.//ns:ActionReference', namespace)
+            if not ref_elements:
+                ref_elements = action_elem.findall('.//ActionReference')
+            
+            for ref_elem in ref_elements:
                 ref_data = self._parse_action_reference_element(ref_elem, namespace)
                 if ref_data:
                     action.action_references.append(ref_data)
             
-            # Parse embedded data
-            for embed_elem in action_elem.findall('.//ns:embedded', namespace or {}):
+            # Parse embedded data - try both with and without namespace
+            embed_elements = []
+            if namespace:
+                embed_elements = action_elem.findall('.//ns:Embedded', namespace)
+            if not embed_elements:
+                embed_elements = action_elem.findall('.//Embedded')
+            
+            for embed_elem in embed_elements:
                 embed_key = embed_elem.get('name', '')
                 embed_value = embed_elem.text or ''
                 if embed_key:
@@ -312,8 +376,18 @@ class XML2JSONConverter:
                 except ValueError:
                     animation.priority = 0
             
-            # Parse frames/poses
-            for pose_elem in anim_elem.findall('.//ns:pose', namespace or {}):
+            # Parse frames/poses - try both with and without namespace
+            pose_elements = []
+            
+            # Try with namespace first
+            if namespace:
+                pose_elements = anim_elem.findall('.//ns:Pose', namespace)
+            
+            # If no poses found with namespace, try without namespace
+            if not pose_elements:
+                pose_elements = anim_elem.findall('.//Pose')
+            
+            for pose_elem in pose_elements:
                 frame = self._parse_pose_element(pose_elem)
                 if frame:
                     animation.frames.append(frame)
@@ -333,27 +407,56 @@ class XML2JSONConverter:
             pose_elem: XML element for pose/frame
             
         Returns:
-            FrameData or None
+            FrameData or None (None if ImageAnchor is missing/invalid)
         """
         try:
-            image = pose_elem.get('image', '')
-            duration = pose_elem.get('duration', '0.1')
-            velocity_x = pose_elem.get('velocityX', '0')
-            velocity_y = pose_elem.get('velocityY', '0')
-            sound = pose_elem.get('sound')
-            volume = pose_elem.get('volume')
+            # Get attributes - check both capitalized and lowercase
+            image = pose_elem.get('Image') or pose_elem.get('image', '')
+            duration = pose_elem.get('Duration') or pose_elem.get('duration', '0.1')
+            velocity = pose_elem.get('Velocity') or pose_elem.get('velocity', '0,0')
+            sound = pose_elem.get('Sound') or pose_elem.get('sound')
+            volume = pose_elem.get('Volume') or pose_elem.get('volume')
+            
+            # Parse ImageAnchor - skip frame if missing or invalid
+            image_anchor_str = pose_elem.get('ImageAnchor')
+            if not image_anchor_str:
+                if self.debug_mode:
+                    print(f"⚠️ Skipping frame {image}: ImageAnchor missing")
+                return None
+            
+            try:
+                # Parse "64,128" format to (64, 128)
+                anchor_parts = image_anchor_str.split(',')
+                if len(anchor_parts) != 2:
+                    if self.debug_mode:
+                        print(f"⚠️ Skipping frame {image}: Invalid ImageAnchor format '{image_anchor_str}'")
+                    return None
+                
+                anchor_x = float(anchor_parts[0].strip())
+                anchor_y = float(anchor_parts[1].strip())
+                image_anchor = (anchor_x, anchor_y)
+                
+            except (ValueError, IndexError) as e:
+                if self.debug_mode:
+                    print(f"⚠️ Skipping frame {image}: Invalid ImageAnchor '{image_anchor_str}' - {e}")
+                return None
+            
+            # Parse velocity from "x,y" format
+            try:
+                vel_parts = velocity.split(',')
+                if len(vel_parts) == 2:
+                    vel_x = float(vel_parts[0].strip())
+                    vel_y = float(vel_parts[1].strip())
+                else:
+                    vel_x = vel_y = 0.0
+            except (ValueError, IndexError):
+                vel_x = vel_y = 0.0
             
             # Convert to proper types
             try:
                 duration_val = float(duration)
             except ValueError:
                 duration_val = 0.1
-            
-            try:
-                vel_x = float(velocity_x)
-                vel_y = float(velocity_y)
-            except ValueError:
-                vel_x = vel_y = 0.0
             
             try:
                 volume_val = int(volume) if volume else None
@@ -364,6 +467,7 @@ class XML2JSONConverter:
                 image=image,
                 duration=duration_val,
                 velocity=(vel_x, vel_y),
+                image_anchor=image_anchor,
                 sound=sound,
                 volume=volume_val
             )
@@ -389,10 +493,41 @@ class XML2JSONConverter:
             tree = ET.parse(xml_path)
             root = tree.getroot()
             
-            # Handle namespaces
-            namespace = {'ns': root.tag.split('}')[0].strip('{')} if '}' in root.tag else {}
+            # Handle namespaces - the XML uses default namespace
+            if '}' in root.tag:
+                namespace_uri = root.tag.split('}')[0].strip('{')
+                namespace = {'ns': namespace_uri}
+            else:
+                # No namespace found, use empty dict
+                namespace = {}
             
-            for behavior_elem in root.findall('.//ns:behavior', namespace):
+            if self.debug_mode:
+                print(f"🔍 Parsing behaviors XML with namespace: {namespace}")
+            
+            # Find all Behavior elements - try both with and without namespace
+            behavior_elements = []
+            
+            # Try with namespace first
+            if namespace:
+                behavior_elements = root.findall('.//ns:Behavior', namespace)
+                if self.debug_mode:
+                    print(f"🔍 Found {len(behavior_elements)} behaviors with namespace")
+            
+            # If no behaviors found with namespace, try without namespace
+            if not behavior_elements:
+                behavior_elements = root.findall('.//Behavior')
+                if self.debug_mode:
+                    print(f"🔍 Found {len(behavior_elements)} behaviors without namespace")
+            
+            # If still no behaviors, try with default namespace handling
+            if not behavior_elements:
+                # Register the namespace with ElementTree
+                ET.register_namespace('', namespace.get('ns', ''))
+                behavior_elements = root.findall('.//Behavior')
+                if self.debug_mode:
+                    print(f"🔍 Found {len(behavior_elements)} behaviors with registered namespace")
+            
+            for behavior_elem in behavior_elements:
                 behavior = self._parse_behavior_element(behavior_elem, namespace)
                 if behavior:
                     behaviors[behavior.name] = behavior
@@ -419,20 +554,41 @@ class XML2JSONConverter:
             BehaviorData or None
         """
         try:
-            name = behavior_elem.get('name', '')
-            frequency = behavior_elem.get('frequency', '1')
-            hidden = behavior_elem.get('hidden', 'false')
-            condition = behavior_elem.get('condition')
-            action = behavior_elem.get('action')
+            # Get attributes - check both capitalized and lowercase
+            name = behavior_elem.get('Name') or behavior_elem.get('name', '')
+            frequency = behavior_elem.get('Frequency') or behavior_elem.get('frequency', '1')
+            hidden = behavior_elem.get('Hidden') or behavior_elem.get('hidden', 'false')
+            condition = behavior_elem.get('Condition') or behavior_elem.get('condition')
+            action = behavior_elem.get('Action') or behavior_elem.get('action')
             
-            # Parse next behaviors
+            # Skip behaviors without name
+            if not name:
+                if self.debug_mode:
+                    print(f"⚠️ Skipping behavior without name: Frequency={frequency}")
+                return None
+            
+            # Parse next behaviors - try both with and without namespace
             next_behaviors = []
-            next_elem = behavior_elem.find('.//ns:next', namespace or {})
-            if next_elem is not None:
-                for behavior_elem in next_elem.findall('.//ns:behavior', namespace or {}):
-                    next_name = behavior_elem.get('name', '')
-                    if next_name:
-                        next_behaviors.append(next_name)
+            
+            # Try to find NextBehaviorList elements
+            next_list_elements = []
+            if namespace:
+                next_list_elements = behavior_elem.findall('.//ns:NextBehaviorList', namespace)
+            if not next_list_elements:
+                next_list_elements = behavior_elem.findall('.//NextBehaviorList')
+            
+            for next_list_elem in next_list_elements:
+                # Try to find BehaviorReference elements
+                ref_elements = []
+                if namespace:
+                    ref_elements = next_list_elem.findall('.//ns:BehaviorReference', namespace)
+                if not ref_elements:
+                    ref_elements = next_list_elem.findall('.//BehaviorReference')
+                
+                for ref_elem in ref_elements:
+                    ref_name = ref_elem.get('Name') or ref_elem.get('name', '')
+                    if ref_name:
+                        next_behaviors.append(ref_name)
             
             # Convert to proper types
             try:
@@ -620,6 +776,9 @@ class XML2JSONConverter:
                             frame_dict["sound"] = frame.sound
                         if frame.volume is not None:
                             frame_dict["volume"] = frame.volume
+                        
+                        if frame.image_anchor:
+                            frame_dict["imageAnchor"] = frame.image_anchor
                         
                         anim_dict["frames"].append(frame_dict)
                     

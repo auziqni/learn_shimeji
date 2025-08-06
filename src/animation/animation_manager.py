@@ -28,6 +28,7 @@ class AnimationManager:
         # Animation state
         self.current_frames = []
         self.frame_durations = []
+        self.frame_anchors = []  # Store anchor points for each frame
         self.is_animating = False
         
         # Action navigation
@@ -198,6 +199,7 @@ class AnimationManager:
         """Load all frames for an action"""
         self.current_frames = []
         self.frame_durations = []
+        self.frame_anchors = []  # Store anchor points for each frame
         self.frame_sounds = []  # Store sound for each frame
         
         action_data = self.actions[action_name]
@@ -216,6 +218,10 @@ class AnimationManager:
                 # Use frame duration from XML, or default
                 duration = getattr(frame, 'duration', 0.1)
                 self.frame_durations.append(duration)
+                
+                # Store frame anchor point
+                anchor = getattr(frame, 'image_anchor', None)
+                self.frame_anchors.append(anchor)
                 
                 # Load frame sound if available (from JSON data)
                 frame_sound = getattr(frame, 'sound', None)
@@ -242,8 +248,11 @@ class AnimationManager:
             self.logger.error("Sprite path not set")
             return None
         
+        # Remove leading slash from image name
+        clean_image_name = image_name.lstrip('/')
+        
         # Construct full path to image
-        image_path = self.sprite_path / image_name
+        image_path = self.sprite_path / clean_image_name
         
         # Use SpriteLoader to load the image
         sprite = self.sprite_loader.load_sprite(str(image_path))
@@ -324,6 +333,12 @@ class AnimationManager:
     def get_current_image(self) -> Optional[pygame.Surface]:
         """Get current frame image"""
         return self.current_image
+    
+    def get_current_anchor(self) -> Optional[tuple]:
+        """Get current frame's anchor point"""
+        if self.frame_anchors and self.current_frame < len(self.frame_anchors):
+            return self.frame_anchors[self.current_frame]
+        return None
     
     def get_current_action(self) -> str:
         """Get current action name"""
