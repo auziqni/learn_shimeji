@@ -372,7 +372,8 @@ class DesktopPetApp:
         self.interaction.update_pet_movement(
             self.pet_manager, 
             self.environment, 
-            self.control_panel.visible
+            self.control_panel.visible,
+            self.debug_manager.debug_mode
         )
         
         # Apply physics to all pets
@@ -381,7 +382,11 @@ class DesktopPetApp:
             user_moving = False
             if pet == self.pet_manager.get_selected_pet():
                 keys = pygame.key.get_pressed()
-                user_moving = keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d]
+                # Only consider user moving if debug mode is ON and control panel is CLOSED
+                user_moving = (keys[pygame.K_w] or keys[pygame.K_a] or 
+                              keys[pygame.K_s] or keys[pygame.K_d]) and \
+                              self.debug_manager.debug_mode and \
+                              not self.control_panel.visible
             
             self.environment.apply_physics(pet, delta_time, user_moving)
         

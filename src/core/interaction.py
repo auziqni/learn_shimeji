@@ -35,7 +35,7 @@ class Interaction:
         if event.type != pygame.KEYDOWN:
             return False
         
-        # System controls
+        # System controls - ALWAYS ACTIVE
         if event.key == pygame.K_ESCAPE:
             app_state['running'] = False
             return True
@@ -51,8 +51,22 @@ class Interaction:
             print(f"🎛️ Control panel {status}")
             return True
         
+        # Check if debug mode is OFF - only allow system controls
+        if not app_state['debug_manager'].debug_mode:
+            return False  # Block all other keys when debug mode is OFF
+        
+        # Check if control panel is visible - only allow system controls
+        if app_state['control_panel'].visible:
+            return False  # Block all other keys when control panel is open
+        
+        # All other controls - only active when debug mode ON and control panel CLOSED
+        return self._handle_debug_mode_controls(event, app_state)
+    
+    def _handle_debug_mode_controls(self, event, app_state):
+        """Handle controls that are only active in debug mode with closed control panel"""
+        
         # Pet selection controls
-        elif event.key == pygame.K_q:
+        if event.key == pygame.K_q:
             app_state['pet_manager'].select_previous()
             pet_num = app_state['pet_manager'].selected_index + 1
             app_state['logger'].user_action("select_pet", f"Selected pet #{pet_num}")
@@ -172,9 +186,10 @@ class Interaction:
             app_state['logger'].warning("Cannot remove last pet")
             print("⚠️ Cannot remove last pet")
     
-    def update_pet_movement(self, pet_manager, environment, control_panel_visible):
+    def update_pet_movement(self, pet_manager, environment, control_panel_visible, debug_mode):
         """Update pet movement based on current input"""
-        if control_panel_visible:
+        # Block movement when control panel is open OR debug mode is off
+        if control_panel_visible or not debug_mode:
             return
         
         keys = pygame.key.get_pressed()
