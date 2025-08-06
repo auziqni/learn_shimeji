@@ -152,9 +152,9 @@ class SpriteNameChat:
                 bubble_surface.blit(line_surface, (self.chat_padding, y_offset))
                 y_offset += line_surface.get_height()
             
-            # Position bubble (top-right of sprite)
+            # Position bubble (top-right of sprite anchor point)
             bubble_rect = bubble_surface.get_rect()
-            bubble_rect.bottomleft = (position[0] + 10, position[1] - 10)  # 10px offset from sprite
+            bubble_rect.bottomleft = (position[0] + 10, position[1] - 10)  # 10px offset from sprite anchor
             
             # Draw bubble
             surface.blit(bubble_surface, bubble_rect)
@@ -163,21 +163,55 @@ class SpriteNameChat:
             self.logger.error(f"Failed to render chat bubble: {e}")
     
     def render_pet_text(self, surface, pet, name: str, chat: str):
-        """Render both name and chat for a pet"""
+        """Render both name and chat for a pet using anchor-based positioning"""
         if not pet:
             return
         
-        # Get pet position and size
-        pet_x, pet_y = pet.get_position()
-        pet_width = pet.width
-        pet_height = pet.height
-        
-        # Calculate positions
-        name_position = (pet_x + pet_width // 2, pet_y + pet_height)  # Center below sprite
-        chat_position = (pet_x + pet_width, pet_y)  # Top-right of sprite
-        
-        # Render name
-        self.render_name(surface, name, name_position)
-        
-        # Render chat bubble
-        self.render_chat_bubble(surface, chat, chat_position) 
+        try:
+            # Get pet's base position (anchor point)
+            pet_x, pet_y = pet.get_draw_position()
+            
+            # Get anchor information for proper positioning
+            anchor_info = pet.get_anchor_info()
+            anchor = anchor_info.get('anchor')
+            draw_position = anchor_info.get('draw_position')
+            frame_size = anchor_info.get('frame_size')
+            
+            if not anchor or not draw_position or not frame_size:
+                # Fallback to old positioning if anchor info not available
+                pet_width = pet.width
+                pet_height = pet.height
+                name_position = (pet_x + pet_width // 2, pet_y + pet_height)
+                chat_position = (pet_x + pet_width, pet_y)
+            else:
+                # Use anchor-based positioning
+                frame_w, frame_h = frame_size
+                draw_x, draw_y = draw_position
+                
+                # Name position: below the sprite (at anchor point)
+                name_position = (pet_x + 64, pet_y + 128)  # 10px below anchor point
+                
+                # Chat bubble position: top-right of the sprite relative to anchor
+                # Position chat bubble above and to the right of the sprite
+                chat_position = (pet_x + 20, pet_y)  # 20px above and 20px right of anchor
+            
+            # Render name
+            self.render_name(surface, name, name_position)
+            
+            # Render chat bubble
+            self.render_chat_bubble(surface, chat, chat_position)
+            
+        except Exception as e:
+            self.logger.error(f"Failed to render pet text: {e}")
+            # Fallback rendering
+            try:
+                pet_x, pet_y = pet.get_position()
+                pet_width = pet.width
+                pet_height = pet.height
+                name_position = (pet_x + pet_width // 2, pet_y + pet_height)
+                chat_position = (pet_x + pet_width, pet_y)
+                
+                self.render_name(surface, name, name_position)
+                self.render_chat_bubble(surface, chat, chat_position)
+            except Exception as fallback_error:
+                self.logger.error(f"Fallback rendering also failed: {fallback_error}") 
