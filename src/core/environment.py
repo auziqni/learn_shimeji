@@ -39,14 +39,41 @@ class Environment:
         }
         self._initialize_surfaces()
     
+    def update_boundaries(self):
+        """Update boundaries from settings in realtime"""
+        old_boundaries = self.boundaries.copy()
+        self.boundaries = self._calculate_boundaries()
+        
+        # Log boundary changes
+        if self.settings_manager:
+            logger = self.settings_manager.get_logger() if hasattr(self.settings_manager, 'get_logger') else None
+            if logger:
+                logger.info(f"Boundaries updated: {old_boundaries} -> {self.boundaries}")
+        
+        return self.boundaries
+    
     def _calculate_boundaries(self):
-        """Calculate boundary positions"""
-        default_margin = self.settings_manager.get_setting('boundaries.default_margin', 0.1) if self.settings_manager else 0.1
+        """Calculate boundary positions from settings"""
+        if not self.settings_manager:
+            default_margin = 0.1
+            return {
+                'left_wall': int(self.screen_width * default_margin),
+                'right_wall': int(self.screen_width * (1 - default_margin)),
+                'ceiling': int(self.screen_height * default_margin),
+                'floor': int(self.screen_height * (1 - default_margin))
+            }
+        
+        # Get individual boundary settings
+        floor_margin = self.settings_manager.get_setting('boundaries.floor_margin', 10) / 100.0
+        ceiling_margin = self.settings_manager.get_setting('boundaries.ceiling_margin', 10) / 100.0
+        wall_left_margin = self.settings_manager.get_setting('boundaries.wall_left_margin', 10) / 100.0
+        wall_right_margin = self.settings_manager.get_setting('boundaries.wall_right_margin', 90) / 100.0
+        
         return {
-            'left_wall': int(self.screen_width * default_margin),
-            'right_wall': int(self.screen_width * (1 - default_margin)),
-            'ceiling': int(self.screen_height * default_margin),
-            'floor': int(self.screen_height * (1 - default_margin))
+            'left_wall': int(self.screen_width * wall_left_margin),
+            'right_wall': int(self.screen_width * wall_right_margin),
+            'ceiling': int(self.screen_height * ceiling_margin),
+            'floor': int(self.screen_height * (1 - floor_margin))
         }
     
     def check_collision(self, pet):

@@ -4,11 +4,12 @@ from ..utils.settings_manager import SettingsManager
 class ControlPanel:
     """Control Panel with modern UI design from contohControlPanel.py"""
     
-    def __init__(self, screen_width, screen_height, settings_manager: SettingsManager):
+    def __init__(self, screen_width, screen_height, settings_manager: SettingsManager, environment=None):
         self.visible = False
         self.screen_width = screen_width
         self.screen_height = screen_height
         self.settings_manager = settings_manager
+        self.environment = environment
         
         # Panel dimensions and position
         self.panel_width = 800
@@ -230,40 +231,48 @@ class ControlPanel:
                 self.floor_value = max(0, self.floor_value - 1)
                 self.settings_manager.set_setting('boundaries.floor_margin', self.floor_value)
                 self.settings_manager.save_settings()
+                self._update_environment_boundaries()
             elif hasattr(self, 'floor_plus') and self.floor_plus.collidepoint(pos):
                 self.floor_value += 1
                 self.settings_manager.set_setting('boundaries.floor_margin', self.floor_value)
                 self.settings_manager.save_settings()
+                self._update_environment_boundaries()
                 
             # Ceiling controls
             if hasattr(self, 'ceiling_minus') and self.ceiling_minus.collidepoint(pos):
                 self.ceiling_value = max(0, self.ceiling_value - 1)
                 self.settings_manager.set_setting('boundaries.ceiling_margin', self.ceiling_value)
                 self.settings_manager.save_settings()
+                self._update_environment_boundaries()
             elif hasattr(self, 'ceiling_plus') and self.ceiling_plus.collidepoint(pos):
                 self.ceiling_value += 1
                 self.settings_manager.set_setting('boundaries.ceiling_margin', self.ceiling_value)
                 self.settings_manager.save_settings()
+                self._update_environment_boundaries()
                 
             # Left wall controls
             if hasattr(self, 'left_wall_minus') and self.left_wall_minus.collidepoint(pos):
                 self.left_wall_value = max(0, self.left_wall_value - 1)
                 self.settings_manager.set_setting('boundaries.wall_left_margin', self.left_wall_value)
                 self.settings_manager.save_settings()
+                self._update_environment_boundaries()
             elif hasattr(self, 'left_wall_plus') and self.left_wall_plus.collidepoint(pos):
                 self.left_wall_value += 1
                 self.settings_manager.set_setting('boundaries.wall_left_margin', self.left_wall_value)
                 self.settings_manager.save_settings()
+                self._update_environment_boundaries()
                 
             # Right wall controls
             if hasattr(self, 'right_wall_minus') and self.right_wall_minus.collidepoint(pos):
                 self.right_wall_value = max(0, self.right_wall_value - 1)
                 self.settings_manager.set_setting('boundaries.wall_right_margin', self.right_wall_value)
                 self.settings_manager.save_settings()
+                self._update_environment_boundaries()
             elif hasattr(self, 'right_wall_plus') and self.right_wall_plus.collidepoint(pos):
                 self.right_wall_value += 1
                 self.settings_manager.set_setting('boundaries.wall_right_margin', self.right_wall_value)
                 self.settings_manager.save_settings()
+                self._update_environment_boundaries()
                 
         elif self.selected_tab == "tiktok":
             # Username input
@@ -309,6 +318,15 @@ class ControlPanel:
         # Handle the click with panel-relative coordinates
         self.handle_click(panel_pos)
         return None
+    
+    def _update_environment_boundaries(self):
+        """Update environment boundaries in realtime"""
+        if self.environment:
+            try:
+                new_boundaries = self.environment.update_boundaries()
+                print(f"🔄 Boundaries updated in realtime: {new_boundaries}")
+            except Exception as e:
+                print(f"⚠️ Error updating boundaries: {e}")
     
     def _is_point_in_panel(self, pos):
         """Check if point is within panel bounds"""

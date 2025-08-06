@@ -99,7 +99,7 @@ class DesktopPetApp:
             self.environment = Environment(screen_width, screen_height, self.settings_manager)
             
             # Initialize control panel with screen dimensions
-            self.control_panel = ControlPanel(screen_width, screen_height, self.settings_manager)
+            self.control_panel = ControlPanel(screen_width, screen_height, self.settings_manager, self.environment)
             
             # Initialize UI Manager
             self.ui_manager = UIManager(screen_width, screen_height)
@@ -291,9 +291,6 @@ class DesktopPetApp:
             new_value = min(10, current + 1)
             self.settings_manager.set_setting('ui.initial_pet_count', new_value)
             self.settings_manager.save_settings()
-            # Update button text in control panel
-            if 'sprite_number' in self.control_panel.ui_components:
-                self.control_panel.ui_components['sprite_number'].text = str(new_value)
             self.logger.user_action("sprite_number_change", f"Increased to {new_value}")
             print(f"🔢 Sprite count: {new_value}")
         elif action == "sprite_minus":
@@ -302,9 +299,6 @@ class DesktopPetApp:
             new_value = max(1, current - 1)
             self.settings_manager.set_setting('ui.initial_pet_count', new_value)
             self.settings_manager.save_settings()
-            # Update button text in control panel
-            if 'sprite_number' in self.control_panel.ui_components:
-                self.control_panel.ui_components['sprite_number'].text = str(new_value)
             self.logger.user_action("sprite_number_change", f"Decreased to {new_value}")
             print(f"🔢 Sprite count: {new_value}")
         elif action == "username_input":
@@ -312,8 +306,8 @@ class DesktopPetApp:
             pass
         elif action == "save_username":
             # Handle TikTok username save
-            if 'username_input' in self.control_panel.ui_components:
-                username = self.control_panel.ui_components['username_input'].text
+            if hasattr(self.control_panel, 'username_text'):
+                username = self.control_panel.username_text
                 self.settings_manager.set_setting('tiktok.username', username)
                 self.settings_manager.save_settings()
                 self.logger.user_action("tiktok_username_save", f"Saved username: {username}")
@@ -333,9 +327,6 @@ class DesktopPetApp:
                 new_value = max(0, min(100, current + delta))
                 self.settings_manager.set_setting(f'boundaries.{boundary_type}_margin', new_value)
                 self.settings_manager.save_settings()
-                # Update button text in control panel
-                if f'{boundary_type}_number' in self.control_panel.ui_components:
-                    self.control_panel.ui_components[f'{boundary_type}_number'].text = str(new_value)
                 self.logger.user_action("boundary_change", f"{boundary_type}: {current} -> {new_value}")
                 print(f"🔧 {boundary_type}: {new_value}")
         else:
