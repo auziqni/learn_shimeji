@@ -220,6 +220,7 @@ class DesktopPetApp:
         self.logger.info("  DELETE/X: Remove selected pet")
         self.logger.info("  F1: Toggle debug mode")
         self.logger.info("  F2: Toggle control panel")
+        self.logger.info("  Mouse: Click and drag pets to move them")
         self.logger.info("  ESC: Exit")
         
         mode = 'Transparent' if self.transparent_mode else 'Simple Window'
@@ -244,6 +245,7 @@ class DesktopPetApp:
         print("  DELETE/X: Remove selected pet")
         print("  F1: Toggle debug mode")
         print("  F2: Toggle control panel")
+        print("  🖱️ Mouse: Click and drag pets to move them")
         print("  ESC: Exit")
         print(f"\n🎨 Mode: {mode}")
         if self.monitor_info:
@@ -251,7 +253,9 @@ class DesktopPetApp:
         print("🐛 Debug Features:")
         print("  🔵 Blue: Walls | 🟡 Yellow: Ceiling | 🟢 Green: Floor")
         print("  🟡 Yellow Box: Selected pet")
+        print("  🔴 Red Border: Dragged pet")
         print("  📊 FPS: Top-left corner")
+        print("  📍 Pinched: True/False in pet debug info")
         print(f"  Current debug mode: {debug_status}")
         print("🎛️ Control Panel:")
         print("  F2: Show/Hide control panel")
@@ -263,6 +267,12 @@ class DesktopPetApp:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+            
+            # Handle mouse events for drag functionality
+            elif event.type in [pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP, pygame.MOUSEMOTION]:
+                # Handle mouse events through PetManager
+                if self.pet_manager.handle_mouse_events(event, self.environment):
+                    continue  # Event was handled by pet manager
             
             # Delegate keyboard events to Interaction class
             elif event.type == pygame.KEYDOWN:
@@ -385,8 +395,12 @@ class DesktopPetApp:
             self.debug_manager.debug_mode
         )
         
-        # Apply physics to all pets
+        # Apply physics to all pets (except dragged pets)
         for pet in self.pet_manager.pets:
+            # Check if pet is being dragged - disable physics for dragged pets
+            if pet.is_being_dragged():
+                continue  # Skip physics for dragged pets
+            
             # Check if user is currently moving the selected pet
             user_moving = False
             if pet == self.pet_manager.get_selected_pet():

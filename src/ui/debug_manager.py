@@ -187,6 +187,13 @@ class DebugManager:
             
             state_surface = self.font.render(position_state_text, True, state_color)
             text_surfaces.append((state_surface, (debug_x, current_y)))
+            current_y += line_height
+            
+            # Line 6: Pinched State
+            pinched_color = (255, 100, 100)  # Light red for pinched state
+            pinched_text = f"Pinched: {pet.is_pinched_state()}"
+            pinched_surface = self.font.render(pinched_text, True, pinched_color)
+            text_surfaces.append((pinched_surface, (debug_x, current_y)))
             
             # Calculate background size
             if text_surfaces:

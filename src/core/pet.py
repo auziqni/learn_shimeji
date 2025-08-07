@@ -51,6 +51,12 @@ class Pet:
         self.rightCeiling = False
         self.leftCeiling = False
         
+        # Drag state management
+        self.is_dragging = False
+        self.drag_offset_x = 0
+        self.drag_offset_y = 0
+        self.is_pinched = False  # For debug info display
+        
         # Text properties - use action info for chat
         self.name = sprite_name if name is None else name
         self.chat = self.animation_manager.get_current_action_info() if chat is None else chat
@@ -112,6 +118,69 @@ class Pet:
             self.set_direction("right")
         elif dx < 0:
             self.set_direction("left")
+    
+    def start_drag(self, mouse_x, mouse_y):
+        """Start dragging the pet"""
+        if not self.is_dragging:
+            self.is_dragging = True
+            self.is_pinched = True
+            
+            # Calculate drag offset from mouse position to pet position
+            draw_x, draw_y = self.get_draw_position()
+            self.drag_offset_x = mouse_x - draw_x
+            self.drag_offset_y = mouse_y - draw_y
+            
+            self.logger.debug(f"Started dragging pet at mouse ({mouse_x}, {mouse_y}) with offset ({self.drag_offset_x}, {self.drag_offset_y})")
+    
+    def update_drag(self, mouse_x, mouse_y, environment=None):
+        """Update pet position during drag"""
+        if not self.is_dragging:
+            return
+        
+        # Calculate new position based on mouse and offset
+        new_x = mouse_x - self.drag_offset_x
+        new_y = mouse_y - self.drag_offset_y
+        
+        # Clamp to boundaries if environment is provided
+        if environment:
+            # Get boundaries
+            boundaries = environment.boundaries
+            
+            # Clamp X position
+            if new_x < boundaries['left_wall']:
+                new_x = boundaries['left_wall']
+            elif new_x + self.width > boundaries['right_wall']:
+                new_x = boundaries['right_wall'] - self.width
+            
+            # Clamp Y position
+            if new_y < boundaries['ceiling']:
+                new_y = boundaries['ceiling']
+            elif new_y + self.height > boundaries['floor']:
+                new_y = boundaries['floor'] - self.height
+        
+        # Update position
+        self.set_position(new_x, new_y)
+        
+        # Update position state
+        if environment:
+            self.update_position_state(environment)
+    
+    def stop_drag(self):
+        """Stop dragging the pet"""
+        if self.is_dragging:
+            self.is_dragging = False
+            self.is_pinched = False
+            self.drag_offset_x = 0
+            self.drag_offset_y = 0
+            self.logger.debug("Stopped dragging pet")
+    
+    def is_being_dragged(self):
+        """Check if pet is currently being dragged"""
+        return self.is_dragging
+    
+    def is_pinched_state(self):
+        """Get pinched state for debug info"""
+        return self.is_pinched
     
     def update_position_state(self, environment):
         """Update position state based on current position and environment"""
@@ -299,6 +368,24 @@ class Pet:
             pygame.draw.polygon(surface, arrow_color, arrow_points)
         except Exception as e:
             self.logger.debug(f"Failed to draw arrow: {e}")
+    
+    def draw_drag_indicator(self, surface, debug_mode=False):
+        """Draw drag indicator when pet is being dragged"""
+        if not debug_mode or not self.is_dragging:
+            return
+        
+        # Draw drag indicator (red border around pet)
+        draw_x, draw_y = self.get_draw_position()
+        frame_w, frame_h = self.get_frame_size()
+        
+        # Red border for dragged pet
+        drag_color = (255, 0, 0)  # Red
+        border_thickness = 3
+        pygame.draw.rect(surface, drag_color, (draw_x, draw_y, frame_w, frame_h), border_thickness)
+        
+        # Draw drag offset indicator
+        offset_color = (255, 255, 0)  # Yellow
+        pygame.draw.circle(surface, offset_color, (self.x, self.y), 5)  # Draw at anchor point
     
     def next_action_type(self):
         """Go to next action type"""

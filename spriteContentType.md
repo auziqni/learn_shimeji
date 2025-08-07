@@ -4,27 +4,22 @@
 
 | Section | Purpose | Key Fields |
 |---------|---------|------------|
-| **Metadata** | File info & versioning | `sprite_name`, `conversion_date` |
+| **Sprite Info** | File identification | `sprite_name` |
 | **Actions** | Animation & behavior logic | `action_type`, `animations`, `embedded_data` |
 | **Behaviors** | AI decision making | `frequency`, `condition`, `next_behaviors` |
-| **Validation** | Data integrity check | `success`, `errors`, `warnings` |
 
 ---
 
 ## 🏗️ JSON Structure Overview
 
-### 1. **Metadata Section**
+### 1. **Sprite Information**
 ```json
 {
-  "metadata": {
-    "sprite_name": "Hornet",
-    "conversion_date": "2024-01-01",
-    "original_files": ["actions.xml", "behaviors.xml"]
-  }
+  "sprite_name": "Hornet"
 }
 ```
 
-**Purpose**: File identification and source tracking
+**Purpose**: Sprite pack identification
 
 ---
 
@@ -98,21 +93,6 @@
 
 ---
 
-### 4. **Validation Section**
-```json
-{
-  "validation": {
-    "success": true|false,
-    "errors": ["error1", "error2"],
-    "warnings": ["warning1", "warning2"]
-  }
-}
-```
-
-**Purpose**: Data integrity and conversion status
-
----
-
 ## 🎯 **Field Descriptions**
 
 ### **Action Fields:**
@@ -147,6 +127,7 @@
 | `image` | string | Sprite file path | "shime1.png" |
 | `duration` | number | Frame duration (seconds) | 1.0, 0.133 |
 | `velocity` | array | Movement speed [x, y] | [0, 0], [-2, 0] |
+| `imageAnchor` | array | Anchor point [x, y] | [64, 128] |
 | `sound` | string|null | Audio file path | "bounce.wav", null |
 | `volume` | number|null | Sound volume (-100 to 0) | -14, null |
 
@@ -166,10 +147,9 @@ behaviors.xml →   Behaviors  →   Behaviors →   Behavior Logic
 ## ⚠️ **Important Notes**
 
 ### **Required Fields:**
-- `metadata`: Always present
+- `sprite_name`: Always present
 - `actions`: Always present (can be empty)
 - `behaviors`: Always present (can be empty)
-- `validation`: Always present
 
 ### **Optional Fields:**
 - `border_type`: Can be null
@@ -198,9 +178,10 @@ behaviors.xml →   Behaviors  →   Behaviors →   Behavior Logic
     "default": {
       "frames": [
         {
-          "image": "stand.png",
-          "duration": 2.0,
-          "velocity": [0, 0]
+          "image": "/shime1.png",
+          "duration": 75.0,
+          "velocity": [0.0, 0.0],
+          "imageAnchor": [64.0, 128.0]
         }
       ]
     }
@@ -226,24 +207,34 @@ behaviors.xml →   Behaviors  →   Behaviors →   Behavior Logic
 {
   "name": "FallWithIe",
   "action_type": "Embedded",
-  "embedded_data": {
-    "class": "com.group_finity.mascot.action.FallWithIE"
-  }
+  "animations": {}
+}
+```
+
+### **Animation with Sound:**
+```json
+{
+  "image": "/shime48.png",
+  "duration": 3.0,
+  "velocity": [0.0, 0.0],
+  "imageAnchor": [64.0, 198.0],
+  "sound": "/Hive Knight 5.wav",
+  "volume": -7
 }
 ```
 
 ---
 
-## 📊 **File Statistics (Hornet Example)**
+## 📊 **File Statistics (Current Implementation)**
 
-| Component | Count | Percentage |
-|-----------|-------|------------|
-| **Actions** | 105 | - |
-| **Behaviors** | 69 | - |
-| **Embedded Actions** | 12 | 11.4% |
-| **Sequence Actions** | 58 | 55.2% |
-| **AI Behaviors** | 54 | 78.3% |
-| **System Behaviors** | 5 | 7.2% |
+| Component | Hornet | HiveKnight | HiveQueen |
+|-----------|--------|------------|-----------|
+| **Actions** | 105 | 103 | 107 |
+| **Behaviors** | 69 | 67 | 71 |
+| **Embedded Actions** | 12 | 12 | 12 |
+| **Sequence Actions** | 58 | 56 | 60 |
+| **AI Behaviors** | 54 | 52 | 56 |
+| **System Behaviors** | 5 | 5 | 5 |
 
 ---
 
@@ -266,9 +257,30 @@ behaviors.xml →   Behaviors  →   Behaviors →   Behavior Logic
 2. **Frequency**: Use 0 for system behaviors, 1-100 for AI behaviors
 3. **Conditions**: Keep expressions simple and readable
 4. **References**: Always verify referenced behaviors exist
-5. **Validation**: Always include validation section
+5. **Image Anchors**: Use consistent anchor points (typically [64, 128])
 6. **Documentation**: Add comments for complex conditions
 
 ---
 
-*This documentation covers the essential structure of sprite JSON files for Shimeji desktop pets.* 
+## 🚀 **Implementation Notes**
+
+### **Current Status:**
+- ✅ **JSON Structure**: Matches actual implementation
+- ✅ **Field Types**: All field types are accurate
+- ✅ **Examples**: Based on real data from assets
+- ✅ **Statistics**: Updated with current file counts
+
+### **Deprecated Sections (Removed):**
+- ❌ **Metadata Section**: Not present in actual JSON
+- ❌ **Validation Section**: Not present in actual JSON
+- ❌ **Conversion Tracking**: Not implemented
+
+### **Updated Sections:**
+- ✅ **Sprite Info**: Simplified to match actual structure
+- ✅ **Actions**: Accurate field descriptions
+- ✅ **Behaviors**: Accurate field descriptions
+- ✅ **Examples**: Real examples from Hornet sprite pack
+
+---
+
+*This documentation covers the essential structure of sprite JSON files for Shimeji desktop pets, updated to match the actual implementation.* 
