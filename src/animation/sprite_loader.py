@@ -11,11 +11,13 @@ from ..utils.log_manager import get_logger
 class SpriteLoader:
     """Robust sprite cache & memory management for sprite animations"""
     
-    def __init__(self, cache_size: int = 100, memory_limit_mb: int = 50):
-        self.logger = get_logger("sprite_loader")
+    def __init__(self, cache_size: int = 100, memory_limit_mb: int = 50, settings_manager=None):
+        """Initialize sprite loader with cache and memory management"""
+        self.cache = {}
         self.cache_size = cache_size
-        self.memory_limit_mb = memory_limit_mb
         self.memory_limit_bytes = memory_limit_mb * 1024 * 1024
+        self.settings_manager = settings_manager
+        self.logger = get_logger("sprite_loader")
         
         # LRU Cache for sprites
         self.sprite_cache = OrderedDict()
@@ -74,6 +76,7 @@ class SpriteLoader:
             
             # Try to load the sprite
             sprite = pygame.image.load(sprite_path)
+
             # Convert to optimize for display - handle display not initialized
             try:
                 if sprite.get_alpha() is None:
@@ -89,16 +92,14 @@ class SpriteLoader:
                             sprite = sprite.convert(dummy_surface)
                         else:
                             sprite = sprite.convert_alpha(dummy_surface)
-                        self.logger.debug(f"Used dummy surface for conversion: {sprite_path}")
-                    except Exception as conv_e:
-                        self.logger.warning(f"Failed to convert sprite {sprite_path}: {conv_e}")
-                        # Return unconverted sprite as fallback
-                        return sprite
+                    except:
+                        # If all else fails, use as-is
+                        pass
                 else:
                     raise e
-            
-            # Preprocess sprite to avoid transparency conflicts
-            sprite = self._preprocess_sprite_for_transparency(sprite)
+
+            # Preprocess alpha pixels to prevent bleeding
+            sprite = self._preprocess_alpha_pixels(sprite)
             
             
             return sprite
@@ -169,6 +170,59 @@ class SpriteLoader:
         except Exception as e:
             self.logger.warning(f"Failed to preprocess sprite: {e}")
             return sprite  # Return original if preprocessing fails
+    
+    def _preprocess_alpha_pixels(self, sprite: pygame.Surface) -> pygame.Surface:
+        """Convert RGBA to RGB to prevent bleeding with color key transparency"""
+        try:
+            # Check if preprocessing is enabled
+            if hasattr(self, 'settings_manager') and self.settings_manager:
+                if not self.settings_manager.get_preprocess_alpha():
+                    return sprite  # Skip preprocessing if disabled
+            
+            # Create a copy to avoid modifying original
+            processed_sprite = sprite.copy()
+            
+            # Get pixel array for manipulation
+            pixel_array = pygame.PixelArray(processed_sprite)
+            
+            # Track conversion stats
+            converted_pixels = 0
+            total_pixels = sprite.get_width() * sprite.get_height()
+            
+            # Process each pixel
+            for x in range(sprite.get_width()):
+                for y in range(sprite.get_height()):
+                    pixel = sprite.get_at((x, y))
+                    
+                    if len(pixel) == 4:  # RGBA
+                        r, g, b, a = pixel
+                        
+                        if a == 255:
+                            # Keep original color (fully opaque)
+                            new_color = (r, g, b)
+                            pixel_array[x, y] = new_color
+                        elif a == 0:
+                            # Keep transparent (fully transparent)
+                            # Don't change - keep as transparent
+                            pass
+                        else:
+                            # Convert semi-transparent to solid RGB (remove alpha)
+                            new_color = (r, g, b)
+                            pixel_array[x, y] = new_color
+                            converted_pixels += 1
+            
+            # Log preprocessing results
+            if converted_pixels > 0:
+                conversion_percentage = (converted_pixels / total_pixels) * 100
+                self.logger.info(f"RGBA to RGB conversion: {converted_pixels}/{total_pixels} pixels converted ({conversion_percentage:.1f}%)")
+            else:
+                self.logger.info(f"RGBA to RGB conversion: No pixels converted (sprite may not have alpha channel)")
+            
+            return processed_sprite
+            
+        except Exception as e:
+            self.logger.error(f"Failed to convert RGBA to RGB: {e}")
+            return sprite  # Return original if processing fails
     
     def _add_to_cache(self, sprite_path: str, sprite: pygame.Surface):
         """Add sprite to cache with memory management"""

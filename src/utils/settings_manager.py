@@ -263,3 +263,19 @@ class SettingsManager:
     def set_transparency_mode(self, mode):
         """Set transparency mode in settings"""
         return self.set_setting('window.transparency_mode', mode) 
+    
+    def set_alpha_transparency(self, alpha):
+        """Set alpha transparency value"""
+        return self.set_setting('window.alpha_transparency', alpha)
+    
+    def get_preprocess_alpha(self):
+        """Get alpha preprocessing setting"""
+        return self.get_setting('window.preprocess_alpha', True)
+
+    def set_preprocess_alpha(self, enabled):
+        """Set alpha preprocessing setting"""
+        return self.set_setting('window.preprocess_alpha', enabled)
+    
+    def get_alpha_threshold(self):
+        """Get alpha threshold for preprocessing"""
+        return self.get_setting('window.alpha_threshold', 255) 

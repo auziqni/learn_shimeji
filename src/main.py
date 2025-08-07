@@ -18,6 +18,7 @@ from .utils.json_parser import JSONParser
 from .utils.settings_manager import SettingsManager
 from .utils.performance_monitor import performance_monitor
 from .utils.memory_manager import memory_manager
+from .animation.sprite_loader import SpriteLoader
 
 # Optional Win32 imports with fallback
 try:
@@ -130,6 +131,13 @@ class DesktopPetApp:
             
             # Start memory monitoring
             memory_manager.start_monitoring()
+            
+            # Initialize sprite loader
+            self.sprite_loader = SpriteLoader(
+                cache_size=self.settings_manager.get_setting('sprites.cache_size', 100),
+                memory_limit_mb=self.settings_manager.get_setting('sprites.memory_limit_mb', 50),
+                settings_manager=self.settings_manager
+            )
             
             # Add sprite loader cleanup callback
             if hasattr(self, 'sprite_loader'):
