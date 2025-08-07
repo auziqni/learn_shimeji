@@ -26,6 +26,15 @@ class Environment:
         self.bounce_factor = self.settings_manager.get_setting('physics.bounce_factor', 0.7) if self.settings_manager else 0.7
         self.max_velocity = self.settings_manager.get_setting('physics.max_velocity', 10.0) if self.settings_manager else 10.0
         
+        # Thrown physics properties
+        self.thrown_max_velocity = self.settings_manager.get_setting('thrown_physics.max_velocity', 150.0) if self.settings_manager else 150.0
+        self.thrown_min_velocity = self.settings_manager.get_setting('thrown_physics.min_throw_velocity', 50.0) if self.settings_manager else 50.0
+        self.thrown_duration = self.settings_manager.get_setting('thrown_physics.throw_duration', 3.0) if self.settings_manager else 3.0
+        self.thrown_bounce_loss = self.settings_manager.get_setting('thrown_physics.bounce_energy_loss', 0.7) if self.settings_manager else 0.7
+        self.thrown_gravity_mult = self.settings_manager.get_setting('thrown_physics.gravity_multiplier', 1.5) if self.settings_manager else 1.5
+        self.thrown_time_mult = self.settings_manager.get_setting('thrown_physics.time_multiplier', 60.0) if self.settings_manager else 60.0
+        self.thrown_fallback_mult = self.settings_manager.get_setting('thrown_physics.fallback_multiplier', 2.0) if self.settings_manager else 2.0
+        
         # Virtual boundary detection
         self.taskbar_height = self._detect_taskbar_height()
         self.work_area = self._get_work_area()
@@ -333,4 +342,109 @@ class Environment:
         # Floor (green)
         pygame.draw.line(surface, boundary_colors['floor'],
                         (0, self.boundaries['floor']),
-                        (self.screen_width, self.boundaries['floor']), 3) 
+                        (self.screen_width, self.boundaries['floor']), 3)
+    
+    # ===== THROWN PHYSICS METHODS =====
+    
+    def calculate_throw_velocity(self, start_pos, end_pos, drag_time):
+        """Calculate realistic throw velocity with time precision"""
+        import math
+        
+        dx = end_pos[0] - start_pos[0]
+        dy = end_pos[1] - start_pos[1]
+        
+        # Time-based velocity (critical for realism)
+        if drag_time > 0:
+            vx = dx / drag_time * self.thrown_time_mult
+            vy = dy / drag_time * self.thrown_time_mult
+        else:
+            # Fallback for instant release
+            vx = dx * self.thrown_fallback_mult
+            vy = dy * self.thrown_fallback_mult
+        
+        # Apply physics constraints
+        velocity_magnitude = math.sqrt(vx**2 + vy**2)
+        
+        if velocity_magnitude > self.thrown_max_velocity:
+            scale = self.thrown_max_velocity / velocity_magnitude
+            vx *= scale
+            vy *= scale
+        
+        return vx, vy
+    
+    def apply_thrown_physics(self, pet, delta_time):
+        """Apply specialized physics for thrown pets"""
+        if not pet.is_thrown:
+            return
+        
+        # Update thrown timer
+        pet.update_thrown_timer(delta_time)
+        
+        # Apply enhanced gravity to thrown velocity
+        pet.thrown_velocity[1] += self.gravity * self.thrown_gravity_mult * delta_time
+        
+        # Update position
+        current_x, current_y = pet.get_position()
+        new_x = current_x + pet.thrown_velocity[0] * delta_time
+        new_y = current_y + pet.thrown_velocity[1] * delta_time
+        
+        # Log thrown physics data for debugging
+        from ..utils.log_manager import get_logger
+        logger = get_logger("environment")
+        logger.debug(f"Thrown physics - Timer: {pet.thrown_timer:.3f}s, Velocity: {pet.thrown_velocity}, Position: ({new_x:.1f}, {new_y:.1f})")
+        
+        # Handle collision
+        if self.check_thrown_collision(pet, new_x, new_y):
+            logger.debug("Thrown collision detected")
+            self.handle_thrown_collision(pet)
+        
+        # Check if thrown state should end (Timer < 3 OR hit boundary)
+        if (pet.thrown_timer >= self.thrown_duration or 
+            self.check_boundary_collision(pet, new_x, new_y)):
+            logger.debug(f"Ending thrown state - Timer: {pet.thrown_timer:.3f}s, Boundary hit: {self.check_boundary_collision(pet, new_x, new_y)}")
+            self.end_thrown_state(pet)
+        else:
+            # Set new position
+            pet.set_position(new_x, new_y)
+    
+    def check_thrown_collision(self, pet, new_x, new_y):
+        """Check collision for thrown pets"""
+        pet_rect = pygame.Rect(new_x, new_y, pet.width, pet.height)
+        
+        # Check all surfaces
+        for surface_type, surfaces in self.surfaces.items():
+            for surface in surfaces:
+                surface_rect = pygame.Rect(surface['x'], surface['y'], surface['width'], surface['height'])
+                if pet_rect.colliderect(surface_rect):
+                    return True
+        
+        return False
+    
+    def handle_thrown_collision(self, pet):
+        """Handle collision for thrown pets with energy loss"""
+        # Apply bounce with energy loss
+        pet.thrown_velocity[0] = -pet.thrown_velocity[0] * self.thrown_bounce_loss
+        pet.thrown_velocity[1] = -pet.thrown_velocity[1] * self.thrown_bounce_loss
+        
+        # If velocity is too low, end thrown state
+        velocity_magnitude = (pet.thrown_velocity[0]**2 + pet.thrown_velocity[1]**2)**0.5
+        if velocity_magnitude < 5.0:  # Minimum velocity threshold
+            self.end_thrown_state(pet)
+    
+    def check_boundary_collision(self, pet, new_x, new_y):
+        """Check if pet hits boundary"""
+        pet_rect = pygame.Rect(new_x, new_y, pet.width, pet.height)
+        
+        return (pet_rect.left < self.boundaries['left_wall'] or
+                pet_rect.right > self.boundaries['right_wall'] or
+                pet_rect.top < self.boundaries['ceiling'] or
+                pet_rect.bottom > self.boundaries['floor'])
+    
+    def end_thrown_state(self, pet):
+        """End thrown state and return to normal physics"""
+        pet.end_thrown_state()
+        # Reset to normal physics
+        if not hasattr(pet, 'velocity'):
+            pet.velocity = [0, 0]
+        else:
+            pet.velocity = [0, 0]  # Reset velocity 

@@ -209,4 +209,99 @@ class Interaction:
             if selected:
                 self.apply_movement(selected, dx, dy)
                 if environment:
-                    environment.clamp_position(selected) 
+                    environment.clamp_position(selected)
+    
+    # ===== THROWN DETECTION METHODS =====
+    
+    def detect_throw_gesture(self, pet, start_pos, end_pos, drag_time):
+        """Detect if user gesture qualifies as throw"""
+        import math
+        
+        # Calculate distance and velocity
+        dx = end_pos[0] - start_pos[0]
+        dy = end_pos[1] - start_pos[1]
+        distance = math.sqrt(dx**2 + dy**2)
+        
+        # Calculate velocity magnitude
+        if drag_time > 0:
+            velocity_magnitude = distance / drag_time
+        else:
+            velocity_magnitude = distance * 2.0  # Fallback for instant release
+        
+        # Check if velocity meets minimum threshold for throw
+        min_throw_velocity = 50.0  # Minimum velocity to qualify as throw
+        is_throw = velocity_magnitude >= min_throw_velocity
+        
+        # Log debug info
+        from ..utils.log_manager import get_logger
+        logger = get_logger("interaction")
+        logger.debug(f"Throw detection - Distance: {distance:.1f}, Time: {drag_time:.3f}s, Velocity: {velocity_magnitude:.1f}, Is throw: {is_throw}")
+        
+        return is_throw
+    
+    def initiate_throw(self, pet, velocity_x, velocity_y):
+        """Initiate thrown state with given velocity"""
+        if pet and not pet.is_thrown:
+            pet.start_thrown_state(velocity_x, velocity_y)
+            return True
+        return False
+    
+    def handle_thrown_input(self, pet, event):
+        """Handle input events for thrown pets"""
+        if not pet or not pet.is_thrown:
+            return False
+        
+        # Block most input during thrown state
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            # Allow double-right-click to kill even during thrown state
+            if event.button == 3:  # Right click
+                return False  # Let main.py handle double-right-click detection
+            else:
+                return True  # Block other mouse input
+        
+        return False  # Block all other input during thrown state
+    
+    def handle_mouse_drag_for_throw(self, pet, mouse_pos, mouse_buttons):
+        """Handle mouse drag for throw detection"""
+        if not pet:
+            return False
+        
+        # Start drag tracking on left mouse button down
+        if mouse_buttons[0]:  # Left mouse button
+            if not pet.is_dragging:
+                pet.start_drag(mouse_pos[0], mouse_pos[1])
+                pet.start_drag_tracking(mouse_pos[0], mouse_pos[1])
+                from ..utils.log_manager import get_logger
+                logger = get_logger("interaction")
+                logger.debug(f"Started drag at ({mouse_pos[0]}, {mouse_pos[1]})")
+                return True
+            else:
+                # Handle drag movement while button is pressed
+                pet.update_drag(mouse_pos[0], mouse_pos[1])
+                return True
+        
+        # Handle drag release and throw detection
+        elif pet.is_dragging and not mouse_buttons[0]:
+            # Calculate throw velocity
+            drag_duration = pet.get_drag_duration()
+            start_pos = pet.drag_start_pos
+            end_pos = [mouse_pos[0], mouse_pos[1]]
+            
+            from ..utils.log_manager import get_logger
+            logger = get_logger("interaction")
+            logger.debug(f"Drag ended - Duration: {drag_duration:.3f}s, Start: {start_pos}, End: {end_pos}")
+            
+            # Check if gesture qualifies as throw
+            if self.detect_throw_gesture(pet, start_pos, end_pos, drag_duration):
+                # Calculate velocity using environment physics
+                from ..core.environment import Environment
+                # This will be called from main.py where environment is available
+                logger.debug("THROW_DETECTED")
+                return "THROW_DETECTED"
+            
+            # Normal drag end
+            pet.stop_drag()
+            logger.debug("DRAG_ENDED")
+            return "DRAG_ENDED"
+        
+        return False 

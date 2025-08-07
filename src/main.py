@@ -268,11 +268,46 @@ class DesktopPetApp:
             if event.type == pygame.QUIT:
                 self.running = False
             
-            # Handle mouse events for drag functionality
+            # Handle mouse events for drag functionality and throw detection
             elif event.type in [pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP, pygame.MOUSEMOTION]:
                 # Handle mouse events through PetManager
                 if self.pet_manager.handle_mouse_events(event, self.environment):
                     continue  # Event was handled by pet manager
+                
+                # Handle throw detection for selected pet
+                selected_pet = self.pet_manager.get_selected_pet()
+                if selected_pet and not selected_pet.is_being_thrown():
+                    mouse_pos = pygame.mouse.get_pos()
+                    mouse_buttons = pygame.mouse.get_pressed()
+                    
+                    # Handle throw detection
+                    result = self.interaction.handle_mouse_drag_for_throw(selected_pet, mouse_pos, mouse_buttons)
+                    
+                    if result == "THROW_DETECTED":
+                        # Calculate throw velocity using environment
+                        drag_duration = selected_pet.get_drag_duration()
+                        start_pos = selected_pet.drag_start_pos
+                        end_pos = [mouse_pos[0], mouse_pos[1]]
+                        
+                        # Calculate velocity
+                        velocity_x, velocity_y = self.environment.calculate_throw_velocity(
+                            start_pos, end_pos, drag_duration
+                        )
+                        
+                        # Initiate throw
+                        if self.interaction.initiate_throw(selected_pet, velocity_x, velocity_y):
+                            # Handle animation transition
+                            selected_pet.animation_manager.handle_throw_transition(selected_pet)
+                            self.logger.user_action("throw_pet", f"Threw pet with velocity ({velocity_x:.1f}, {velocity_y:.1f})")
+                            print(f"🚀 Threw pet with velocity ({velocity_x:.1f}, {velocity_y:.1f})")
+                            
+                            # Log detailed thrown data for debugging
+                            thrown_info = selected_pet.get_thrown_info()
+                            self.logger.debug(f"Throw initiated - Thrown data: {thrown_info}")
+                            self.logger.debug(f"Drag duration: {drag_duration:.3f}s, Start: {start_pos}, End: {end_pos}")
+                    
+                    elif result == "DRAG_ENDED":
+                        selected_pet.stop_drag()
             
             # Delegate keyboard events to Interaction class
             elif event.type == pygame.KEYDOWN:
@@ -400,6 +435,24 @@ class DesktopPetApp:
             # Check if pet is being dragged - disable physics for dragged pets
             if pet.is_being_dragged():
                 continue  # Skip physics for dragged pets
+            
+            # Check if pet is in thrown state - apply thrown physics
+            if pet.is_being_thrown():
+                # Log thrown data for debugging
+                thrown_info = pet.get_thrown_info()
+                self.logger.debug(f"Thrown data: {thrown_info}")
+                
+                self.environment.apply_thrown_physics(pet, delta_time)
+                # Update position state after thrown physics
+                pet.update_position_state(self.environment)
+                
+                # Check if thrown state just ended
+                if not pet.is_being_thrown():
+                    # Restore animation checkpoint
+                    pet.animation_manager.restore_animation_checkpoint(pet)
+                    self.logger.info("Thrown state ended, restored animation")
+                
+                continue
             
             # Check if user is currently moving the selected pet
             user_moving = False

@@ -410,4 +410,79 @@ class AnimationManager:
             'animation_timer': self.animation_timer,
             'frame_durations': self.frame_durations,
             'has_image': self.current_image is not None
-        } 
+        }
+    
+    # ===== THROWN ANIMATION METHODS =====
+    
+    def handle_throw_transition(self, pet):
+        """Handle animation transition for thrown pets"""
+        if not pet or not pet.is_being_thrown():
+            return False
+        
+        # Save current animation state
+        self.save_animation_checkpoint(pet)
+        
+        # Switch to throw animation (DECISION: Thrown OVERRIDE semua)
+        if self.has_action("Thrown"):
+            self.set_action("Thrown")
+            self.logger.info("Switched to Thrown animation")
+            return True
+        else:
+            # Fallback to appropriate animation based on velocity
+            velocity_x, velocity_y = pet.get_thrown_velocity()
+            if velocity_y > 0:  # Falling
+                if self.has_action("Fall"):
+                    self.set_action("Fall")
+                    self.logger.info("Switched to Fall animation (thrown fallback)")
+                else:
+                    self.set_action("Stand")  # Ultimate fallback
+                    self.logger.info("Switched to Stand animation (thrown fallback)")
+            else:  # Rising
+                if self.has_action("Jump"):
+                    self.set_action("Jump")
+                    self.logger.info("Switched to Jump animation (thrown fallback)")
+                else:
+                    self.set_action("Stand")  # Ultimate fallback
+                    self.logger.info("Switched to Stand animation (thrown fallback)")
+            return True
+    
+    def save_animation_checkpoint(self, pet):
+        """Save current animation state before throw"""
+        if not pet:
+            return
+        
+        pet.animation_checkpoint = {
+            'current_action': self.current_action,
+            'current_frame': self.current_frame,
+            'animation_timer': self.animation_timer,
+            'frame_durations': self.frame_durations.copy() if self.frame_durations else [],
+            'is_animating': self.is_animating
+        }
+        self.logger.debug(f"Saved animation checkpoint: {self.current_action}")
+    
+    def restore_animation_checkpoint(self, pet):
+        """Restore animation state after throw"""
+        if not pet or not pet.animation_checkpoint:
+            return False
+        
+        checkpoint = pet.animation_checkpoint
+        
+        # Restore animation state
+        self.current_action = checkpoint['current_action']
+        self.current_frame = checkpoint['current_frame']
+        self.animation_timer = checkpoint['animation_timer']
+        self.is_animating = checkpoint['is_animating']
+        
+        # Reload frames for the restored action
+        self._load_action_frames(self.current_action)
+        
+        # Restore frame durations if available
+        if checkpoint['frame_durations'] and len(checkpoint['frame_durations']) == len(self.frame_durations):
+            self.frame_durations = checkpoint['frame_durations']
+        
+        self.logger.info(f"Restored animation checkpoint: {self.current_action}")
+        return True
+    
+    def has_action(self, action_name: str) -> bool:
+        """Check if action exists in current action list"""
+        return action_name in self.action_list 

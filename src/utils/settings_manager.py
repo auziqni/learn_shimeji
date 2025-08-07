@@ -32,6 +32,16 @@ class SettingsManager:
                 "max_velocity": 10.0
             },
             
+            "thrown_physics": {
+                "max_velocity": 150.0,
+                "min_throw_velocity": 50.0,
+                "throw_duration": 3.0,
+                "bounce_energy_loss": 0.7,
+                "gravity_multiplier": 1.5,
+                "time_multiplier": 60.0,
+                "fallback_multiplier": 2.0
+            },
+            
             "boundaries": {
                 "default_margin": 0.1,
                 "safe_spawn_margin": 50,

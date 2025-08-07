@@ -57,6 +57,17 @@ class Pet:
         self.drag_offset_y = 0
         self.is_pinched = False  # For debug info display
         
+        # Thrown state management (NEW)
+        self.is_thrown = False
+        self.thrown_velocity = [0.0, 0.0]
+        self.thrown_timer = 0.0
+        self.thrown_angle = 0.0
+        self.thrown_power = 0.0
+        self.thrown_gravity = 0.5
+        self.drag_start_time = 0.0
+        self.drag_start_pos = [0, 0]
+        self.animation_checkpoint = None  # For animation state restoration
+        
         # Text properties - use action info for chat
         self.name = sprite_name if name is None else name
         self.chat = self.animation_manager.get_current_action_info() if chat is None else chat
@@ -599,4 +610,82 @@ class Pet:
 
     def get_animation_info(self) -> Dict[str, Any]:
         """Get animation information for debugging"""
-        return self.animation_manager.get_animation_info() 
+        return self.animation_manager.get_animation_info()
+    
+    # ===== THROWN STATE MANAGEMENT METHODS =====
+    
+    def is_being_thrown(self) -> bool:
+        """Check if pet is currently in thrown state"""
+        return self.is_thrown
+    
+    def start_thrown_state(self, velocity_x: float, velocity_y: float):
+        """Start thrown state with given velocity"""
+        self.is_thrown = True
+        self.thrown_velocity = [velocity_x, velocity_y]
+        self.thrown_timer = 0.0
+        self.thrown_power = (velocity_x**2 + velocity_y**2)**0.5
+        self.thrown_angle = self._calculate_throw_angle(velocity_x, velocity_y)
+        self.logger.info(f"Pet entered thrown state with velocity ({velocity_x:.2f}, {velocity_y:.2f})")
+    
+    def end_thrown_state(self):
+        """End thrown state and return to normal"""
+        self.is_thrown = False
+        self.thrown_velocity = [0.0, 0.0]
+        self.thrown_timer = 0.0
+        self.thrown_angle = 0.0
+        self.thrown_power = 0.0
+        self.logger.info("Pet exited thrown state")
+    
+    def update_thrown_timer(self, delta_time: float):
+        """Update thrown timer"""
+        if self.is_thrown:
+            self.thrown_timer += delta_time
+    
+    def get_thrown_velocity(self) -> Tuple[float, float]:
+        """Get current thrown velocity"""
+        return tuple(self.thrown_velocity)
+    
+    def set_thrown_velocity(self, velocity_x: float, velocity_y: float):
+        """Set thrown velocity"""
+        self.thrown_velocity = [velocity_x, velocity_y]
+        self.thrown_power = (velocity_x**2 + velocity_y**2)**0.5
+        self.thrown_angle = self._calculate_throw_angle(velocity_x, velocity_y)
+    
+    def get_thrown_info(self) -> Dict[str, Any]:
+        """Get thrown state information for debugging"""
+        return {
+            'is_thrown': self.is_thrown,
+            'velocity': self.thrown_velocity,
+            'timer': self.thrown_timer,
+            'angle': self.thrown_angle,
+            'power': self.thrown_power,
+            'gravity': self.thrown_gravity
+        }
+    
+    def _calculate_throw_angle(self, velocity_x: float, velocity_y: float) -> float:
+        """Calculate throw angle from velocity components"""
+        import math
+        if velocity_x == 0 and velocity_y == 0:
+            return 0.0
+        return math.degrees(math.atan2(-velocity_y, velocity_x))  # Negative Y for screen coordinates
+    
+    def start_drag_tracking(self, mouse_x: int, mouse_y: int):
+        """Start tracking drag for throw detection"""
+        import time
+        self.drag_start_time = time.time()
+        self.drag_start_pos = [mouse_x, mouse_y]
+        self.logger.debug(f"Started drag tracking at ({mouse_x}, {mouse_y})")
+    
+    def get_drag_duration(self) -> float:
+        """Get duration of current drag"""
+        import time
+        if self.drag_start_time > 0:
+            return time.time() - self.drag_start_time
+        return 0.0
+    
+    def get_drag_distance(self, current_x: int, current_y: int) -> float:
+        """Calculate distance from drag start to current position"""
+        import math
+        dx = current_x - self.drag_start_pos[0]
+        dy = current_y - self.drag_start_pos[1]
+        return math.sqrt(dx**2 + dy**2) 
