@@ -43,13 +43,19 @@ class DebugManager:
         if not self.debug_mode or not self.font:
             return
         
-        # Draw FPS
-        fps_text = f"FPS: {self.current_fps}"
-        debug_text_color = self.settings_manager.get_setting('ui.debug_text_color', [255, 255, 255]) if self.settings_manager else [255, 255, 255]
-        text_surface = self.font.render(fps_text, False, debug_text_color)
+        # Colors
+        debug_text_color = (0, 0, 0)  # Black text for white background
+        secondary_color = (50, 50, 50)  # Dark gray for secondary info
+        alert_color = (150, 0, 0)  # Dark red for alerts
+        background_color = (255, 255, 255)  # White background
         
-        # Position at top-left with small margin
-        surface.blit(text_surface, (10, 10))
+        # Collect all text surfaces and positions
+        text_surfaces = []
+        
+        # FPS
+        fps_text = f"FPS: {self.current_fps}"
+        fps_surface = self.font.render(fps_text, True, debug_text_color)
+        text_surfaces.append((fps_surface, (10, 10)))
         
         # Draw performance stats if available
         try:
@@ -58,30 +64,43 @@ class DebugManager:
             
             # Frame time
             frame_time_text = f"Frame: {perf_stats['frame_time']:.1f}ms"
-            frame_time_surface = self.font.render(frame_time_text, False, (200, 200, 200))
-            surface.blit(frame_time_surface, (10, 35))
+            frame_time_surface = self.font.render(frame_time_text, True, secondary_color)
+            text_surfaces.append((frame_time_surface, (10, 35)))
             
             # CPU usage
             cpu_text = f"CPU: {perf_stats['cpu_usage']:.1f}%"
-            cpu_surface = self.font.render(cpu_text, False, (200, 200, 200))
-            surface.blit(cpu_surface, (10, 60))
+            cpu_surface = self.font.render(cpu_text, True, secondary_color)
+            text_surfaces.append((cpu_surface, (10, 60)))
             
             # Memory info
             from ..utils.memory_manager import memory_manager
             mem_stats = memory_manager.get_memory_stats()
             mem_text = f"Mem: {mem_stats['current_memory_mb']:.1f}MB"
-            mem_surface = self.font.render(mem_text, False, (200, 200, 200))
-            surface.blit(mem_surface, (10, 85))
+            mem_surface = self.font.render(mem_text, True, secondary_color)
+            text_surfaces.append((mem_surface, (10, 85)))
             
             # Alerts count
             if perf_stats['alerts'] > 0:
                 alert_text = f"Alerts: {perf_stats['alerts']}"
-                alert_surface = self.font.render(alert_text, False, (255, 200, 200))
-                surface.blit(alert_surface, (10, 110))
+                alert_surface = self.font.render(alert_text, True, alert_color)
+                text_surfaces.append((alert_surface, (10, 110)))
                 
         except Exception as e:
             # Silently fail if performance monitoring is not available
             pass
+        
+        # Calculate background size
+        if text_surfaces:
+            max_width = max(surface.get_width() for surface, _ in text_surfaces)
+            total_height = len(text_surfaces) * 25 + 20  # 25px per line + 20px padding
+            
+            # Draw white background with padding
+            background_rect = pygame.Rect(0, 0, max_width + 20, total_height)
+            pygame.draw.rect(surface, background_color, background_rect)
+            
+            # Draw all text surfaces
+            for text_surface, pos in text_surfaces:
+                surface.blit(text_surface, pos)
     
     def draw_pet_debug_info(self, surface, pet, pet_index):
         """Draw debug info for a specific pet to the right of the pet"""
@@ -108,10 +127,14 @@ class DebugManager:
         pos_color = (255, 200, 200)     # Light red for position
         dir_color = (0, 255, 255)       # Cyan for direction
         state_color = (255, 200, 255)   # Light purple for position state
+        background_color = (0, 0, 0)    # Black background
         
         # Line spacing
         line_height = 20
         current_y = debug_y
+        
+        # Collect all text surfaces and positions
+        text_surfaces = []
         
         try:
             # Line 1: Sprite Name : Pet Name (always show both)
@@ -121,8 +144,8 @@ class DebugManager:
             if len(combined_text) > 30:
                 combined_text = combined_text[:27] + "..."
             
-            combined_surface = self.font.render(combined_text, False, sprite_color)
-            surface.blit(combined_surface, (debug_x, current_y))
+            combined_surface = self.font.render(combined_text, True, sprite_color)
+            text_surfaces.append((combined_surface, (debug_x, current_y)))
             current_y += line_height
             
             # Line 2: Chat/Action info (simplified)
@@ -141,20 +164,20 @@ class DebugManager:
             if len(chat_text) > 30:
                 chat_text = chat_text[:27] + "..."
             
-            chat_surface = self.font.render(chat_text, False, chat_color)
-            surface.blit(chat_surface, (debug_x, current_y))
+            chat_surface = self.font.render(chat_text, True, chat_color)
+            text_surfaces.append((chat_surface, (debug_x, current_y)))
             current_y += line_height
             
             # Line 3: Direction
             dir_text = f"Dir: {direction}"
-            dir_surface = self.font.render(dir_text, False, dir_color)
-            surface.blit(dir_surface, (debug_x, current_y))
+            dir_surface = self.font.render(dir_text, True, dir_color)
+            text_surfaces.append((dir_surface, (debug_x, current_y)))
             current_y += line_height
             
             # Line 4: Position (without comma)
             pos_text = f"({int(pet_x)} {int(pet_y)})"
-            pos_surface = self.font.render(pos_text, False, pos_color)
-            surface.blit(pos_surface, (debug_x, current_y))
+            pos_surface = self.font.render(pos_text, True, pos_color)
+            text_surfaces.append((pos_surface, (debug_x, current_y)))
             current_y += line_height
             
             # Line 5: Position State (compact format)
@@ -162,8 +185,21 @@ class DebugManager:
             if len(position_state_text) > 30:
                 position_state_text = position_state_text[:27] + "..."
             
-            state_surface = self.font.render(position_state_text, False, state_color)
-            surface.blit(state_surface, (debug_x, current_y))
+            state_surface = self.font.render(position_state_text, True, state_color)
+            text_surfaces.append((state_surface, (debug_x, current_y)))
+            
+            # Calculate background size
+            if text_surfaces:
+                max_width = max(surface.get_width() for surface, _ in text_surfaces)
+                total_height = len(text_surfaces) * line_height + 20  # 20px padding
+                
+                # Draw black background with padding
+                background_rect = pygame.Rect(debug_x - 10, debug_y - 10, max_width + 20, total_height)
+                pygame.draw.rect(surface, background_color, background_rect)
+                
+                # Draw all text surfaces
+                for text_surface, pos in text_surfaces:
+                    surface.blit(text_surface, pos)
             
         except Exception as e:
             # Silently fail if rendering fails

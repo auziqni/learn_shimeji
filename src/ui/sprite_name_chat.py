@@ -55,7 +55,7 @@ class SpriteNameChat:
                 self.chat_font = None
     
     def render_name(self, surface, name: str, position: tuple, max_length: int = 25):
-        """Render pet name below sprite"""
+        """Render pet name below sprite with black background"""
         if not name or len(name) == 0 or not self.name_font:
             return
         
@@ -64,14 +64,26 @@ class SpriteNameChat:
         
         try:
             # Render name text
-            name_surface = self.name_font.render(display_name, False, self.name_color)
+            name_surface = self.name_font.render(display_name, True, self.name_color)
             
             # Calculate position (center below sprite)
             name_rect = name_surface.get_rect()
             name_rect.centerx = position[0]
             name_rect.top = position[1] + 5  # 5 pixels below sprite
             
-            # Draw name
+            # Create background rectangle with 3px padding
+            padding = 3
+            bg_rect = pygame.Rect(
+                name_rect.x - padding,
+                name_rect.y - padding,
+                name_rect.width + (padding * 2),
+                name_rect.height + (padding * 2)
+            )
+            
+            # Draw black background
+            pygame.draw.rect(surface, (0, 0, 0), bg_rect)
+            
+            # Draw name text
             surface.blit(name_surface, name_rect)
             
         except Exception as e:
@@ -130,7 +142,7 @@ class SpriteNameChat:
             total_height = 0
             
             for line in lines:
-                line_surface = self.chat_font.render(line, False, self.chat_text_color)
+                line_surface = self.chat_font.render(line, True, self.chat_text_color)
                 line_surfaces.append(line_surface)
                 max_width = max(max_width, line_surface.get_width())
                 total_height += line_surface.get_height()
@@ -154,7 +166,7 @@ class SpriteNameChat:
             
             # Position bubble (top-right of sprite anchor point)
             bubble_rect = bubble_surface.get_rect()
-            bubble_rect.bottomleft = (position[0] + 10, position[1] - 10)  # 10px offset from sprite anchor
+            bubble_rect.bottomleft = (position[0] + 40, position[1] - 10)  # 10px offset from sprite anchor
             
             # Draw bubble
             surface.blit(bubble_surface, bubble_rect)
