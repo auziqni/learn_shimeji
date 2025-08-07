@@ -46,7 +46,7 @@ class DebugManager:
         # Draw FPS
         fps_text = f"FPS: {self.current_fps}"
         debug_text_color = self.settings_manager.get_setting('ui.debug_text_color', [255, 255, 255]) if self.settings_manager else [255, 255, 255]
-        text_surface = self.font.render(fps_text, True, debug_text_color)
+        text_surface = self.font.render(fps_text, False, debug_text_color)
         
         # Position at top-left with small margin
         surface.blit(text_surface, (10, 10))
@@ -58,25 +58,25 @@ class DebugManager:
             
             # Frame time
             frame_time_text = f"Frame: {perf_stats['frame_time']:.1f}ms"
-            frame_time_surface = self.font.render(frame_time_text, True, (200, 200, 200))
+            frame_time_surface = self.font.render(frame_time_text, False, (200, 200, 200))
             surface.blit(frame_time_surface, (10, 35))
             
             # CPU usage
             cpu_text = f"CPU: {perf_stats['cpu_usage']:.1f}%"
-            cpu_surface = self.font.render(cpu_text, True, (200, 200, 200))
+            cpu_surface = self.font.render(cpu_text, False, (200, 200, 200))
             surface.blit(cpu_surface, (10, 60))
             
             # Memory info
             from ..utils.memory_manager import memory_manager
             mem_stats = memory_manager.get_memory_stats()
             mem_text = f"Mem: {mem_stats['current_memory_mb']:.1f}MB"
-            mem_surface = self.font.render(mem_text, True, (200, 200, 200))
+            mem_surface = self.font.render(mem_text, False, (200, 200, 200))
             surface.blit(mem_surface, (10, 85))
             
             # Alerts count
             if perf_stats['alerts'] > 0:
                 alert_text = f"Alerts: {perf_stats['alerts']}"
-                alert_surface = self.font.render(alert_text, True, (255, 200, 200))
+                alert_surface = self.font.render(alert_text, False, (255, 200, 200))
                 surface.blit(alert_surface, (10, 110))
                 
         except Exception as e:
@@ -121,7 +121,7 @@ class DebugManager:
             if len(combined_text) > 30:
                 combined_text = combined_text[:27] + "..."
             
-            combined_surface = self.font.render(combined_text, True, sprite_color)
+            combined_surface = self.font.render(combined_text, False, sprite_color)
             surface.blit(combined_surface, (debug_x, current_y))
             current_y += line_height
             
@@ -141,19 +141,19 @@ class DebugManager:
             if len(chat_text) > 30:
                 chat_text = chat_text[:27] + "..."
             
-            chat_surface = self.font.render(chat_text, True, chat_color)
+            chat_surface = self.font.render(chat_text, False, chat_color)
             surface.blit(chat_surface, (debug_x, current_y))
             current_y += line_height
             
             # Line 3: Direction
             dir_text = f"Dir: {direction}"
-            dir_surface = self.font.render(dir_text, True, dir_color)
+            dir_surface = self.font.render(dir_text, False, dir_color)
             surface.blit(dir_surface, (debug_x, current_y))
             current_y += line_height
             
             # Line 4: Position (without comma)
             pos_text = f"({int(pet_x)} {int(pet_y)})"
-            pos_surface = self.font.render(pos_text, True, pos_color)
+            pos_surface = self.font.render(pos_text, False, pos_color)
             surface.blit(pos_surface, (debug_x, current_y))
             current_y += line_height
             
@@ -162,7 +162,7 @@ class DebugManager:
             if len(position_state_text) > 30:
                 position_state_text = position_state_text[:27] + "..."
             
-            state_surface = self.font.render(position_state_text, True, state_color)
+            state_surface = self.font.render(position_state_text, False, state_color)
             surface.blit(state_surface, (debug_x, current_y))
             
         except Exception as e:

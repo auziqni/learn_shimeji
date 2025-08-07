@@ -74,7 +74,6 @@ class SpriteLoader:
             
             # Try to load the sprite
             sprite = pygame.image.load(sprite_path)
-            
             # Convert to optimize for display - handle display not initialized
             try:
                 if sprite.get_alpha() is None:
@@ -98,6 +97,10 @@ class SpriteLoader:
                 else:
                     raise e
             
+            # Preprocess sprite to avoid transparency conflicts
+            sprite = self._preprocess_sprite_for_transparency(sprite)
+            
+            
             return sprite
             
         except pygame.error as e:
@@ -106,6 +109,66 @@ class SpriteLoader:
         except Exception as e:
             self.logger.error(f"Unexpected error loading {sprite_path}: {e}")
             return None
+    
+    def _preprocess_sprite_for_transparency(self, sprite: pygame.Surface, transparency_color=(255, 0, 255)) -> pygame.Surface:
+        """Preprocess sprite to avoid color key conflicts"""
+        try:
+            # Create a copy to avoid modifying original
+            processed_sprite = sprite.copy()
+            
+            # Get the surface array for pixel manipulation
+            pixel_array = pygame.PixelArray(processed_sprite)
+            
+            # Define tolerance for color matching (to avoid bleeding)
+            tolerance = 30  # Adjust this value as needed
+            
+            # Get transparency color components
+            r_target, g_target, b_target = transparency_color
+            
+            # Scan and adjust pixels that are too close to transparency color
+            for x in range(processed_sprite.get_width()):
+                for y in range(processed_sprite.get_height()):
+                    # Get pixel color
+                    pixel_color = processed_sprite.get_at((x, y))
+                    r, g, b, a = pixel_color
+                    
+                    # Skip fully transparent pixels
+                    if a == 0:
+                        continue
+                    
+                    # Calculate distance from transparency color
+                    distance = ((r - r_target) ** 2 + (g - g_target) ** 2 + (b - b_target) ** 2) ** 0.5
+                    
+                    # If pixel is too close to transparency color, adjust it
+                    if distance < tolerance:
+                        # Move the color away from transparency color
+                        if r < r_target:
+                            r = max(0, r - 10)
+                        else:
+                            r = min(255, r + 10)
+                        
+                        if g < g_target:
+                            g = max(0, g - 10)
+                        else:
+                            g = min(255, g + 10)
+                        
+                        if b < b_target:
+                            b = max(0, b - 10)
+                        else:
+                            b = min(255, b + 10)
+                        
+                        # Set the adjusted pixel
+                        processed_sprite.set_at((x, y), (r, g, b, a))
+            
+            # Clean up pixel array
+            pixel_array.close()
+            
+            self.logger.debug(f"Sprite preprocessed to avoid transparency conflicts")
+            return processed_sprite
+            
+        except Exception as e:
+            self.logger.warning(f"Failed to preprocess sprite: {e}")
+            return sprite  # Return original if preprocessing fails
     
     def _add_to_cache(self, sprite_path: str, sprite: pygame.Surface):
         """Add sprite to cache with memory management"""

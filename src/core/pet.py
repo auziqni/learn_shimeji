@@ -207,7 +207,8 @@ class Pet:
         """Get current image flipped based on direction"""
         if self.image:
             if self.direction == "right":
-                return pygame.transform.flip(self.image, True, False)
+                flipped_image = pygame.transform.flip(self.image, True, False)
+                return flipped_image.convert_alpha()
             else:
                 return self.image
         return self.image

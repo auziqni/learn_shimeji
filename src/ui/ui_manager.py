@@ -17,9 +17,16 @@ class UIManager:
     
     def render_game_screen(self, surface, game_state):
         """Render complete game screen with all elements"""
+        # Get transparency color from settings
+        settings_manager = game_state.get('settings_manager')
+        if settings_manager:
+            transparency_color = settings_manager.get_transparency_color()
+        else:
+            transparency_color = [255, 0, 255]  # Default magenta
+        
         # Clear with appropriate background
         if game_state.get('transparent_mode', False):
-            surface.fill((0, 0, 0))  # Black = transparent
+            surface.fill((255, 0, 255))  # Black = transparent
         else:
             surface.fill((30, 30, 30))  # Dark gray background
         

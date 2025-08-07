@@ -120,8 +120,8 @@ class WindowManager:
             return [WindowManager.get_main_monitor_info()]
     
     @staticmethod
-    def create_transparent_window(monitor_info=None):
-        """Create transparent pygame window on specific monitor"""
+    def create_transparent_window(monitor_info=None, transparency_color=(255, 0, 255)):
+        """Create transparent pygame window with dynamic color"""
         if not WIN32_AVAILABLE:
             raise ImportError("Win32 modules not available")
         
@@ -142,12 +142,12 @@ class WindowManager:
         
         # Get window handle and apply transparency
         hwnd = pygame.display.get_wm_info()["window"]
-        WindowManager._apply_transparency(hwnd)
+        WindowManager._apply_transparency(hwnd, transparency_color)
         
         # Ensure window is positioned correctly on the target monitor
         WindowManager._position_window_on_monitor(hwnd, monitor_info)
         
-        print(f"✅ Transparent window created on main monitor: {monitor_info['width']}x{monitor_info['height']}")
+        print(f"✅ Transparent window created with color {transparency_color}")
         return display, hwnd, monitor_info['width'], monitor_info['height']
     
     @staticmethod
@@ -187,17 +187,21 @@ class WindowManager:
             print(f"⚠️ Could not position window on monitor: {e}")
     
     @staticmethod
-    def _apply_transparency(hwnd):
-        """Apply Win32 transparency settings"""
+    def _apply_transparency(hwnd, transparency_color=(255, 0, 255)):
+        """Apply Win32 transparency settings with dynamic color"""
         try:
             # Set layered window
             current_style = win32gui.GetWindowLong(hwnd, win32con.GWL_EXSTYLE)
             new_style = current_style | win32con.WS_EX_LAYERED
             win32gui.SetWindowLong(hwnd, win32con.GWL_EXSTYLE, new_style)
             
-            # Set color key transparency (black = transparent)
+            # Convert RGB to hex color
+            r, g, b = transparency_color
+            hex_color = (r << 16) | (g << 8) | b
+            
+            # Set color key transparency
             win32gui.SetLayeredWindowAttributes(
-                hwnd, 0x000000, 0, win32con.LWA_COLORKEY
+                hwnd, hex_color, 0, win32con.LWA_COLORKEY
             )
             
             # Always on top

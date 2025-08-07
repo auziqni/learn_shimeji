@@ -238,13 +238,28 @@ class SettingsManager:
         return self.settings.get(section, {})
     
     def reset_to_defaults(self) -> bool:
-        """Reset all settings to defaults"""
+        """Reset all settings to default values"""
         try:
             self.settings = self.default_settings.copy()
-            success = self.save_settings()
-            if success:
-                self.logger.info("Settings reset to defaults")
-            return success
+            self.save_settings()
+            self.logger.info("Settings reset to defaults")
+            return True
         except Exception as e:
             self.logger.error(f"Failed to reset settings: {e}")
-            return False 
+            return False
+    
+    def get_transparency_color(self):
+        """Get transparency color from settings"""
+        return self.get_setting('window.transparency_color', [255, 0, 255])
+
+    def get_transparency_mode(self):
+        """Get transparency mode from settings"""
+        return self.get_setting('window.transparency_mode', 'color_key')
+    
+    def set_transparency_color(self, color):
+        """Set transparency color in settings"""
+        return self.set_setting('window.transparency_color', color)
+    
+    def set_transparency_mode(self, mode):
+        """Set transparency mode in settings"""
+        return self.set_setting('window.transparency_mode', mode) 

@@ -67,6 +67,7 @@ class DesktopPetApp:
             
             # Initialize pygame
             pygame.init()
+            
             self.clock = pygame.time.Clock()
             self.logger.debug("Pygame initialized successfully")
             
@@ -423,20 +424,20 @@ class DesktopPetApp:
         # Pet info
         info_text = f"Pet {self.pet_manager.selected_index + 1}/{self.pet_manager.get_pet_count()}"
         info_color = self.settings_manager.get_setting('ui.info_text_color', [255, 255, 255])
-        text_surface = font.render(info_text, True, info_color)
+        text_surface = font.render(info_text, False, info_color)
         self.display.blit(text_surface, (10, 40))  # Moved down to avoid FPS overlap
         
         # Monitor info
         if self.monitor_info:
             monitor_text = f"Main Monitor: {self.monitor_info['width']}x{self.monitor_info['height']}"
             monitor_color = self.settings_manager.get_setting('ui.monitor_info_color', [200, 200, 200])
-            monitor_surface = font.render(monitor_text, True, monitor_color)
+            monitor_surface = font.render(monitor_text, False, monitor_color)
             self.display.blit(monitor_surface, (10, 65))
         
         # Control panel hint
         if not self.control_panel.visible:
             hint_text = "Press F2 for Control Panel"
-            hint_surface = font.render(hint_text, True, (150, 150, 150))
+            hint_surface = font.render(hint_text, False, (150, 150, 150))
             self.display.blit(hint_surface, (10, 90))
     
     def run(self):

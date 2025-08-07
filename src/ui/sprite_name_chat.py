@@ -64,7 +64,7 @@ class SpriteNameChat:
         
         try:
             # Render name text
-            name_surface = self.name_font.render(display_name, True, self.name_color)
+            name_surface = self.name_font.render(display_name, False, self.name_color)
             
             # Calculate position (center below sprite)
             name_rect = name_surface.get_rect()
@@ -130,7 +130,7 @@ class SpriteNameChat:
             total_height = 0
             
             for line in lines:
-                line_surface = self.chat_font.render(line, True, self.chat_text_color)
+                line_surface = self.chat_font.render(line, False, self.chat_text_color)
                 line_surfaces.append(line_surface)
                 max_width = max(max_width, line_surface.get_width())
                 total_height += line_surface.get_height()
